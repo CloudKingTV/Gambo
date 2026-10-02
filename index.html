@@ -51,7 +51,7 @@ h1,h2,h3{ margin:0; font-family:var(--f-display); font-weight:400; letter-spacin
 p{ margin:0; }
 
 /* ---------- app shell ---------- */
-#app{ position:fixed; top:0; bottom:0; left:0; right:0; margin:0 auto; width:100%; max-width:480px; overflow:hidden; isolation:isolate; }
+#app{ position:fixed; top:0; bottom:0; left:0; right:0; margin:0 auto; width:100%; max-width:480px; overflow:hidden; overflow:clip; isolation:isolate; }
 #app::before{ /* velvet diamond weave + vignette */
   content:""; position:absolute; inset:0; z-index:-1; pointer-events:none;
   background:
@@ -150,6 +150,18 @@ body.hr #app::before{ background:
 .art-mahjong{ background:radial-gradient(circle at 30% 20%, #4af0c4, #0b5a52 70%); }
 .art-blocks{ background:radial-gradient(circle at 30% 20%, #ffd36b, #8a4d0f 70%); }
 .art-connect{ background:radial-gradient(circle at 30% 20%, #6be7ff, #1b3c8f 70%); }
+.art-gems{ background:radial-gradient(circle at 30% 20%, #ff8aa5, #7a0f2e 70%); }
+.art-stack{ background:radial-gradient(circle at 30% 20%, #7fb2ff, #14306f 70%); }
+.art-safe{ background:radial-gradient(circle at 30% 20%, #8c8c9c, #24242c 70%); }
+.art-mines{ background:radial-gradient(circle at 30% 20%, #9dff7a, #1f4a14 70%); }
+.art-simon{ background:radial-gradient(circle at 30% 20%, #c49bff, #3a1460 70%); }
+.mini-chips{ position:relative; width:56px; height:50px; }
+.mini-chips i{ position:absolute; left:6px; width:44px; height:14px; border-radius:50%; background:repeating-linear-gradient(90deg, var(--cc) 0 6px, #fff 6px 9px); box-shadow:0 3px 0 rgba(0,0,0,.4); }
+.mini-chips i:nth-child(1){ top:30px; } .mini-chips i:nth-child(2){ top:19px; } .mini-chips i:nth-child(3){ top:8px; }
+.mini-pads{ display:grid; grid-template-columns:repeat(2,22px); gap:4px; }
+.mini-pads i{ width:22px; height:22px; background:currentColor; box-shadow:0 0 10px currentColor; }
+.mini-pads i:nth-child(1){ border-radius:100% 5px 5px 5px; } .mini-pads i:nth-child(2){ border-radius:5px 100% 5px 5px; }
+.mini-pads i:nth-child(3){ border-radius:5px 5px 5px 100%; } .mini-pads i:nth-child(4){ border-radius:5px 5px 100% 5px; }
 .mini-dots{ display:grid; grid-template-columns:repeat(3,16px); gap:6px; }
 .mini-dots i{ width:16px; height:16px; border-radius:50%; box-shadow:0 0 8px currentColor; background:currentColor; }
 .mini-blocks{ display:grid; grid-template-columns:repeat(3,17px); gap:3px; }
@@ -168,6 +180,8 @@ body.hr #app::before{ background:
 .joy i{ position:absolute; left:50%; top:50%; width:54px; height:54px; margin:-27px 0 0 -27px; border-radius:50%;
   background:radial-gradient(circle at 35% 30%, #fff, var(--acc1) 60%); box-shadow:0 0 18px var(--acc1); }
 #scrLobby > .topbar{ position:relative; z-index:3; }
+.world-fade{ position:absolute; inset:0; z-index:3; background:#000; opacity:0; pointer-events:none; transition:opacity .3s ease; }
+.world-fade.on{ opacity:1; }
 #btnMenu{ display:none; }
 .world-ui{ display:none; }
 .sheet-head{ display:none; }
@@ -259,6 +273,97 @@ body.hr #scrLobby.world-on .scroll{ background:linear-gradient(175deg, rgba(70,4
 .board-wrap{ flex:1; min-height:0; position:relative; isolation:isolate; z-index:0; display:flex; align-items:center; justify-content:center; touch-action:none; }
 .game-foot{ flex:none; display:flex; align-items:center; justify-content:center; gap:10px; min-height:44px; touch-action:none; }
 .game-foot .hint{ font-size:13px; color:var(--muted); text-align:center; }
+
+/* ---------- GEM SWAP ---------- */
+.gm-board{ position:relative; touch-action:none; border-radius:18px; background:rgba(0,0,0,.42); border:1px solid var(--line); box-shadow:inset 0 0 30px rgba(0,0,0,.6); }
+.gem{ position:absolute; left:0; top:0; transition:transform .26s cubic-bezier(.34,1.25,.55,1); will-change:transform; }
+.gem i{ position:absolute; inset:0; background:linear-gradient(150deg, color-mix(in srgb, var(--c) 30%, #fff) 0 22%, var(--c) 48%, color-mix(in srgb, var(--c) 55%, #000) 100%); }
+.gem.s0 i{ clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%); }
+.gem.s1 i{ inset:4%; border-radius:50%; box-shadow:inset 0 -4px 0 rgba(0,0,0,.25), inset 0 3px 0 rgba(255,255,255,.5); }
+.gem.s2 i{ inset:9%; border-radius:24%; box-shadow:inset 0 -4px 0 rgba(0,0,0,.25), inset 0 3px 0 rgba(255,255,255,.5); }
+.gem.s3 i{ clip-path:polygon(25% 5%,75% 5%,100% 50%,75% 95%,25% 95%,0 50%); }
+.gem.s4 i{ clip-path:polygon(50% 4%,97% 90%,3% 90%); }
+.gem.s5 i{ inset:12%; border-radius:50%; background:radial-gradient(circle at 35% 30%, #fff, #e9defa 45%, #a58fc2); box-shadow:0 0 10px rgba(255,255,255,.45); }
+.gem.wild i{ inset:6%; clip-path:none; border-radius:50%; background:conic-gradient(from 0deg, #ff6bd5, #ffd166, #8dff6a, #3ff0ff, #a974ff, #ff6bd5); box-shadow:0 0 12px #fff; }
+.gem::after{ content:""; position:absolute; inset:-3px; border-radius:30%; border:3px solid transparent; pointer-events:none; }
+.gem.sel::after{ border-color:var(--gold); box-shadow:0 0 14px var(--gold); }
+.gem.pop i{ animation:vanish .3s ease forwards; }
+.gem.reshuf i{ animation:flipIn .4s ease; }
+.gem .lk{ position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); z-index:2; }
+
+/* ---------- CHIP STACK ---------- */
+.st-board{ position:relative; touch-action:none; border-radius:22px; background:rgba(0,0,0,.45); border:1px solid var(--line); box-shadow:inset 0 0 30px rgba(0,0,0,.6); }
+.st-cell{ position:absolute; left:0; top:0; border-radius:50%; background:rgba(255,255,255,.05); box-shadow:inset 0 2px 6px rgba(0,0,0,.6); }
+.st-tile{ position:absolute; left:0; top:0; transition:transform .11s ease-out; will-change:transform; z-index:2; }
+.st-tile .chip{ position:absolute; inset:0; border-radius:50%; display:grid; place-items:center;
+  background:radial-gradient(circle, var(--cc) 0 52%, transparent 53%), repeating-conic-gradient(var(--cc) 0 22.5deg, #fff 22.5deg 45deg);
+  box-shadow:0 5px 0 rgba(0,0,0,.45), 0 0 14px color-mix(in srgb, var(--cc) 50%, transparent), inset 0 0 0 4px rgba(0,0,0,.18); }
+.st-tile .chip::before{ content:""; position:absolute; inset:17%; border-radius:50%; border:2px dashed rgba(255,255,255,.6); }
+.st-tile span{ position:relative; font:800 var(--fs,22px)/1 var(--f-ui); color:#fff; text-shadow:0 1px 3px rgba(0,0,0,.7); }
+.st-tile.light span{ color:#2a1600; text-shadow:none; }
+.st-tile.wild .chip{ background:conic-gradient(from 0deg, #ff6bd5, #ffd166, #8dff6a, #3ff0ff, #a974ff, #ff6bd5); }
+.st-tile.new .chip{ animation:placeIn .2s ease; }
+.st-tile.merged .chip{ animation:pop .25s ease; }
+.st-tile .lk{ position:absolute; top:-4px; right:-4px; }
+
+/* ---------- SAFE CRACKER ---------- */
+.sf-box{ width:100%; max-width:400px; padding:10px 12px; display:flex; flex-direction:column; gap:8px; }
+.sf-head{ display:flex; align-items:center; gap:8px; }
+.sf-dial{ width:44px; height:44px; flex:none; border-radius:50%; position:relative;
+  background:radial-gradient(circle, #45454f 0 28%, #22222a 29% 60%, var(--gold) 61% 67%, #2a2a33 68%); box-shadow:0 0 12px rgba(255,209,102,.35); transition:transform .7s cubic-bezier(.3,1.4,.5,1), box-shadow .3s; }
+.sf-dial::after{ content:""; position:absolute; left:50%; top:3px; width:3px; height:11px; margin-left:-1.5px; background:var(--gold-hi); border-radius:2px; }
+.sf-dial.open{ transform:rotate(540deg); box-shadow:0 0 28px var(--gold); }
+.sf-dial .lk{ position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); }
+.sf-title{ flex:1; min-width:0; display:flex; flex-direction:column; }
+.sf-title b{ font-family:var(--f-display); font-weight:400; font-size:18px; }
+.sf-title small{ color:var(--muted); font-size:12.5px; font-weight:700; }
+.sf-btn{ min-height:44px; min-width:44px; padding:0 10px; border-radius:12px; background:var(--glass-hi); border:1px solid var(--line); font-weight:800; font-size:13px; }
+.sf-btn:disabled{ opacity:.4; }
+.sf-rows{ display:flex; flex-direction:column; gap:5px; }
+.sf-row{ display:flex; align-items:center; gap:10px; height:var(--rh,44px); padding:0 10px; border-radius:12px; background:rgba(0,0,0,.25); }
+.sf-row.cur{ background:rgba(255,209,102,.1); box-shadow:inset 0 0 0 2px rgba(255,209,102,.55); }
+.sf-row.reveal{ background:rgba(255,84,112,.18); box-shadow:inset 0 0 0 2px rgba(255,84,112,.5); }
+.sf-row .pegs{ flex:1; display:flex; gap:10px; justify-content:center; }
+.peg{ width:calc(var(--rh,44px) * .62); height:calc(var(--rh,44px) * .62); border-radius:50%; background:rgba(255,255,255,.07); box-shadow:inset 0 2px 4px rgba(0,0,0,.6); }
+.peg.on{ background:radial-gradient(circle at 35% 30%, #fff 0 10%, var(--c) 45%, color-mix(in srgb, var(--c) 55%, #000)); box-shadow:0 0 10px var(--c); animation:placeIn .2s ease; }
+.peg.hint{ background:transparent; box-shadow:inset 0 0 0 3px var(--c); opacity:.75; }
+.sf-row .fb{ display:grid; grid-template-columns:repeat(2, 10px); gap:4px; width:24px; flex:none; }
+.fb i{ width:10px; height:10px; border-radius:50%; background:rgba(255,255,255,.08); }
+.fb i.b{ background:var(--lime); box-shadow:0 0 6px var(--lime); }
+.fb i.w{ background:transparent; box-shadow:inset 0 0 0 2px #fff; }
+.sf-pal{ display:flex; gap:8px; justify-content:center; width:100%; }
+.sf-col{ width:46px; height:46px; flex:none; border-radius:50%; background:radial-gradient(circle at 35% 30%, #fff 0 10%, var(--c) 45%, color-mix(in srgb, var(--c) 55%, #000)); box-shadow:0 0 12px var(--c), 0 4px 0 rgba(0,0,0,.4); }
+
+/* ---------- DIAMOND MINES ---------- */
+.mn-grid{ display:grid; gap:3px; padding:6px; border-radius:16px; background:rgba(0,0,0,.45); border:1px solid var(--line); touch-action:none; }
+.mn-cell{ position:relative; border-radius:7px; display:grid; place-items:center; font-weight:800; font-family:var(--f-ui), var(--f-emoji); line-height:1;
+  background:linear-gradient(160deg, #5b3a85, #3a1f5c); box-shadow:inset 0 2px 0 rgba(255,255,255,.25), inset 0 -3px 0 rgba(0,0,0,.35); }
+body.hr .mn-cell{ background:linear-gradient(160deg, #7a5d22, #3d2c0c); }
+body.hr .mn-cell.open, .mn-cell.open{ background:rgba(255,255,255,.05); box-shadow:inset 0 1px 3px rgba(0,0,0,.6); animation:placeIn .18s ease; }
+body.hr .mn-cell.mine, .mn-cell.mine{ background:rgba(255,84,112,.25); }
+.mn-cell.boom{ background:var(--danger) !important; }
+.mn-cell .n1{ color:#3ff0ff; } .mn-cell .n2{ color:#8dff6a; } .mn-cell .n3{ color:#ffd166; } .mn-cell .n4{ color:#ff9f43; } .mn-cell .n5{ color:#ff3fb4; }
+.mn-cell .n6, .mn-cell .n7, .mn-cell .n8{ color:#ff5470; }
+.mn-cell .gemlet{ color:rgba(169,116,255,.4); font-size:.6em; }
+.mn-cell .lk{ position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); }
+.mn-seg{ display:grid; grid-template-columns:1fr 1fr; gap:6px; padding:5px; border-radius:16px; background:var(--glass); border:1px solid var(--line); width:100%; max-width:320px; }
+.mn-seg button{ min-height:44px; border-radius:12px; font-weight:800; color:var(--muted); }
+.mn-seg button.on{ color:#fff; background:color-mix(in srgb, var(--acc1) 55%, transparent); box-shadow:0 0 14px color-mix(in srgb, var(--acc1) 45%, transparent); }
+
+/* ---------- LUCKY SEQUENCE ---------- */
+.sm-board{ position:relative; display:grid; grid-template-columns:1fr 1fr; gap:12px; padding:14px; border-radius:50%; touch-action:none;
+  background:rgba(0,0,0,.45); border:1px solid var(--line); box-shadow:inset 0 0 40px rgba(0,0,0,.7), 0 0 40px color-mix(in srgb, var(--acc1) 20%, transparent); transition:box-shadow .2s; }
+.sm-pad{ background:color-mix(in srgb, var(--c) 30%, #120818); box-shadow:inset 0 0 0 2px color-mix(in srgb, var(--c) 50%, transparent), inset 0 -8px 16px rgba(0,0,0,.4); transition:background .08s, box-shadow .08s, transform .08s; }
+.sm-pad.p0{ border-radius:100% 14px 14px 14px; } .sm-pad.p1{ border-radius:14px 100% 14px 14px; }
+.sm-pad.p2{ border-radius:14px 14px 14px 100%; } .sm-pad.p3{ border-radius:14px 14px 100% 14px; }
+.sm-pad.lit{ background:var(--c); box-shadow:0 0 34px var(--c), inset 0 0 20px rgba(255,255,255,.6); transform:scale(1.03); }
+.sm-pad.hint{ box-shadow:inset 0 0 0 5px #fff, 0 0 20px #fff; }
+.sm-hub{ position:absolute; left:50%; top:50%; width:38%; height:38%; transform:translate(-50%,-50%); border-radius:50%; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px;
+  background:radial-gradient(circle at 35% 30%, #3a1a55, #12061f); border:3px solid var(--gold); box-shadow:0 0 22px rgba(255,209,102,.4); pointer-events:none; text-align:center; }
+.sm-hub b{ font-family:var(--f-display); font-weight:400; font-size:clamp(16px, 5vw, 24px); color:var(--gold-hi); }
+.sm-hub small{ font-size:11px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); }
+.sm-board.good{ box-shadow:inset 0 0 40px rgba(0,0,0,.7), 0 0 50px var(--lime); }
+.sm-board.bad{ animation:wiggle .35s ease; }
 
 /* ---------- luck badges ---------- */
 .lk{ display:inline-grid; place-items:center; min-width:24px; height:20px; padding:0 5px; border-radius:7px; font:800 11px/1 var(--f-ui); letter-spacing:0;
@@ -483,7 +588,7 @@ body.hr .modal{ background:linear-gradient(170deg, rgba(80,52,14,.94), rgba(26,1
 
   <!-- ============ LOBBY ============ -->
   <section class="screen active" id="scrLobby" aria-label="Lobby">
-    <div class="world" id="world" hidden><div class="joy" id="joy" hidden><i></i></div></div>
+    <div class="world" id="world" hidden><div class="joy" id="joy" hidden><i></i></div><div class="world-fade" id="worldFade"></div></div>
     <div class="topbar">
       <div class="brand"><b>Puzzle</b><span>Parlor</span></div>
       <div class="bank" id="bankPill" aria-label="Bankroll"><span class="chip-ico"></span><b id="bankVal">1,000</b></div>
@@ -507,6 +612,7 @@ body.hr .modal{ background:linear-gradient(170deg, rgba(80,52,14,.94), rgba(26,1
         <span><b>Daily Free Spin</b><small id="spinSub">Win 50 – 1,000 chips</small></span>
         <span class="go" id="spinGo">SPIN</span>
       </button>
+      <div class="label" id="tablesLabel">Main Floor games</div>
       <div class="tables" id="tables"></div>
       <div class="stats glass" id="stats"></div>
       <p class="fine">Play-money chips only. No real money, no purchases, no payouts.</p>
@@ -760,6 +866,7 @@ const Sfx = (() => {
       [523, 659, 784, 1046].forEach(f => { tone(f, { type: 'sawtooth', dur: 1.3, vol: 0.06, at: 0.5, attack: 0.04, dest: lp }); tone(f * 2, { type: 'sine', dur: 1.2, vol: 0.03, at: 0.5 }); });
       for (let i = 0; i < 10; i++) coin(0.6 + i * 0.08, (i % 4) * 2);
     },
+    note(f, d = 0.3) { tone(f, { type: 'triangle', dur: d + 0.15, vol: 0.16 }); tone(f * 2, { type: 'sine', dur: d, vol: 0.04 }); },
     spinTick() { tone(2300, { type: 'square', dur: 0.018, vol: 0.04 }); }
   };
 })();
@@ -1477,7 +1584,522 @@ const ConnectTable = {
   }
 };
 
-const TABLES = { memory: MemoryTable, mahjong: MahjongTable, blocks: BlocksTable, connect: ConnectTable };
+
+/* =====================================================================
+   MORE TABLES — Gem Swap and Chip Stack (Main Floor), Safe Cracker,
+   Diamond Mines and Lucky Sequence (High Roller floor exclusives).
+   Same interface as the tables above.
+   ===================================================================== */
+
+/* ---------------------------- GEM SWAP (match-3) ---------------------------- */
+const GEM_COLORS = ['#ff4d6d', '#3ff0ff', '#8dff6a', '#ffd166', '#a974ff', '#f6f0ff'];
+const GemsTable = {
+  id: 'gems', name: 'Gem Swap', icon: '💎', art: 'art-gems', unit: 'gems', time: 60, targets: [30, 55, 85], max: 2000, comboWindow: 2500,
+  blurb: 'Swap neighbours to line up three.',
+  rules: (t, time) => `Swipe a gem into a neighbour to line up <b>3+</b> of a kind. Clear <b>${t} gems</b> in <b>${time}s</b>. Cascades build combos; rainbow gems are wild.`,
+  create(R, wrap, foot) {
+    const N = 7, NT = GEM_COLORS.length, grid = [];
+    const board = el('div', 'gm-board'); wrap.appendChild(board);
+    foot.innerHTML = '<p class="hint">Swipe a gem, or tap two neighbours to swap.</p>';
+    let size = 300, pitch = 40, gsz = 34, busy = false, sel = null, dead = false, extraLuck = 0, drag = null;
+
+    function measure() { size = Math.floor(Math.min(wrap.clientWidth, wrap.clientHeight, 440)); pitch = size / N; gsz = Math.round(pitch * 0.84); board.style.width = board.style.height = size + 'px'; }
+    const xy = (r, c) => `translate(${c * pitch + (pitch - gsz) / 2}px, ${r * pitch + (pitch - gsz) / 2}px)`;
+    const setPos = g => { g.el.style.transform = xy(g.r, g.c); };
+    function paint(g) { g.el.className = 'gem s' + g.t + (g.wild ? ' wild' : '') + (g === sel ? ' sel' : ''); g.el.style.setProperty('--c', GEM_COLORS[g.t]); }
+    function makeGem(r, c, t, fromRow) {
+      const g = { r, c, t, wild: false, luck: null, el: el('div', 'gem', '<i></i>') };
+      g.el.style.width = g.el.style.height = gsz + 'px';
+      paint(g); board.appendChild(g.el);
+      g.el.style.transition = 'none'; g.el.style.transform = xy(fromRow, c);
+      return g;
+    }
+    function settle(list) { void board.offsetWidth; list.forEach(g => { g.el.style.transition = ''; setPos(g); }); }
+    function findMatches() {
+      const out = new Set(), lines = [];
+      for (let i = 0; i < N; i++) { lines.push(grid[i]); lines.push(grid.map(row => row[i])); }
+      for (const line of lines) for (let t = 0; t < NT; t++) {
+        let run = [];
+        for (const g of [...line, null]) {
+          if (g && (g.wild || g.t === t)) run.push(g);
+          else { if (run.length >= 3 && run.some(x => !x.wild)) run.forEach(x => out.add(x)); run = []; }
+        }
+      }
+      return out;
+    }
+    function swapCells(a, b) { const ar = a.r, ac = a.c; grid[b.r][b.c] = a; grid[ar][ac] = b; a.r = b.r; a.c = b.c; b.r = ar; b.c = ac; }
+    function hasMove() {
+      for (let r = 0; r < N; r++) for (let c = 0; c < N; c++) for (const [dr, dc] of [[0, 1], [1, 0]]) {
+        const a = grid[r][c], b = grid[r + dr] && grid[r + dr][c + dc]; if (!b) continue;
+        swapCells(a, b); const ok = findMatches().size > 0; swapCells(a, b); if (ok) return true;
+      }
+      return false;
+    }
+    function reshuffle() {
+      const all = grid.flat(); let guard = 0;
+      do { all.forEach(g => { if (!g.wild) g.t = randi(0, NT - 1); }); } while ((findMatches().size || !hasMove()) && ++guard < 80);
+      all.forEach(g => { paint(g); void g.el.offsetWidth; g.el.classList.add('reshuf'); });
+      Sfx.whoosh();
+    }
+
+    // initial board: no ready-made matches, hidden luck, maybe one wild
+    measure();
+    for (let r = 0; r < N; r++) {
+      grid.push([]);
+      for (let c = 0; c < N; c++) {
+        let t; do { t = randi(0, NT - 1); } while ((c >= 2 && grid[r][c - 1].t === t && grid[r][c - 2].t === t) || (r >= 2 && grid[r - 1][c].t === t && grid[r - 2][c].t === t));
+        grid[r].push(makeGem(r, c, t, r - N - 1));
+      }
+    }
+    if (Math.random() < Luck.wildChance) { const g = grid[randi(0, N - 1)][randi(0, N - 1)]; g.wild = true; if (findMatches().size) g.wild = false; paint(g); }
+    if (!hasMove()) reshuffle();
+    shuffle(grid.flat()).slice(0, R.plan.length).forEach((g, i) => { g.luck = R.plan[i]; });
+    requestAnimationFrame(() => settle(grid.flat()));
+
+    function clearSet(m, chain) {
+      let sx = 0, sy = 0;
+      m.forEach(g => {
+        const p = centerOf(g.el); sx += p.x; sy += p.y;
+        FX.sparks(p.x, p.y, g.wild ? '#ffffff' : GEM_COLORS[g.t], 5);
+        if (g.luck) { R.luck(g.luck, p.x, p.y); g.luck = null; }
+        g.el.classList.add('pop'); const e = g.el; setTimeout(() => e.remove(), 300);
+        grid[g.r][g.c] = null;
+      });
+      const mid = { x: sx / m.size, y: sy / m.size };
+      R.score(m.size); R.combo(mid.x, mid.y);
+      if (chain >= 2) R.float(`CASCADE ×${chain}`, mid.x, mid.y - 30, 'mag');
+      else if (m.size >= 5) R.float(m.size >= 7 ? 'DAZZLING!' : 'GREAT!', mid.x, mid.y - 30, 'cy');
+    }
+    function gravity() {
+      const moved = [];
+      for (let c = 0; c < N; c++) {
+        let w = N - 1;
+        for (let r = N - 1; r >= 0; r--) { const g = grid[r][c]; if (g) { if (r !== w) { grid[w][c] = g; grid[r][c] = null; g.r = w; moved.push(g); } w--; } }
+        for (let r = w, k = 1; r >= 0; r--, k++) {
+          const g = makeGem(r, c, randi(0, NT - 1), -k);
+          if (Math.random() < 0.025) { g.wild = true; paint(g); }
+          if (extraLuck < 4) { const lk = R.spawnLuck(); if (lk) { g.luck = lk; extraLuck++; } }
+          grid[r][c] = g; moved.push(g);
+        }
+      }
+      settle(moved);
+    }
+    async function trySwap(a, b) {
+      if (busy || dead) return;
+      busy = true; setSel(null);
+      swapCells(a, b); setPos(a); setPos(b); Sfx.flip(); Haptic.tap();
+      await wait(200);
+      let m = findMatches();
+      if (!m.size) { swapCells(a, b); setPos(a); setPos(b); Sfx.error(); R.breakCombo(); await wait(200); busy = false; return; }
+      let chain = 0;
+      while (m.size && !dead) { chain++; clearSet(m, chain); await wait(240); if (dead) break; gravity(); await wait(320); m = findMatches(); }
+      if (!dead && !hasMove()) { R.float('NO MOVES · SHUFFLING', innerWidth / 2, centerOf(board).y, 'cy'); reshuffle(); }
+      busy = false;
+    }
+
+    // input: swipe a gem, or tap two neighbours
+    function hit(e) {
+      const b = board.getBoundingClientRect(), k = size / b.width;
+      const c = Math.floor((e.clientX - b.left) * k / pitch), r = Math.floor((e.clientY - b.top) * k / pitch);
+      return (r >= 0 && c >= 0 && r < N && c < N) ? grid[r][c] : null;
+    }
+    function setSel(g) { const old = sel; sel = g; if (old) paint(old); if (g) paint(g); }
+    board.addEventListener('pointerdown', e => {
+      if (!R.active || busy) return;
+      const g = hit(e); if (!g) return;
+      e.preventDefault(); try { board.setPointerCapture(e.pointerId); } catch (err) { /* ok */ }
+      drag = { g, x: e.clientX, y: e.clientY, id: e.pointerId, done: false };
+    });
+    board.addEventListener('pointermove', e => {
+      if (!drag || drag.done || e.pointerId !== drag.id) return;
+      const dx = e.clientX - drag.x, dy = e.clientY - drag.y, th = board.getBoundingClientRect().width / N * 0.35;
+      if (Math.max(Math.abs(dx), Math.abs(dy)) < th) return;
+      drag.done = true;
+      const [dr, dc] = Math.abs(dx) > Math.abs(dy) ? [0, Math.sign(dx)] : [Math.sign(dy), 0];
+      const b = grid[drag.g.r + dr] && grid[drag.g.r + dr][drag.g.c + dc];
+      if (b && R.active) trySwap(drag.g, b);
+    });
+    const up = e => {
+      if (!drag || e.pointerId !== drag.id) return;
+      const d = drag; drag = null;
+      if (d.done || !R.active || busy) return;
+      if (sel && sel !== d.g && Math.abs(sel.r - d.g.r) + Math.abs(sel.c - d.g.c) === 1) { const a = sel; trySwap(a, d.g); }
+      else { setSel(sel === d.g ? null : d.g); Sfx.select(2); Haptic.tap(); }
+    };
+    board.addEventListener('pointerup', up); board.addEventListener('pointercancel', up); board.addEventListener('lostpointercapture', up);
+
+    return {
+      resize() {
+        measure();
+        grid.flat().forEach(g => { if (!g) return; g.el.style.width = g.el.style.height = gsz + 'px'; g.el.style.transition = 'none'; setPos(g); });
+        void board.offsetWidth; grid.flat().forEach(g => { if (g) g.el.style.transition = ''; });
+      },
+      stop() { dead = true; setSel(null); },
+      nearMiss() { return grid.flat().filter(g => g && g.luck).map(g => { g.el.insertAdjacentHTML('beforeend', luckBadge(g.luck)); return { el: g.el, type: g.luck }; }); }
+    };
+  }
+};
+
+/* ---------------------------- CHIP STACK (2048-style merge) ---------------------------- */
+const STACK_COL = { 2: '#2f7df6', 4: '#e23a6f', 8: '#2b2b2b', 16: '#8a3cf0', 32: '#d29b1e', 64: '#13a37a', 128: '#ff7a00', 256: '#ff3fb4', 512: '#00a8c4', 1024: '#ffd166', 2048: '#f4f4f4' };
+const StackTable = {
+  id: 'stack', name: 'Chip Stack', icon: '🪙', art: 'art-stack', unit: 'top chip', time: 90, targets: [64, 128, 256], max: 2000, comboWindow: 1800,
+  blurb: 'Slide and merge matching chips.',
+  rules: (t, time) => `Swipe to slide every chip. Two equal chips merge into one worth double. Build a <b>${t}</b> chip in <b>${time}s</b>. Rainbow chips are wild.`,
+  create(R, wrap, foot) {
+    const N = 4, DIRS = { left: [0, -1], right: [0, 1], up: [-1, 0], down: [1, 0] };
+    let grid = [...Array(N)].map(() => Array(N).fill(null));
+    const board = el('div', 'st-board'); wrap.appendChild(board);
+    const bg = [...Array(N * N)].map(() => { const c = el('div', 'st-cell'); board.appendChild(c); return c; });
+    foot.innerHTML = '<p class="hint">Swipe on the board to slide. Arrow keys work too.</p>';
+    let size = 300, pad = 10, gap = 10, cell = 60, best = 0, spawns = 0, dead = false, moving = false, start = null;
+    const luckAt = {}; shuffle([...Array(30).keys()].map(i => i + 3)).slice(0, R.plan.length).forEach((n, i) => { luckAt[n] = R.plan[i]; });
+
+    const pos = i => pad + i * (cell + gap);
+    function measure() {
+      size = Math.floor(Math.min(wrap.clientWidth, wrap.clientHeight, 400)); pad = gap = Math.round(size * 0.03); cell = (size - 2 * pad - 3 * gap) / N;
+      board.style.width = board.style.height = size + 'px';
+      bg.forEach((c, i) => { c.style.width = c.style.height = cell + 'px'; c.style.transform = `translate(${pos(i % N)}px, ${pos(Math.floor(i / N))}px)`; });
+    }
+    const label = t => t.wild ? '★' : t.v >= 1024 ? (t.v / 1024) + 'K' : String(t.v);
+    function paint(t) {
+      t.el.classList.toggle('wild', t.wild); t.el.classList.toggle('light', !t.wild && t.v >= 1024);
+      t.el.style.setProperty('--cc', STACK_COL[t.v] || '#f4f4f4');
+      const s = label(t); $('span', t.el).textContent = s;
+      t.el.style.setProperty('--fs', Math.round(cell * (s.length >= 3 ? 0.3 : 0.38)) + 'px');
+    }
+    function place(t) { t.el.style.transform = `translate(${pos(t.c)}px, ${pos(t.r)}px)`; }
+    function spawn() {
+      const empty = []; for (let r = 0; r < N; r++) for (let c = 0; c < N; c++) if (!grid[r][c]) empty.push([r, c]);
+      if (!empty.length) return;
+      const [r, c] = pick(empty); spawns++;
+      const t = { r, c, v: Math.random() < 0.9 ? 2 : 4, wild: Math.random() < 0.04, luck: luckAt[spawns] || null, el: el('div', 'st-tile new', '<div class="chip"><span></span></div>') };
+      t.el.style.width = t.el.style.height = cell + 'px';
+      paint(t); place(t); board.appendChild(t.el); grid[r][c] = t;
+    }
+    const canMerge = (a, b) => a.wild || b.wild || a.v === b.v;
+    function canMove() {
+      for (let r = 0; r < N; r++) for (let c = 0; c < N; c++) {
+        const t = grid[r][c]; if (!t) return true;
+        if (c < N - 1 && grid[r][c + 1] && canMerge(t, grid[r][c + 1])) return true;
+        if (r < N - 1 && grid[r + 1][c] && canMerge(t, grid[r + 1][c])) return true;
+      }
+      return false;
+    }
+    function topChip() { return Math.max(0, ...grid.flat().filter(t => t && !t.wild).map(t => t.v)); }
+    function move(dir) {
+      if (!R.active || moving || dead) return;
+      const [dr, dc] = DIRS[dir], order = [...Array(N).keys()];
+      if (dr > 0 || dc > 0) order.reverse();
+      const ng = [...Array(N)].map(() => Array(N).fill(null)), merges = [], removed = [];
+      let moved = false;
+      for (let k = 0; k < N; k++) {
+        const line = order.map(i => dc ? grid[k][i] : grid[i][k]).filter(Boolean), out = [];
+        for (const t of line) {
+          const last = out[out.length - 1];
+          if (last && !last.fresh && canMerge(last, t)) {
+            last.v = last.wild && t.wild ? 4 : last.wild ? t.v * 2 : t.wild ? last.v * 2 : last.v * 2;
+            last.wild = false; last.fresh = true; t.into = last; removed.push(t); merges.push(last);
+            last.got = [...(last.got || []), last.luck, t.luck].filter(Boolean); last.luck = null; t.luck = null;
+          } else out.push(t);
+        }
+        out.forEach((t, i) => { const idx = order[i], r = dc ? k : idx, c = dc ? idx : k; if (t.r !== r || t.c !== c) moved = true; t.r = r; t.c = c; ng[r][c] = t; });
+      }
+      if (!moved && !merges.length) return;
+      grid = ng; moving = true; Sfx.tap();
+      grid.flat().forEach(t => { if (t) { t.el.classList.remove('new', 'merged'); place(t); } });
+      removed.forEach(t => { t.r = t.into.r; t.c = t.into.c; t.el.style.zIndex = 1; place(t); setTimeout(() => t.el.remove(), 130); });
+      setTimeout(() => {
+        if (dead) return;
+        merges.forEach(t => {
+          t.fresh = false; paint(t); void t.el.offsetWidth; t.el.classList.add('merged');
+          const p = centerOf(t.el); FX.sparks(p.x, p.y, STACK_COL[t.v] || '#ffffff', 8);
+          (t.got || []).forEach(l => R.luck(l, p.x, p.y)); t.got = null;
+        });
+        if (merges.length) { const p = centerOf(merges[0].el); R.combo(p.x, p.y); }
+        const top = topChip();
+        if (top > best) { R.score(top - best); if (top >= 32) { const tt = grid.flat().find(t => t && t.v === top); const p = centerOf(tt.el); R.float(`${fmt(top)} CHIP!`, p.x, p.y - 30, top >= 128 ? 'mag big' : 'cy'); } best = top; }
+        spawn(); moving = false;
+        if (!canMove()) setTimeout(() => R.finish('stuck'), 450);
+      }, 120);
+    }
+    board.addEventListener('pointerdown', e => { if (!R.active) return; e.preventDefault(); try { board.setPointerCapture(e.pointerId); } catch (err) { /* ok */ } start = { x: e.clientX, y: e.clientY, id: e.pointerId }; });
+    board.addEventListener('pointermove', e => {
+      if (!start || e.pointerId !== start.id) return;
+      const dx = e.clientX - start.x, dy = e.clientY - start.y;
+      if (Math.max(Math.abs(dx), Math.abs(dy)) < 26) return;
+      start = null; move(Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? 'right' : 'left') : (dy > 0 ? 'down' : 'up'));
+    });
+    const end = e => { if (start && e.pointerId === start.id) start = null; };
+    board.addEventListener('pointerup', end); board.addEventListener('pointercancel', end);
+    const KEYS = { ArrowLeft: 'left', ArrowRight: 'right', ArrowUp: 'up', ArrowDown: 'down', a: 'left', d: 'right', w: 'up', s: 'down' };
+    const onKey = e => { if (UI.cur === 'game' && KEYS[e.key]) { e.preventDefault(); move(KEYS[e.key]); } };
+    addEventListener('keydown', onKey);
+
+    measure(); spawn(); spawn();
+    best = topChip(); R.score(best);
+    return {
+      resize() { measure(); grid.flat().forEach(t => { if (t) { t.el.style.width = t.el.style.height = cell + 'px'; paint(t); place(t); } }); },
+      stop() { dead = true; removeEventListener('keydown', onKey); },
+      nearMiss() { return grid.flat().filter(t => t && t.luck).map(t => { $('.chip', t.el).insertAdjacentHTML('beforeend', luckBadge(t.luck)); return { el: t.el, type: t.luck }; }); }
+    };
+  }
+};
+
+/* ---------------------------- SAFE CRACKER (code-breaking) ---------------------------- */
+const SAFE_COLS = ['#ff3fb4', '#3ff0ff', '#ffd166', '#8dff6a', '#a974ff', '#ff7a00'];
+const SafeTable = {
+  id: 'safe', name: 'Safe Cracker', icon: '🔐', art: 'art-safe', unit: 'safes', time: 90, targets: [1, 2, 3], max: 5000, comboWindow: 600000,
+  blurb: 'Crack colour codes from the clues.',
+  rules: (t, time) => `Each safe hides a code of 4 different colours. After a guess, a <b>green dot</b> means right colour in the right spot and a <b>white ring</b> means right colour, wrong spot. 6 tries per safe. Crack <b>${t} safe${t > 1 ? 's' : ''}</b> in <b>${time}s</b>.`,
+  create(R, wrap, foot) {
+    const P = 4, TRIES = 6;
+    const box = el('div', 'sf-box glass'); wrap.appendChild(box);
+    box.innerHTML = '<div class="sf-head"><div class="sf-dial"></div><div class="sf-title"><b>Safe #1</b><small></small></div><button class="sf-btn" data-a="peek">Peek ×2</button><button class="sf-btn" data-a="del" aria-label="Delete last colour">⌫</button></div><div class="sf-rows"></div>';
+    const rowsEl = $('.sf-rows', box), title = $('.sf-title b', box), sub = $('.sf-title small', box), dial = $('.sf-dial', box), peekBtn = $('[data-a=peek]', box);
+    foot.innerHTML = '';
+    const pal = el('div', 'sf-pal'); foot.appendChild(pal);
+    SAFE_COLS.forEach((c, i) => {
+      const b = el('button', 'sf-col'); b.style.setProperty('--c', c); b.setAttribute('aria-label', 'Colour ' + (i + 1));
+      b.addEventListener('pointerdown', e => { e.preventDefault(); input(i); }); pal.appendChild(b);
+    });
+    let code = [], guesses = [], cur = [], known = [], safeNo = 0, peeks = 2, locked = false, dead = false, reveal = false;
+    const timers = new Set(), later = (fn, ms) => { const t = setTimeout(() => { timers.delete(t); if (!dead) fn(); }, ms); timers.add(t); };
+    const safeLuck = {}; shuffle([0, 1, 2, 3]).slice(0, R.plan.length).forEach((s, i) => { safeLuck[s] = R.plan[i]; });
+
+    function newSafe() {
+      safeNo++; code = shuffle([0, 1, 2, 3, 4, 5]).slice(0, P); guesses = []; cur = []; known = []; locked = false; reveal = false;
+      title.textContent = `Safe #${safeNo}`; dial.classList.remove('open'); render();
+    }
+    function render() {
+      const left = TRIES - guesses.length;
+      sub.textContent = reveal ? 'Locked out. The code was:' : `${left} ${left === 1 ? 'try' : 'tries'} left`;
+      rowsEl.innerHTML = '';
+      for (let i = 0; i < TRIES; i++) {
+        const g = guesses[i], isCur = i === guesses.length && !locked && !reveal;
+        const row = el('div', 'sf-row' + (isCur ? ' cur' : ''));
+        let pegs = '';
+        for (let k = 0; k < P; k++) {
+          const ci = g ? g.guess[k] : isCur ? cur[k] : undefined, hint = isCur && ci === undefined && known[k] != null;
+          const col = ci != null ? SAFE_COLS[ci] : hint ? SAFE_COLS[known[k]] : 'transparent';
+          pegs += `<span class="peg${ci != null ? ' on' : ''}${hint ? ' hint' : ''}" style="--c:${col}"></span>`;
+        }
+        let fb = '';
+        for (let k = 0; k < P; k++) fb += `<i class="${g ? (k < g.black ? 'b' : k < g.black + g.white ? 'w' : '') : ''}"></i>`;
+        row.innerHTML = `<div class="pegs">${pegs}</div><div class="fb">${fb}</div>`;
+        rowsEl.appendChild(row);
+      }
+      if (reveal) {
+        const row = el('div', 'sf-row reveal');
+        row.innerHTML = `<div class="pegs">${code.map(c => `<span class="peg on" style="--c:${SAFE_COLS[c]}"></span>`).join('')}</div><div class="fb"></div>`;
+        rowsEl.appendChild(row);
+      }
+    }
+    function input(i) {
+      if (!R.active || locked || reveal || cur.length >= P) return;
+      cur.push(i); Sfx.select(i * 2 + 2); Haptic.tap(); render();
+      if (cur.length === P) { locked = true; later(check, 200); }
+    }
+    function check() {
+      const g = cur.slice(); let black = 0, common = 0;
+      g.forEach((c, k) => { if (code[k] === c) black++; });
+      for (let c = 0; c < SAFE_COLS.length; c++) common += Math.min(g.filter(x => x === c).length, code.filter(x => x === c).length);
+      guesses.push({ guess: g, black, white: common - black }); cur = [];
+      const p = centerOf(dial);
+      if (black === P) {
+        render(); dial.classList.add('open');
+        R.score(1); R.combo(p.x, p.y); FX.coins(p.x, p.y, 18); Sfx.win(); Haptic.win();
+        R.float('CRACKED!', clamp(p.x + 80, 100, innerWidth - 100), p.y, 'big');
+        const lk = safeLuck[safeNo - 1]; if (lk) { delete safeLuck[safeNo - 1]; later(() => R.luck(lk, p.x, p.y + 40), 300); }
+        later(newSafe, 1000);
+      } else if (guesses.length >= TRIES) {
+        reveal = true; render(); R.breakCombo(); Sfx.error(); FX.shake(false); Haptic.lose();
+        delete safeLuck[safeNo - 1];
+        later(newSafe, 1600);
+      } else { locked = false; render(); Sfx.tick(black / P); }
+    }
+    $('[data-a=del]', box).addEventListener('click', () => { if (!R.active || locked || reveal) return; cur.pop(); render(); });
+    peekBtn.addEventListener('click', () => {
+      if (!R.active || !peeks || locked || reveal) return;
+      const unknown = [0, 1, 2, 3].filter(k => known[k] == null); if (!unknown.length) return;
+      const k = pick(unknown); known[k] = code[k]; peeks--;
+      peekBtn.textContent = `Peek ×${peeks}`; peekBtn.disabled = !peeks; Sfx.whoosh(); render();
+    });
+    function resize() {
+      const H = wrap.clientHeight, rh = clamp(Math.floor((H - 84) / (TRIES + 1)) - 5, 34, 52);
+      box.style.setProperty('--rh', rh + 'px');
+    }
+    resize(); newSafe();
+    return {
+      resize,
+      stop() { dead = true; timers.forEach(clearTimeout); },
+      nearMiss() { const lk = safeLuck[safeNo - 1]; if (!lk) return []; dial.insertAdjacentHTML('beforeend', luckBadge(lk)); return [{ el: dial, type: lk }]; }
+    };
+  }
+};
+
+/* ---------------------------- DIAMOND MINES (minesweeper logic) ---------------------------- */
+const MinesTable = {
+  id: 'mines', name: 'Diamond Mines', icon: '💣', art: 'art-mines', unit: 'tiles', time: 90, targets: [25, 45, 70], max: 5000, comboWindow: 3500,
+  blurb: 'Dig safe tiles and read the numbers.',
+  rules: (t, time) => `Tap to dig. A number counts the bombs touching that tile. Switch to the flag (or long-press) to mark bombs. Dig <b>${t} safe tiles</b> in <b>${time}s</b>. A bomb costs 5 seconds and a fresh mine.`,
+  create(R, wrap, foot) {
+    const C = 7, RW = 9, MINES = 11;
+    let cells = [], first = true, flagMode = false, dead = false, hold = false, extraLuck = 0, boardNo = 0;
+    const grid = el('div', 'mn-grid'); wrap.appendChild(grid);
+    foot.innerHTML = '';
+    const seg = el('div', 'mn-seg', '<button class="on" data-m="dig">⛏ Dig</button><button data-m="flag">🚩 Flag</button>'); foot.appendChild(seg);
+    $$('button', seg).forEach(b => b.addEventListener('click', () => { flagMode = b.dataset.m === 'flag'; $$('button', seg).forEach(x => x.classList.toggle('on', x === b)); }));
+    const timers = new Set(), later = (fn, ms) => { const t = setTimeout(() => { timers.delete(t); if (!dead) fn(); }, ms); timers.add(t); return t; };
+    const at = (r, c) => (r < 0 || c < 0 || r >= RW || c >= C) ? null : cells[r * C + c];
+    const around = x => { const o = []; for (let dr = -1; dr <= 1; dr++) for (let dc = -1; dc <= 1; dc++) if (dr || dc) { const y = at(x.r + dr, x.c + dc); if (y) o.push(y); } return o; };
+
+    function paint(x) {
+      x.el.className = 'mn-cell' + (x.open ? ' open' : '') + (x.flag && !x.open ? ' flag' : '') + (x.open && x.mine ? ' mine' : '');
+      x.el.innerHTML = x.open ? (x.mine ? '💣' : x.n ? `<b class="n${x.n}">${x.n}</b>` : '<span class="gemlet">◆</span>') : x.flag ? '🚩' : '';
+    }
+    function build() {
+      grid.innerHTML = ''; cells = []; first = true; hold = false; boardNo++;
+      for (let r = 0; r < RW; r++) for (let c = 0; c < C; c++) {
+        const x = { r, c, mine: false, n: 0, open: false, flag: false, luck: null, el: el('button', 'mn-cell') };
+        x.el.setAttribute('aria-label', 'Tile');
+        let lp = 0, longed = false;
+        x.el.addEventListener('pointerdown', e => { e.preventDefault(); longed = false; clearTimeout(lp); lp = setTimeout(() => { longed = true; act(x, true); }, 420); });
+        x.el.addEventListener('pointerup', () => { clearTimeout(lp); if (!longed) act(x, flagMode); });
+        x.el.addEventListener('pointerleave', () => clearTimeout(lp));
+        x.el.addEventListener('pointercancel', () => clearTimeout(lp));
+        grid.appendChild(x.el); cells.push(x);
+      }
+      resize();
+    }
+    function seed(safe) {
+      const banned = new Set([safe, ...around(safe)]);
+      shuffle(cells.filter(x => !banned.has(x))).slice(0, MINES).forEach(x => { x.mine = true; });
+      cells.forEach(x => { x.n = around(x).filter(y => y.mine).length; });
+      const safeCells = shuffle(cells.filter(x => !x.mine && !banned.has(x)));
+      if (boardNo === 1) R.plan.forEach((t, i) => { if (safeCells[i]) safeCells[i].luck = t; });
+      else safeCells.slice(0, 8).forEach(x => { if (extraLuck < 3) { const l = R.spawnLuck(); if (l) { x.luck = l; extraLuck++; } } });
+    }
+    function flood(x) {
+      const out = [], st = [x];
+      while (st.length) {
+        const y = st.pop(); if (y.open || y.flag || y.mine) continue;
+        y.open = true; out.push(y); paint(y);
+        if (y.n === 0) around(y).forEach(z => { if (!z.open) st.push(z); });
+      }
+      return out;
+    }
+    function act(x, flag) {
+      if (!R.active || dead || hold || x.open) return;
+      if (flag) { x.flag = !x.flag; paint(x); Sfx.select(x.flag ? 8 : 2); Haptic.tap(); return; }
+      if (x.flag) return;
+      if (first) { seed(x); first = false; }
+      if (x.mine) { boom(x); return; }
+      const opened = flood(x), p = centerOf(x.el);
+      Sfx.flip(); Haptic.tap();
+      R.score(opened.length); R.combo(p.x, p.y);
+      opened.forEach(y => { if (y.luck) { const q = centerOf(y.el); R.luck(y.luck, q.x, q.y); y.luck = null; } });
+      if (opened.length >= 8) R.float(`+${opened.length} TILES`, p.x, p.y - 30, 'cy');
+      if (cells.every(y => y.mine || y.open)) {
+        hold = true; R.float('MINE CLEARED!', innerWidth / 2, centerOf(grid).y, 'big'); FX.coins(innerWidth / 2, centerOf(grid).y, 24); Sfx.win();
+        later(build, 1000);
+      }
+    }
+    function boom(x) {
+      hold = true;
+      cells.filter(y => y.mine).forEach(y => { y.open = true; paint(y); });
+      x.el.classList.add('boom');
+      const p = centerOf(x.el);
+      FX.sparks(p.x, p.y, '#ff5470', 30); FX.shake(true); Sfx.lose(); Haptic.lose();
+      R.breakCombo(); R.penalty(5); R.float('BOOM! −5s', p.x, p.y, 'big');
+      later(build, 1100);
+    }
+    function resize() {
+      const W = wrap.clientWidth, H = wrap.clientHeight, g = 3, padd = 12;
+      const s = Math.floor(Math.min((W - padd - g * (C - 1)) / C, (H - padd - g * (RW - 1)) / RW, 54));
+      grid.style.gridTemplateColumns = `repeat(${C}, ${s}px)`; grid.style.gridAutoRows = s + 'px';
+      grid.style.fontSize = Math.round(s * 0.42) + 'px';
+    }
+    build();
+    return {
+      resize,
+      stop() { dead = true; timers.forEach(clearTimeout); },
+      nearMiss() { return cells.filter(x => x.luck && !x.open).map(x => { x.el.insertAdjacentHTML('beforeend', luckBadge(x.luck)); return { el: x.el, type: x.luck }; }); }
+    };
+  }
+};
+
+/* ---------------------------- LUCKY SEQUENCE (Simon-style memory) ---------------------------- */
+const SM_COLS = ['#ff3fb4', '#3ff0ff', '#ffd166', '#8dff6a'];
+const SM_NOTES = [329.63, 392.0, 523.25, 659.25];
+const SimonTable = {
+  id: 'simon', name: 'Lucky Sequence', icon: '🎵', art: 'art-simon', unit: 'steps', time: 90, targets: [20, 35, 50], max: 5000, comboWindow: 600000,
+  blurb: 'Watch the lights, repeat the pattern.',
+  rules: (t, time) => `Watch the pads light up, then tap them back in the same order. Every clean repeat adds one more light. Repeat <b>${t} steps</b> in <b>${time}s</b>. A mistake starts a shorter pattern.`,
+  create(R, wrap, foot) {
+    const board = el('div', 'sm-board'); wrap.appendChild(board);
+    const pads = SM_COLS.map((c, i) => {
+      const b = el('button', 'sm-pad p' + i); b.style.setProperty('--c', c); b.setAttribute('aria-label', 'Pad ' + (i + 1));
+      b.addEventListener('pointerdown', e => { e.preventDefault(); press(i); }); board.appendChild(b); return b;
+    });
+    const hub = el('div', 'sm-hub', '<b>LV 1</b><small>Get ready</small>'); board.appendChild(hub);
+    foot.innerHTML = '<p class="hint">Watch first, then repeat. Clean streaks build your combo.</p>';
+    let seq = [], step = 0, phase = 'wait', level = 0, dead = false, timer = 0;
+    const levelLuck = {}; shuffle([1, 2, 3, 4, 5, 6]).slice(0, R.plan.length).forEach((lv, i) => { levelLuck[lv] = R.plan[i]; });
+    const later = (fn, ms) => { clearTimeout(timer); timer = setTimeout(() => { if (!dead) fn(); }, ms); };
+    const setHub = (a, b) => { hub.innerHTML = `<b>${a}</b><small>${b}</small>`; };
+    function flash(i, ms) { pads[i].classList.add('lit'); Sfx.note(SM_NOTES[i], ms / 1000); setTimeout(() => pads[i].classList.remove('lit'), ms); }
+    const newSeq = n => { seq = Array.from({ length: n }, () => randi(0, 3)); };
+    function play() {
+      phase = 'show'; step = 0; setHub(`LV ${level + 1}`, 'Watch');
+      let k = 0; const on = Math.max(250, 460 - seq.length * 18);
+      (function next() {
+        if (!R.active) { later(next, 150); return; }            // hold the show while paused or counting down
+        if (k >= seq.length) { phase = 'input'; setHub(`LV ${level + 1}`, 'Your turn'); return; }
+        flash(seq[k++], on); later(next, on + 140);
+      })();
+    }
+    function press(i) {
+      if (!R.active || phase !== 'input' || dead) return;
+      flash(i, 180); Haptic.tap();
+      if (seq[step] === i) {
+        step++; R.score(1);
+        if (step === seq.length) {
+          phase = 'wait'; level++;
+          const p = centerOf(hub); R.combo(p.x, p.y);
+          if (levelLuck[level]) { R.luck(levelLuck[level], p.x, p.y); delete levelLuck[level]; }
+          setHub('NICE!', `${seq.length} in a row`);
+          board.classList.add('good'); setTimeout(() => board.classList.remove('good'), 450);
+          seq.push(randi(0, 3)); later(play, 750);
+        }
+      } else {
+        phase = 'wait'; Sfx.error(); R.breakCombo(); Haptic.lose();
+        const right = pads[seq[step]]; right.classList.add('hint'); setTimeout(() => right.classList.remove('hint'), 800);
+        board.classList.add('bad'); setTimeout(() => board.classList.remove('bad'), 400);
+        setHub('MISS', 'New pattern'); newSeq(Math.max(3, seq.length - 1)); later(play, 1200);
+      }
+    }
+    function resize() { const s = Math.floor(Math.min(wrap.clientWidth, wrap.clientHeight, 380)); board.style.width = board.style.height = s + 'px'; }
+    resize(); newSeq(3); later(play, 200);
+    return {
+      resize,
+      stop() { dead = true; clearTimeout(timer); },
+      nearMiss() {
+        const lv = Object.keys(levelLuck).map(Number).sort((a, b) => a - b)[0]; if (!lv) return [];
+        hub.insertAdjacentHTML('beforeend', luckBadge(levelLuck[lv])); return [{ el: hub, type: levelLuck[lv] }];
+      }
+    };
+  }
+};
+
+/* ---------------------------- registry + floor line-ups ---------------------------- */
+const TABLES = { memory: MemoryTable, mahjong: MahjongTable, blocks: BlocksTable, connect: ConnectTable, gems: GemsTable, stack: StackTable, safe: SafeTable, mines: MinesTable, simon: SimonTable };
+// Order = 3D layout: [top-left, top-right, mid-left, mid-right, bottom-left, bottom-right]
+const FLOORS = {
+  main: ['memory', 'connect', 'mahjong', 'gems', 'blocks', 'stack'],
+  high: ['safe', 'mines', 'simon', 'mahjong', 'gems', 'blocks']
+};
+const floorTables = () => FLOORS[Econ.room().id].map(id => TABLES[id]);
 
 /* =====================================================================
    WORLD — walkable 3D casino lobby (three.js r128, loaded from cdnjs).
@@ -1493,6 +2115,18 @@ const World = (() => {
   let ok = false, running = false, raf = 0, renderer, scene, camera, clock, hemi, floorMat;
   let player, curZone = null, pendingZone = null, target = null, time = 0, stuck = 0;
   const colliders = [], zones = [], clickables = [], tickers = [], npcs = [], neon = [], signs = {};
+  const floors = {}; let floorId = null, base = null, switching = null;   // active zones/colliders = base (wheel, door, decor) + current floor's tables
+  const LOOK = {
+    memory: { color: 0xff3fb4, css: '#ff3fb4', felt: 0x7a1450, shape: 'rect' },
+    mahjong: { color: 0x2ef0b4, css: '#4af0c4', felt: 0x0b5a52, shape: 'rect' },
+    blocks: { color: 0xffb03b, css: '#ffd166', felt: 0x6b3c0a, shape: 'round' },
+    connect: { color: 0x3ff0ff, css: '#3ff0ff', felt: 0x14306f, shape: 'round' },
+    gems: { color: 0xff4d6d, css: '#ff6b8b', felt: 0x5a0f2a, shape: 'round' },
+    stack: { color: 0x4f8dff, css: '#7fb2ff', felt: 0x10285a, shape: 'rect' },
+    safe: { color: 0xffd166, css: '#ffd166', felt: 0x26262e, shape: 'rect' },
+    mines: { color: 0x8dff6a, css: '#8dff6a', felt: 0x1f3a14, shape: 'round' },
+    simon: { color: 0xa974ff, css: '#c49bff', felt: 0x2a0f45, shape: 'round' }
+  };
   const keys = {}, joy = { id: null, sx: 0, sy: 0, vx: 0, vy: 0, t0: 0, moved: false };
   const v3 = (x, y, z) => new T3.Vector3(x, y, z);
 
@@ -1623,7 +2257,7 @@ const World = (() => {
       .forEach(([x, y, z, w, h, d, c]) => neon.push(mesh(new T3.BoxGeometry(w, h, d), glow(c), x, y, z)));
 
     // pillars with gold rings
-    [[-9, -9], [9, -9], [-9, 5], [9, 5]].forEach(([x, z]) => {
+    [[-10.2, -12], [10.2, -12], [-10.2, 6.8], [10.2, 6.8]].forEach(([x, z]) => {
       mesh(new T3.CylinderGeometry(0.45, 0.5, 5.5, 16), lam(0x2a0d3d), x, 2.75, z);
       [0.4, 2.6, 4.8].forEach(y => mesh(new T3.TorusGeometry(0.5, 0.06, 8, 24), lam(0xffd166, { emissive: 0x6b4a10 }), x, y, z).rotation.x = Math.PI / 2);
       colliders.push({ x, z, r: 0.55 });
@@ -1652,15 +2286,15 @@ const World = (() => {
     const pl = new T3.PointLight(0xff3fb4, 1.2, 8); pl.position.set(0, 3.6, -3); scene.add(pl);
     colliders.push({ x: 0, z: -3, r: 1.15 });
 
-    // four puzzle tables
-    const defs = [
-      { id: 'memory', x: -6, z: -7.5, color: 0xff3fb4, css: '#ff3fb4', felt: 0x7a1450, shape: 'rect' },
-      { id: 'mahjong', x: 6, z: -7.5, color: 0x2ef0b4, css: '#4af0c4', felt: 0x0b5a52, shape: 'rect' },
-      { id: 'blocks', x: -6, z: 1.5, color: 0xffb03b, css: '#ffd166', felt: 0x6b3c0a, shape: 'round' },
-      { id: 'connect', x: 6, z: 1.5, color: 0x3ff0ff, css: '#3ff0ff', felt: 0x14306f, shape: 'round' }
-    ];
-    defs.forEach(buildTable);
     buildWheel(); buildDoor(); buildDust();
+    base = { zones: zones.slice(), colliders: colliders.slice(), clickables: clickables.slice() };
+    // one six-table layout per floor; only the current floor is shown
+    const SPOTS = [[-6.2, -7.5], [6.2, -7.5], [-6.2, -2], [6.2, -2], [-6.2, 3.5], [6.2, 3.5]];
+    Object.keys(FLOORS).forEach(f => {
+      const fl = floors[f] = { group: new T3.Group(), zones: [], colliders: [], clickables: [] };
+      scene.add(fl.group);
+      FLOORS[f].forEach((id, i) => buildTable(Object.assign({ id, x: SPOTS[i][0], z: SPOTS[i][1] }, LOOK[id]), fl));
+    });
 
     // player + patrons
     player = makeChar({ body: 0xff3fb4, hat: 'top', hatColor: 0x1a1a1a, isPlayer: true });
@@ -1671,9 +2305,30 @@ const World = (() => {
       n.position.set(rand(-8, 8), 0, rand(-10, 7)); n.userData.npc = { goal: null, wait: rand(0, 2), cheer: false };
       npcs.push(n);
     });
+    applyFloor(Econ.room().id);
   }
-  function buildTable(d) {
-    const T = TABLES[d.id], g = new T3.Group(); g.position.set(d.x, 0, d.z); scene.add(g);
+  function applyFloor(f) {
+    floorId = f;
+    for (const k in floors) floors[k].group.visible = k === f;
+    const fl = floors[f];
+    zones.length = 0; zones.push(...base.zones, ...fl.zones);
+    colliders.length = 0; colliders.push(...base.colliders, ...fl.colliders);
+    clickables.length = 0; clickables.push(...base.clickables, ...fl.clickables);
+    target = null; pendingZone = null; showZone(null, true);
+    npcs.forEach(n => { n.position.set(rand(-8, 8), 0, rand(-10, 7)); collide(n.position, 0.45); n.userData.npc.goal = null; });
+  }
+  function switchFloor(f) {
+    const fade = $('#worldFade'); fade.classList.add('on'); Sfx.whoosh(); switching = f;
+    setTimeout(() => {
+      switching = null; applyFloor(f);
+      player.position.set(8.2, 0, -10.4); player.rotation.y = 0;
+      camera.position.set(player.position.x * 0.8, 14, player.position.z + 12);
+      fade.classList.remove('on');
+      UI.banner(f === 'high' ? 'HIGH ROLLER FLOOR<small>Exclusive games · stakes ×10</small>' : 'MAIN FLOOR<small>Welcome back down</small>', 'good', 1500);
+    }, 330);
+  }
+  function buildTable(d, fl) {
+    const T = TABLES[d.id], g = new T3.Group(); g.position.set(d.x, 0, d.z); fl.group.add(g);
     const felt = lam(d.felt), gold = lam(0xffd166, { emissive: 0x5a3a08 });
     mesh(new T3.CylinderGeometry(0.35, 0.6, 0.85, 16), lam(0x1b0b2a), 0, 0.42, 0, g);
     if (d.shape === 'rect') {
@@ -1702,6 +2357,39 @@ const World = (() => {
       const tet = new T3.Group(); tet.position.set(0, 2.0, 0); g.add(tet);
       [[-0.3, 0], [0, 0], [0.3, 0], [0, 0.3]].forEach(([x, y]) => mesh(new T3.BoxGeometry(0.28, 0.28, 0.28), lam(0xff3fb4, { emissive: 0xff3fb4, emissiveIntensity: 0.35 }), x, y, 0, tet));
       tickers.push(() => { tet.rotation.y = time * 1.2; tet.rotation.z = Math.sin(time) * 0.3; });
+    } else if (d.id === 'gems') {
+      const cols = [0xff4d6d, 0x3ff0ff, 0x8dff6a, 0xffd166, 0xa974ff];
+      for (let i = 0; i < 10; i++) { const a = i / 10 * Math.PI * 2; mesh(new T3.OctahedronGeometry(0.15), lam(cols[i % 5], { emissive: cols[i % 5], emissiveIntensity: 0.35 }), Math.cos(a), 1.2, Math.sin(a), g); }
+      const big = mesh(new T3.OctahedronGeometry(0.4), lam(0xff4d6d, { emissive: 0xff4d6d, emissiveIntensity: 0.4 }), 0, 1.95, 0, g);
+      tickers.push(() => { big.rotation.y = time * 1.3; big.position.y = 1.95 + Math.sin(time * 2) * 0.12; });
+    } else if (d.id === 'stack') {
+      const cols = [0x2f7df6, 0xe23a6f, 0xd29b1e, 0x13a37a, 0x8a3cf0];
+      [[-1, -0.4, 5], [-0.5, 0.3, 3], [0.1, -0.3, 7], [0.7, 0.35, 4], [1.15, -0.35, 2]].forEach(([x, z, n], k) => { for (let j = 0; j < n; j++) mesh(new T3.CylinderGeometry(0.2, 0.2, 0.06, 20), lam(cols[(k + j) % 5]), x, 1.09 + j * 0.065, z, g); });
+      const cp = new T3.Group(); cp.position.set(0, 2.0, 0); g.add(cp);
+      mesh(new T3.CylinderGeometry(0.32, 0.32, 0.07, 28), lam(0xff3fb4, { emissive: 0xff3fb4, emissiveIntensity: 0.3 }), 0, 0, 0, cp).rotation.x = Math.PI / 2;
+      tickers.push(() => { cp.rotation.y = time * 2.2; cp.position.y = 2.0 + Math.sin(time * 2) * 0.1; });
+    } else if (d.id === 'safe') {
+      mesh(new T3.BoxGeometry(1.0, 1.0, 0.85), lam(0x5a5a66), 0, 1.55, -0.25, g);
+      mesh(new T3.BoxGeometry(0.86, 0.86, 0.05), lam(0x2a2a33), 0, 1.55, 0.2, g);
+      const dial = new T3.Group(); dial.position.set(0, 1.55, 0.26); g.add(dial);
+      mesh(new T3.CylinderGeometry(0.22, 0.22, 0.08, 24), lam(0xffd166, { emissive: 0x6b4a10 }), 0, 0, 0, dial).rotation.x = Math.PI / 2;
+      mesh(new T3.BoxGeometry(0.04, 0.14, 0.04), lam(0x111111), 0, 0.12, 0.05, dial);
+      tickers.push(() => { dial.rotation.z = Math.sin(time * 1.3) * 2.2; });
+      [0xff3fb4, 0x3ff0ff, 0xffd166, 0x8dff6a].forEach((c, i) => mesh(new T3.SphereGeometry(0.11, 12, 10), glow(c), -0.45 + i * 0.3, 1.15, 0.7, g));
+    } else if (d.id === 'mines') {
+      for (let x = 0; x < 4; x++) for (let z = 0; z < 4; z++) mesh(new T3.BoxGeometry(0.3, 0.1, 0.3), lam((x + z) % 3 ? 0x5b3a85 : 0x2a1a40), -0.55 + x * 0.36, 1.1, -0.55 + z * 0.36, g);
+      mesh(new T3.SphereGeometry(0.28, 16, 12), lam(0x1a1a1a), 0.85, 1.35, 0.6, g);
+      mesh(new T3.CylinderGeometry(0.03, 0.03, 0.2, 6), lam(0x8a6a3a), 0.9, 1.68, 0.6, g);
+      const spark = mesh(new T3.SphereGeometry(0.07, 8, 6), glow(0xffb03b), 0.92, 1.8, 0.6, g);
+      tickers.push(() => { spark.scale.setScalar(0.7 + Math.random() * 0.8); });
+      const dia = mesh(new T3.OctahedronGeometry(0.3), lam(0x9de7ff, { emissive: 0x3ff0ff, emissiveIntensity: 0.4 }), 0, 2.0, 0, g); dia.scale.y = 1.4;
+      tickers.push(() => { dia.rotation.y = time * 1.5; dia.position.y = 2.0 + Math.sin(time * 2.2) * 0.1; });
+    } else if (d.id === 'simon') {
+      const cols = [0xff3fb4, 0x3ff0ff, 0xffd166, 0x8dff6a];
+      const pads = cols.map((c, i) => mesh(new T3.BoxGeometry(0.55, 0.08, 0.55), new T3.MeshBasicMaterial({ color: c }), i % 2 ? 0.32 : -0.32, 1.1, i < 2 ? -0.32 : 0.32, g));
+      tickers.push(() => { const lit = Math.floor(time * 2.5) % 4; pads.forEach((p, i) => { p.material.color.setHex(cols[i]).multiplyScalar(i === lit ? 1 : 0.3); p.position.y = i === lit ? 1.14 : 1.1; }); });
+      const halo = mesh(new T3.TorusGeometry(0.45, 0.05, 8, 32), glow(0xa974ff), 0, 2.0, 0, g);
+      tickers.push(() => { halo.rotation.x = time; halo.rotation.y = time * 0.7; });
     } else {
       const cols = [0xff3fb4, 0x3ff0ff, 0xffd166, 0x8dff6a, 0xa974ff];
       for (let i = 0; i < 16; i++) { const s = mesh(new T3.SphereGeometry(0.13, 12, 10), glow(cols[(i * 7) % 5]), -0.75 + (i % 4) * 0.5, 1.2, -0.75 + Math.floor(i / 4) * 0.5, g); tickers.push(() => { s.position.y = 1.2 + Math.max(0, Math.sin(time * 3 + i)) * 0.18; }); }
@@ -1710,9 +2398,9 @@ const World = (() => {
     const s = sign(T.name.toUpperCase(), d.css, `${T.time}s · ${T.unit.toUpperCase()}`, 3.0); s.position.set(0, 3.35, 0); s.rotation.x = -0.25; g.add(s);
     tickers.push(() => { s.position.y = 3.35 + Math.sin(time * 1.5 + d.x) * 0.06; });
     const ring = mesh(new T3.RingGeometry(2.55, 2.8, 48), glow(d.color, 0.35), 0, 0.03, 0, g); ring.rotation.x = -Math.PI / 2;
-    colliders.push({ x: d.x, z: d.z, r: d.shape === 'rect' ? 1.75 : 1.65 });
-    const zone = { id: d.id, kind: 'table', x: d.x, z: d.z, r: 3.0, ring, color: d.color };
-    zones.push(zone); g.traverse(o => { o.userData.zone = zone; }); clickables.push(g);
+    fl.colliders.push({ x: d.x, z: d.z, r: d.shape === 'rect' ? 1.75 : 1.65 });
+    const zone = { id: d.id, kind: 'table', x: d.x, z: d.z, r: 2.8, ring, color: d.color };
+    fl.zones.push(zone); g.traverse(o => { o.userData.zone = zone; }); fl.clickables.push(g);
   }
   function buildWheel() {
     const g = new T3.Group(); g.position.set(0, 2.9, -13.9); scene.add(g);
@@ -1736,6 +2424,7 @@ const World = (() => {
     mesh(new T3.BoxGeometry(2.85, 0.35, 0.4), gold, 0, 3.6, 0.1, g);
     const door = mesh(new T3.PlaneGeometry(2.15, 3.4), new T3.MeshBasicMaterial({ color: 0x120814 }), 0, 1.7, 0.25, g);
     const s = sign('HIGH ROLLER', '#ffd166', '', 2.9); s.position.set(0, 4.35, 0.3); g.add(s); signs.door = s;
+    const s2 = sign('MAIN FLOOR', '#3ff0ff', '', 2.9); s2.position.set(0, 4.35, 0.3); s2.visible = false; g.add(s2); signs.doorDown = s2;
     // velvet rope on gold stanchions
     const rope = new T3.Group(); g.add(rope);
     [-1.2, 1.2].forEach(x => { mesh(new T3.CylinderGeometry(0.06, 0.12, 1.0, 10), gold, x, 0.5, 1.3, rope); mesh(new T3.SphereGeometry(0.1, 10, 8), gold, x, 1.02, 1.3, rope); });
@@ -1831,8 +2520,9 @@ const World = (() => {
     const room = Econ.room();
     if (z.kind === 'table') { const T = TABLES[z.id]; return { name: T.name, info: `${T.blurb} Stakes ${fmtShort(room.min)}–${fmtShort(T.max * room.scale)} · ${T.time}s`, act: `Sit at ${T.name}` }; }
     if (z.kind === 'wheel') { const l = Wheel.timeLeft(); return { name: 'Daily Free Spin', info: l > 0 ? `Next free spin in ${Wheel.fmtLeft(l)}` : 'Your free spin is ready: 50 – 1,000 chips', act: l > 0 ? 'Look at the wheel' : 'Spin the wheel' }; }
+    if (floorId === 'high') return { name: 'Elevator', info: 'Ride back down to the Main Floor tables.', act: 'Go to Main Floor' };
     if (!Store.d.hrUnlocked) return { name: 'High Roller Room', info: `Members only. Reach ${fmt(HR_UNLOCK)} chips to get in (you have ${fmt(Store.d.bank)}).`, act: 'Locked', locked: true };
-    return room.id === 'high' ? { name: 'High Roller Room', info: 'You are on the gold floor: stakes ×10.', act: 'Back to Main Floor' } : { name: 'High Roller Room', info: 'Gold tables, stakes ×10, better jackpot odds.', act: 'Enter High Roller Room' };
+    return { name: 'High Roller floor', info: 'Upstairs: Safe Cracker, Diamond Mines, Lucky Sequence and more at ×10 stakes.', act: 'Go upstairs' };
   }
   function showZone(z, silent) {
     curZone = z;
@@ -1968,6 +2658,8 @@ const World = (() => {
     refresh() {
       if (!ok) return;
       const hr = Econ.room().id === 'high', unlocked = Store.d.hrUnlocked;
+      if (floorId !== Econ.room().id && switching !== Econ.room().id) switchFloor(Econ.room().id);
+      signs.door.visible = !hr; signs.doorDown.visible = hr;
       signs.rope.visible = !unlocked;
       signs.doorPanel.material.color.setHex(unlocked ? (hr ? 0x3ff0ff : 0xffd166) : 0x120814);
       hemi.color.setHex(hr ? 0xffcf7a : 0xb58cff); hemi.groundColor.setHex(hr ? 0x2a1a04 : 0x1a0526);
@@ -1988,7 +2680,7 @@ const Round = (() => {
   const hud = { score: $('#hudScore'), box: $('#hudScoreBox'), mult: $('#hudMult'), fill: $('#timerFill'), txt: $('#timerTxt'), timer: $('#timer'), strip: $('#luckStrip'), collect: $('#btnCollect') };
   const comboFactor = c => c >= 2 ? Math.min(1.5, 1 + 0.1 * (c - 1)) : 1;
   const shortBy = rs => rs.target - rs.score;
-  const isClose = rs => shortBy(rs) > 0 && shortBy(rs) <= Math.max(1, Math.ceil(rs.target * 0.15));
+  const isClose = rs => shortBy(rs) > 0 && rs.score >= rs.target / 2 && shortBy(rs) <= Math.max(1, Math.ceil(rs.target * 0.15));
 
   function liveMult(rs) {
     const comboLive = rs.combo && performance.now() - rs.lastMatch <= rs.T.comboWindow;
@@ -2049,6 +2741,7 @@ const Round = (() => {
         paintMult(rs); FX.pop(hud.mult);
       },
       finish(reason) { if (live()) finish(reason); },
+      penalty(sec) { if (live()) rs.elapsed = Math.min(rs.time, rs.elapsed + sec); },
       spawnLuck() { return Luck.spawn(); },
       float(t, x, y, c) { FX.float(t, x, y, c); }
     };
@@ -2263,18 +2956,24 @@ const Lobby = (() => {
     memory: '🃏',
     mahjong: '🀄',
     blocks: '<div class="mini-blocks">' + ['#ff3fb4', '#ff3fb4', 'o', '#3ff0ff', '#ffd166', '#ffd166', '#3ff0ff', 'o', '#8dff6a'].map(c => c === 'o' ? '<i class="o"></i>' : `<i style="color:${c}"></i>`).join('') + '</div>',
+    gems: '💎', safe: '🔐', mines: '💣',
+    stack: '<div class="mini-chips"><i style="--cc:#2f7df6"></i><i style="--cc:#e23a6f"></i><i style="--cc:#d29b1e"></i></div>',
+    simon: '<div class="mini-pads">' + ['#ff3fb4', '#3ff0ff', '#ffd166', '#8dff6a'].map(c => `<i style="color:${c}"></i>`).join('') + '</div>',
     connect: '<div class="mini-dots">' + ['#ff3fb4', '#ff3fb4', '#3ff0ff', '#ffd166', '#ff3fb4', '#3ff0ff', '#ffd166', '#8dff6a', '#3ff0ff'].map(c => `<i style="color:${c}"></i>`).join('') + '</div>'
   };
-  let spinTimer = 0;
-  const sheet = open => $('#scrLobby').classList.toggle('sheet-open', !!open);
-  function init() {
-    const box = $('#tables');
-    Object.values(TABLES).forEach((T, i) => {
+  let spinTimer = 0, cardsFloor = null;
+  function buildCards() {
+    const box = $('#tables'), room = Econ.room(); box.innerHTML = ''; cardsFloor = room.id;
+    $('#tablesLabel').textContent = `${room.id === 'high' ? 'High Roller floor' : 'Main Floor'} games`;
+    floorTables().forEach((T, i) => {
       const b = el('button', 'table-card glass');
-      b.innerHTML = `<div class="art ${T.art}" style="--sd:${i * 0.8}s">${ART[T.id]}</div><h3>${T.name}</h3><p>${T.blurb}</p><div class="stakes"><span data-stakes="${T.id}"></span><span>${T.time}s</span></div>`;
+      b.innerHTML = `<div class="art ${T.art}" style="--sd:${i * 0.8}s">${ART[T.id]}</div><h3>${T.name}</h3><p>${T.blurb}</p><div class="stakes"><span>Stakes ${fmtShort(room.min)}–${fmtShort(T.max * room.scale)}</span><span>${T.time}s</span></div>`;
       b.addEventListener('click', () => { sheet(false); Bet.open(T.id); });
       box.appendChild(b);
     });
+  }
+  const sheet = open => $('#scrLobby').classList.toggle('sheet-open', !!open);
+  function init() {
     $('#btnMenu').addEventListener('click', () => sheet(true));
     $('#btnSheetClose').addEventListener('click', () => sheet(false));
     $('#sheetScrim').addEventListener('click', () => sheet(false));
@@ -2297,7 +2996,7 @@ const Lobby = (() => {
     $('#roomHighSub').textContent = Store.d.hrUnlocked ? 'Stakes from 100' : `Unlocks at ${fmtShort(HR_UNLOCK)}`;
     $('#hrMeter').hidden = Store.d.hrUnlocked;
     $('#hrMeter i').style.transform = `scaleX(${clamp(Store.d.bank / HR_UNLOCK, 0, 1)})`;
-    Object.values(TABLES).forEach(T => { $(`[data-stakes="${T.id}"]`).textContent = `Stakes ${fmtShort(room.min)}–${fmtShort(T.max * room.scale)}`; });
+    if (cardsFloor !== room.id) buildCards();
     const rate = s.rounds ? Math.round(100 * s.wins / s.rounds) + '%' : '—';
     $('#stats').innerHTML = `<div><b>${fmt(s.rounds)}</b><small>Rounds</small></div><div><b>${rate}</b><small>Win rate</small></div><div><b>${fmtShort(Math.max(0, s.biggest))}</b><small>Best win</small></div><div><b>${fmt(s.jackpots)}</b><small>Jackpots</small></div>`;
     renderSpin();
@@ -2323,7 +3022,7 @@ const Lobby = (() => {
     }
     if (Econ.justUnlocked) {
       Econ.justUnlocked = false; FX.confetti(); Sfx.fanfare(); Haptic.big();
-      const go = await UI.confirm({ icon: '👑', title: 'High Roller Room unlocked', body: 'Gold tables, stakes ×10 and better jackpot odds. Switch rooms any time from the lobby.', ok: 'Enter High Roller Room', cancel: 'Stay on Main Floor' });
+      const go = await UI.confirm({ icon: '👑', title: 'High Roller Room unlocked', body: 'A whole new floor: Safe Cracker, Diamond Mines and Lucky Sequence, plus classics at ×10 stakes and better jackpot odds. Take the gold door any time.', ok: 'Go upstairs', cancel: 'Stay on Main Floor' });
       if (go) setRoom('high');
     }
   }
@@ -2481,6 +3180,8 @@ function wire() {
   // No pull-to-refresh, pinch, double-tap zoom or long-press menus
   document.addEventListener('touchmove', e => { if (e.touches.length > 1 || !e.target.closest('.scroll')) e.preventDefault(); }, { passive: false });
   ['gesturestart', 'gesturechange', 'dblclick', 'contextmenu'].forEach(ev => document.addEventListener(ev, e => e.preventDefault(), { passive: false }));
+  // The app shell must never scroll (focus or scrollIntoView could nudge it)
+  const app = $('#app'); app.addEventListener('scroll', () => { app.scrollTop = 0; app.scrollLeft = 0; });
   let rz = 0;
   window.addEventListener('resize', () => { cancelAnimationFrame(rz); rz = requestAnimationFrame(() => { FX.resize(); Round.resize(); World.resize(); }); });
   document.addEventListener('visibilitychange', () => {
