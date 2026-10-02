@@ -35,6 +35,14 @@
   color-scheme:dark;
 }
 /* High Roller Room: the whole floor turns gold */
+/* Sky Deck: open-air night sky, cyan + lime */
+body.sky{ --acc1:#2ee6ff; --acc2:#8dff6a; --bg1:#051a2e; --bg2:#0b3d63; --muted:#a6cde0; --dim:#6b93a8; }
+body.sky #app::before{ background:
+    radial-gradient(90% 60% at 50% 110%, rgba(63,240,255,.18), transparent 70%),
+    radial-gradient(1.5px 1.5px at 12% 18%, #fff, transparent), radial-gradient(1px 1px at 38% 8%, #fff, transparent),
+    radial-gradient(1.5px 1.5px at 64% 22%, #fff, transparent), radial-gradient(1px 1px at 86% 12%, #fff, transparent),
+    radial-gradient(1px 1px at 76% 40%, #fff, transparent), radial-gradient(1.5px 1.5px at 22% 46%, #fff, transparent); }
+body.sky .modal{ background:linear-gradient(170deg, rgba(10,52,84,.95), rgba(4,16,30,.97)); }
 body.hr{ --acc1:var(--gold); --acc2:#ff9f43; --bg1:#1c1204; --bg2:#4a2f08; --muted:#d8c08e; --dim:#9a8257; }
 
 *,*::before,*::after{ box-sizing:border-box; }
@@ -116,9 +124,9 @@ body.hr #app::before{ background:
   text-shadow:0 0 12px rgba(255,209,102,.55), 0 2px 0 #7a4f12; }
 .brand span{ display:block; font-family:var(--f-display); font-size:13px; letter-spacing:.32em; color:var(--acc1);
   text-shadow:0 0 10px var(--acc1); }
-.rooms{ display:grid; grid-template-columns:1fr 1fr; gap:6px; padding:5px; border-radius:18px; }
-.room-tab{ min-height:44px; border-radius:13px; font-weight:800; font-size:14px; color:var(--muted); display:flex; flex-direction:column; align-items:center; justify-content:center; line-height:1.1; }
-.room-tab small{ font-weight:600; font-size:11px; color:var(--dim); }
+.rooms{ display:grid; grid-template-columns:repeat(3,1fr); gap:6px; padding:5px; border-radius:18px; }
+.room-tab{ min-height:48px; padding:4px 2px; border-radius:13px; font-weight:800; font-size:13px; text-align:center; color:var(--muted); display:flex; flex-direction:column; align-items:center; justify-content:center; line-height:1.1; }
+.room-tab small{ font-weight:600; font-size:10.5px; color:var(--dim); }
 .room-tab.on{ color:#fff; background:linear-gradient(180deg, color-mix(in srgb, var(--acc1) 70%, #fff 0%), color-mix(in srgb, var(--acc1) 40%, #000));
   box-shadow:0 0 18px color-mix(in srgb, var(--acc1) 50%, transparent); }
 .room-tab.locked{ opacity:.75; }
@@ -155,6 +163,10 @@ body.hr #app::before{ background:
 .art-safe{ background:radial-gradient(circle at 30% 20%, #8c8c9c, #24242c 70%); }
 .art-mines{ background:radial-gradient(circle at 30% 20%, #9dff7a, #1f4a14 70%); }
 .art-simon{ background:radial-gradient(circle at 30% 20%, #c49bff, #3a1460 70%); }
+.art-escape{ background:radial-gradient(circle at 30% 20%, #ff8a5c, #5a1a10 70%); }
+.art-pit{ background:radial-gradient(circle at 30% 20%, #7ae7ff, #0b3d63 70%); }
+.art-tramp{ background:radial-gradient(circle at 30% 20%, #b6ff9a, #1f5a2a 70%); }
+.art-disco{ background:radial-gradient(circle at 30% 20%, #e59bff, #3a1460 70%); }
 .mini-chips{ position:relative; width:56px; height:50px; }
 .mini-chips i{ position:absolute; left:6px; width:44px; height:14px; border-radius:50%; background:repeating-linear-gradient(90deg, var(--cc) 0 6px, #fff 6px 9px); box-shadow:0 3px 0 rgba(0,0,0,.4); }
 .mini-chips i:nth-child(1){ top:30px; } .mini-chips i:nth-child(2){ top:19px; } .mini-chips i:nth-child(3){ top:8px; }
@@ -205,6 +217,7 @@ body.hr #app::before{ background:
   padding:10px calc(var(--sar) + 16px) calc(var(--sab) + 16px) calc(var(--sal) + 16px);
   border-radius:26px 26px 0 0; background:linear-gradient(175deg, rgba(48,18,72,.97), rgba(16,6,28,.98)); border-top:1px solid var(--line);
   box-shadow:0 -20px 50px rgba(0,0,0,.5); transform:translateY(105%); visibility:hidden; transition:transform .32s cubic-bezier(.3,1.1,.5,1), visibility 0s .32s; }
+body.sky #scrLobby.world-on .scroll{ background:linear-gradient(175deg, rgba(10,52,84,.97), rgba(4,14,26,.98)); }
 body.hr #scrLobby.world-on .scroll{ background:linear-gradient(175deg, rgba(70,46,12,.97), rgba(22,14,4,.98)); }
 #scrLobby.world-on.sheet-open .scroll{ transform:none; visibility:visible; transition:transform .32s cubic-bezier(.3,1.1,.5,1); }
 #scrLobby.world-on .sheet-head{ display:flex; align-items:center; justify-content:space-between; gap:10px; }
@@ -364,6 +377,63 @@ body.hr .mn-cell.mine, .mn-cell.mine{ background:rgba(255,84,112,.25); }
 .sm-hub small{ font-size:11px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); }
 .sm-board.good{ box-shadow:inset 0 0 40px rgba(0,0,0,.7), 0 0 50px var(--lime); }
 .sm-board.bad{ animation:wiggle .35s ease; }
+
+/* ---------- ELEVATOR ---------- */
+.floor-btn{ display:flex; align-items:center; gap:12px; min-height:60px; padding:8px 14px; border-radius:16px; text-align:left;
+  background:var(--glass-hi); border:1px solid var(--line); transition:transform .12s; }
+.floor-btn .fn{ width:40px; height:40px; flex:none; border-radius:50%; display:grid; place-items:center; font-family:var(--f-display); font-size:20px; color:#2a1600;
+  background:radial-gradient(circle at 35% 30%, var(--gold-hi), var(--gold) 55%, var(--gold-deep)); box-shadow:0 0 14px rgba(255,209,102,.45); }
+.floor-btn .ft{ flex:1; min-width:0; display:flex; flex-direction:column; }
+.floor-btn .ft b{ font-size:16px; }
+.floor-btn .ft small{ font-size:12.5px; color:var(--muted); }
+.floor-btn .fi{ color:var(--gold); font-size:14px; }
+.floor-btn.here{ border-color:var(--acc1); box-shadow:inset 0 0 0 1px var(--acc1); }
+.floor-btn:disabled{ opacity:1; }
+.floor-btn.locked{ opacity:.6; }
+
+/* ---------- ESCAPE ROOM ---------- */
+.es-box{ width:100%; max-width:420px; padding:10px 12px 12px; display:flex; flex-direction:column; gap:8px; }
+.es-head{ display:flex; align-items:baseline; justify-content:space-between; gap:10px; }
+.es-name{ font-family:var(--f-display); font-weight:400; font-size:16px; color:var(--gold-hi); min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.es-prog{ font-size:12px; font-weight:800; color:var(--muted); white-space:nowrap; }
+.es-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:6px; }
+.es-obj{ position:relative; height:var(--oh,80px); border-radius:14px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px;
+  background:linear-gradient(170deg, rgba(255,255,255,.1), rgba(255,255,255,.03)); border:1px solid var(--line); }
+.es-obj .ic{ font-family:var(--f-emoji); font-size:calc(var(--oh,80px) * .38); line-height:1; }
+.es-obj .nm{ font-size:11.5px; font-weight:800; color:var(--muted); }
+.es-obj.done::after{ content:"✓"; position:absolute; top:4px; right:7px; font-size:12px; font-weight:800; color:var(--lime); }
+.es-obj.open{ border-color:var(--gold); box-shadow:0 0 16px rgba(255,209,102,.35); }
+.es-obj .lk{ position:absolute; top:4px; left:6px; }
+.es-view{ min-height:178px; border-radius:16px; background:rgba(0,0,0,.3); border:1px solid var(--line); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; padding:10px; }
+.es-msg{ color:var(--muted); font-weight:700; text-align:center; font-size:14px; }
+.es-msg.big{ font-size:20px; color:var(--lime); }
+.es-cap{ color:var(--muted); font-weight:700; font-size:12.5px; }
+.es-note{ background:#f4ead2; color:#3a2a10; border-radius:8px; padding:10px 14px; transform:rotate(-1.5deg); text-align:center; box-shadow:0 6px 16px rgba(0,0,0,.4); display:flex; flex-direction:column; gap:6px; }
+.es-note small{ font-weight:700; font-size:12px; }
+.es-order{ display:flex; align-items:center; gap:6px; font-family:var(--f-emoji); font-size:30px; }
+.es-order i{ font-style:normal; font-size:16px; color:#8a6a3a; }
+.es-clock{ position:relative; width:120px; height:120px; border-radius:50%; background:radial-gradient(circle, #fffaf0 0 62%, #e9dcc4 63%); border:5px solid var(--gold-deep); box-shadow:0 6px 18px rgba(0,0,0,.4); }
+.es-clock i{ position:absolute; left:50%; top:4px; width:3px; height:9px; margin-left:-1.5px; background:#3a2a10; transform-origin:50% 51px; }
+.es-clock b{ position:absolute; left:50%; bottom:50%; border-radius:3px; background:#2a1a0a; transform-origin:50% 100%; }
+.es-clock .hh{ width:6px; height:30px; margin-left:-3px; }
+.es-clock .mm{ width:3px; height:44px; margin-left:-1.5px; background:#8a1a2a; }
+.es-books{ display:flex; align-items:flex-end; gap:4px; height:110px; padding:0 8px 6px; border-bottom:8px solid #6b4423; }
+.es-books i{ width:18px; height:var(--h,90%); border-radius:3px 3px 1px 1px; background:var(--c); box-shadow:inset -3px 0 0 rgba(0,0,0,.25), inset 2px 0 0 rgba(255,255,255,.2); }
+.es-books i.gold{ background:linear-gradient(90deg, var(--gold-deep), var(--gold-hi), var(--gold)); box-shadow:0 0 8px rgba(255,209,102,.6); }
+.es-die{ display:grid; grid-template-columns:repeat(3,1fr); gap:6px; width:96px; height:96px; padding:12px; border-radius:18px; background:#fffaf0; box-shadow:inset 0 -6px 0 rgba(0,0,0,.12), 0 6px 18px rgba(0,0,0,.4); }
+.es-die i{ border-radius:50%; }
+.es-die i.on{ background:#1a0a28; }
+.es-card{ position:relative; width:84px; height:118px; border-radius:10px; background:#fffaf0; color:#1a1a1a; display:grid; place-items:center; box-shadow:0 6px 18px rgba(0,0,0,.4); }
+.es-card.red{ color:#d01f3a; }
+.es-card span{ font-size:44px; line-height:1; }
+.es-card b{ position:absolute; top:6px; left:9px; font-size:20px; }
+.es-card b.btm{ top:auto; left:auto; bottom:6px; right:9px; transform:rotate(180deg); }
+.es-pad{ display:flex; flex-direction:column; gap:8px; align-items:center; }
+.es-pad.bad{ animation:wiggle .35s ease; }
+.es-disp{ display:flex; gap:6px; }
+.es-disp i{ width:34px; height:40px; border-radius:8px; display:grid; place-items:center; font-style:normal; font-weight:800; font-size:22px; color:var(--lime); background:#08140a; border:1px solid rgba(141,255,106,.4); font-variant-numeric:tabular-nums; }
+.es-keys{ display:grid; grid-template-columns:repeat(6, 44px); gap:5px; }
+.es-keys button{ height:44px; border-radius:10px; font-weight:800; font-size:17px; background:var(--glass-hi); border:1px solid var(--line); }
 
 /* ---------- luck badges ---------- */
 .lk{ display:inline-grid; place-items:center; min-width:24px; height:20px; padding:0 5px; border-radius:7px; font:800 11px/1 var(--f-ui); letter-spacing:0;
@@ -604,8 +674,9 @@ body.hr .modal{ background:linear-gradient(170deg, rgba(80,52,14,.94), rgba(26,1
     <div class="scroll" id="lobbySheet">
       <div class="sheet-head"><b>Quick menu</b><button class="icon-btn" id="btnSheetClose" aria-label="Close menu">✕</button></div>
       <div class="rooms glass" role="tablist" aria-label="Room">
-        <button class="room-tab on" id="roomMain" role="tab" data-room="main">Main Floor<small>Stakes from 10</small></button>
+        <button class="room-tab on" id="roomMain" role="tab" data-room="main">Main Floor<small>Floor 1 · from 10</small></button>
         <button class="room-tab" id="roomHigh" role="tab" data-room="high"><span id="roomHighLbl">🔒 High Roller</span><small id="roomHighSub">Unlocks at 10,000</small><span class="hr-meter" id="hrMeter"><i></i></span></button>
+        <button class="room-tab" id="roomSky" role="tab" data-room="sky">Sky Deck<small>Floor 3 · fun zone</small></button>
       </div>
       <button class="spin-banner" id="btnSpin">
         <span class="mini-wheel" aria-hidden="true"></span>
@@ -726,6 +797,15 @@ body.hr .modal{ background:linear-gradient(170deg, rgba(80,52,14,.94), rgba(26,1
     </div>
   </div>
 
+  <div class="overlay" id="ovElev" role="dialog" aria-modal="true" aria-labelledby="elTitle">
+    <div class="modal glass">
+      <h2 id="elTitle">Elevator</h2>
+      <p>Pick a floor.</p>
+      <div class="btns" id="elBtns"></div>
+      <div class="btns"><button class="btn btn-ghost" id="elClose">Stay here</button></div>
+    </div>
+  </div>
+
   <div class="overlay" id="ovConfirm" role="dialog" aria-modal="true" aria-labelledby="cfTitle">
     <div class="modal glass">
       <div class="comp-chip" id="cfIcon" hidden></div>
@@ -778,7 +858,8 @@ const Store = (() => {
   const KEY = 'puzzleParlor.v1';
   const defaults = () => ({
     bank: 1000, lastSpin: 0, muted: false, haptics: true, hrUnlocked: false, room: 'main', lastWager: 50,
-    stats: { rounds: 0, wins: 0, biggest: 0, jackpots: 0 }
+    stats: { rounds: 0, wins: 0, biggest: 0, jackpots: 0 },
+    fun: { day: '', earned: 0 }
   });
   let data = defaults();
   function load() {
@@ -795,7 +876,7 @@ const Store = (() => {
 
 /* ---------------------------- AUDIO (Web Audio synth, no files) ---------------------------- */
 const Sfx = (() => {
-  let ctx = null, master = null, noiseBuf = null;
+  let ctx = null, master = null, noiseBuf = null, grooveT = 0;
   const VOL = 0.7;
   function unlock() {
     if (!ctx) {
@@ -867,6 +948,23 @@ const Sfx = (() => {
       for (let i = 0; i < 10; i++) coin(0.6 + i * 0.08, (i % 4) * 2);
     },
     note(f, d = 0.3) { tone(f, { type: 'triangle', dur: d + 0.15, vol: 0.16 }); tone(f * 2, { type: 'sine', dur: d, vol: 0.04 }); },
+    boing(p = 0) { tone(150 + p * 25, { dur: 0.32, vol: 0.32, slide: 480 + p * 90 }); tone(80, { type: 'triangle', dur: 0.18, vol: 0.14, slide: 55 }); },
+    splash() { noise({ dur: 0.6, vol: 0.32, freq: 2200, type: 'lowpass', sweep: 300 }); for (let i = 0; i < 6; i++) tone(rand(500, 1400), { dur: 0.12, vol: 0.05, at: i * 0.05, slide: rand(300, 900) }); },
+    whee() { tone(420, { type: 'triangle', dur: 1.1, vol: 0.11, slide: 1300 }); noise({ dur: 1.1, vol: 0.12, freq: 600, sweep: 2400, type: 'bandpass', q: 0.8 }); },
+    climb() { tone(620, { type: 'square', dur: 0.04, vol: 0.035 }); },
+    // Disco floor groove: 120 bpm, 16th-note sequencer
+    startGroove() {
+      if (grooveT) return; let step = 0;
+      grooveT = setInterval(() => {
+        const s = step++ % 16, bass = [55, 55, 65.41, 73.42][s >> 2];
+        if (s % 4 === 0) tone(120, { dur: 0.2, vol: 0.42, slide: 40 });
+        if (s % 4 === 2) noise({ dur: 0.04, vol: 0.07, freq: 7000, type: 'highpass' });
+        if (s % 8 === 4) noise({ dur: 0.14, vol: 0.12, freq: 1800, type: 'bandpass' });
+        if (s % 2 === 0) tone(bass * 2, { type: 'sawtooth', dur: 0.11, vol: 0.045 });
+        if (s === 3 || s === 6 || s === 11) tone([523.25, 659.25, 783.99][s % 3], { type: 'triangle', dur: 0.16, vol: 0.05 });
+      }, 125);
+    },
+    stopGroove() { clearInterval(grooveT); grooveT = 0; },
     spinTick() { tone(2300, { type: 'square', dur: 0.018, vol: 0.04 }); }
   };
 })();
@@ -991,16 +1089,31 @@ const Luck = {
 /* ---------------------------- ECONOMY ---------------------------- */
 const ROOMS = {
   main: { id: 'main', name: 'Main Floor', chips: [10, 50, 100, 500], min: 10, scale: 1 },
-  high: { id: 'high', name: 'High Roller Room', chips: [100, 500, 1000, 5000], min: 100, scale: 10 }
+  high: { id: 'high', name: 'High Roller Room', chips: [100, 500, 1000, 5000], min: 100, scale: 10 },
+  sky: { id: 'sky', name: 'Sky Deck', chips: [10, 50, 100, 500], min: 10, scale: 1 }
 };
-const HR_UNLOCK = 10000, COMP_LINE = 10, COMP_AMOUNT = 500;
+const FLOOR_INFO = {
+  main: { n: 1, name: 'Main Floor', sub: 'Casino classics · stakes from 10' },
+  high: { n: 2, name: 'High Roller', sub: 'Exclusive games · stakes ×10' },
+  sky: { n: 3, name: 'Sky Deck', sub: 'Slide, trampolines, disco & Escape Room' }
+};
+const HR_UNLOCK = 10000, COMP_LINE = 10, COMP_AMOUNT = 500, FUN_CAP = 200;
 const TIERS = [
   { name: 'Easy', odds: 1.5 }, { name: 'Medium', odds: 2.5 }, { name: 'Hard', odds: 5 }
 ];
 const Econ = {
   justUnlocked: false,
   get bank() { return Store.d.bank; },
-  room() { return Store.d.room === 'high' && Store.d.hrUnlocked ? ROOMS.high : ROOMS.main; },
+  room() { const r = Store.d.room; return r === 'high' && Store.d.hrUnlocked ? ROOMS.high : r === 'sky' ? ROOMS.sky : ROOMS.main; },
+  funLeft() { const f = Store.d.fun; return f && f.day === new Date().toDateString() ? Math.max(0, FUN_CAP - f.earned) : FUN_CAP; },
+  /** Small chip rewards for Sky Deck tricks, capped per day so they can't be farmed. Returns chips given. */
+  funReward(n) {
+    const today = new Date().toDateString();
+    if (!Store.d.fun || Store.d.fun.day !== today) Store.d.fun = { day: today, earned: 0 };
+    const give = Math.max(0, Math.min(n, FUN_CAP - Store.d.fun.earned));
+    if (give) { Store.d.fun.earned += give; this.add(give); }
+    return give;
+  },
   add(n) {
     Store.d.bank = Math.max(0, Math.round(Store.d.bank + n));
     if (Store.d.bank >= HR_UNLOCK && !Store.d.hrUnlocked) { Store.d.hrUnlocked = true; this.justUnlocked = true; }
@@ -2092,12 +2205,115 @@ const SimonTable = {
   }
 };
 
+
+/* ---------------------------- ESCAPE ROOM (Sky Deck) ---------------------------- */
+const ESC_ROOMS = ['The Lounge', 'The Vault', 'The Penthouse', 'The Boiler Room', 'The Wine Cellar', 'The Green Room'];
+const ESC_OBJ = {
+  painting: { icon: '🖼️', name: 'Painting' }, clock: { icon: '⏰', name: 'Clock' }, books: { icon: '📚', name: 'Bookshelf' },
+  dice: { icon: '🎲', name: 'Dice' }, card: { icon: '🃏', name: 'Card table' }, door: { icon: '🚪', name: 'Exit door' }
+};
+const EscapeTable = {
+  id: 'escape', name: 'Escape Room', icon: '🚪', art: 'art-escape', unit: 'rooms', time: 120, targets: [1, 2, 3], max: 2000, comboWindow: 600000,
+  blurb: 'Search for clues, crack the door code.',
+  rules: (t, time) => `Search the room. The painting shows the order; the clock, books, dice and card each hide one digit. Type the 4-digit code into the door. Escape <b>${t} room${t > 1 ? 's' : ''}</b> in <b>${time}s</b>. A wrong code costs 5 seconds.`,
+  create(R, wrap, foot) {
+    const KEYS = ['clock', 'books', 'dice', 'card'];
+    const box = el('div', 'es-box glass'); wrap.appendChild(box);
+    box.innerHTML = '<div class="es-head"><b class="es-name"></b><small class="es-prog"></small></div><div class="es-grid"></div><div class="es-view"></div>';
+    const grid = $('.es-grid', box), view = $('.es-view', box), nameEl = $('.es-name', box), prog = $('.es-prog', box);
+    foot.innerHTML = '<p class="hint">Tap objects to search them. The door takes a 4-digit code.</p>';
+    let room = 0, digits = {}, order = [], entry = '', searched = new Set(), luckIn = {}, dead = false, locked = false, extraLuck = 0;
+    const timers = new Set(), later = (fn, ms) => { const t = setTimeout(() => { timers.delete(t); if (!dead) fn(); }, ms); timers.add(t); };
+    const tiles = {};
+    ['painting', 'clock', 'books', 'dice', 'card', 'door'].forEach(k => {
+      const b = el('button', 'es-obj', `<span class="ic">${ESC_OBJ[k].icon}</span><span class="nm">${ESC_OBJ[k].name}</span>`);
+      b.addEventListener('click', () => inspect(k)); grid.appendChild(b); tiles[k] = b;
+    });
+    const code = () => order.map(k => digits[k]).join('');
+    function newRoom() {
+      room++; entry = ''; searched = new Set(); locked = false; luckIn = {};
+      digits = { clock: randi(1, 9), books: randi(1, 7), dice: randi(1, 6), card: randi(1, 9) };
+      order = shuffle(KEYS.slice());
+      const spots = shuffle(['painting', ...KEYS]);
+      if (room === 1) R.plan.forEach((t, i) => { if (spots[i]) luckIn[spots[i]] = t; });
+      else spots.slice(0, 2).forEach(k => { if (extraLuck < 3) { const l = R.spawnLuck(); if (l) { luckIn[k] = l; extraLuck++; } } });
+      nameEl.textContent = `Room ${room}: ${ESC_ROOMS[(room - 1) % ESC_ROOMS.length]}`;
+      Object.values(tiles).forEach(t => t.classList.remove('done', 'open'));
+      view.innerHTML = '<p class="es-msg">Search the room for clues. The painting is a good place to start.</p>';
+      prog.textContent = '0/5 searched';
+    }
+    function render(k) {
+      if (k === 'painting') return `<div class="es-note"><small>Taped behind the painting:</small><div class="es-order">${order.map(o => `<span>${ESC_OBJ[o].icon}</span>`).join('<i>→</i>')}</div><small>Read the digits in this order.</small></div>`;
+      if (k === 'clock') {
+        let ticks = ''; for (let i = 0; i < 12; i++) ticks += `<i style="transform:rotate(${i * 30}deg)"></i>`;
+        return `<div class="es-clock">${ticks}<b class="hh" style="transform:rotate(${digits.clock * 30}deg)"></b><b class="mm"></b></div><small class="es-cap">What hour is it?</small>`;
+      }
+      if (k === 'books') {
+        const cols = shuffle([...Array(9)].map((_, i) => i < digits.books));
+        return `<div class="es-books">${cols.map(g => `<i class="${g ? 'gold' : ''}" style="--h:${randi(68, 100)}%;--c:${pick(['#7a3ce0', '#1c8fb0', '#d01f86', '#2f8a46', '#a8323e'])}"></i>`).join('')}</div><small class="es-cap">Only the gold ones count.</small>`;
+      }
+      if (k === 'dice') {
+        const PIPS = { 1: [4], 2: [0, 8], 3: [0, 4, 8], 4: [0, 2, 6, 8], 5: [0, 2, 4, 6, 8], 6: [0, 2, 3, 5, 6, 8] }[digits.dice];
+        return `<div class="es-die">${[...Array(9)].map((_, i) => `<i class="${PIPS.includes(i) ? 'on' : ''}"></i>`).join('')}</div><small class="es-cap">Roll with it.</small>`;
+      }
+      if (k === 'card') {
+        const v = digits.card, suit = pick(['♠', '♥', '♦', '♣']), red = suit === '♥' || suit === '♦', lbl = v === 1 ? 'A' : v;
+        return `<div class="es-card${red ? ' red' : ''}"><b>${lbl}</b><span>${suit}</span><b class="btm">${lbl}</b></div><small class="es-cap">Face value. Aces are low.</small>`;
+      }
+      return `<div class="es-pad"><div class="es-disp">${[0, 1, 2, 3].map(i => `<i>${entry[i] || ''}</i>`).join('')}</div><div class="es-keys">${[1, 2, 3, 4, 5, 6, 7, 8, 9, '⌫', 0, '↵'].map(x => `<button data-k="${x}" aria-label="${x}">${x}</button>`).join('')}</div></div>`;
+    }
+    function inspect(k) {
+      if (!R.active || locked) return;
+      Sfx.flip(); Haptic.tap();
+      Object.entries(tiles).forEach(([kk, t]) => t.classList.toggle('open', kk === k));
+      if (k !== 'door' && !searched.has(k)) {
+        searched.add(k); tiles[k].classList.add('done'); prog.textContent = `${searched.size}/5 searched`;
+        if (luckIn[k]) { const t = luckIn[k], p = centerOf(tiles[k]); delete luckIn[k]; later(() => R.luck(t, p.x, p.y), 250); }
+      }
+      view.innerHTML = render(k);
+      if (k === 'door') $$('.es-keys button', view).forEach(b => b.addEventListener('pointerdown', e => { e.preventDefault(); key(b.dataset.k); }));
+    }
+    const paintDisp = () => $$('.es-disp i', view).forEach((x, i) => { x.textContent = entry[i] || ''; });
+    function key(k) {
+      if (!R.active || locked) return;
+      if (k === '⌫') { entry = entry.slice(0, -1); paintDisp(); Sfx.tap(); return; }
+      if (k === '↵') { submit(); return; }
+      if (entry.length >= 4) return;
+      entry += k; paintDisp(); Sfx.select(+k); Haptic.tap();
+      if (entry.length === 4) later(submit, 220);
+    }
+    function submit() {
+      if (locked || entry.length !== 4) return;
+      const p = centerOf(tiles.door);
+      if (entry === code()) {
+        locked = true; tiles.door.classList.add('done');
+        view.innerHTML = '<p class="es-msg big">🔓 The door swings open!</p>';
+        R.score(1); R.combo(p.x, p.y); FX.coins(p.x, p.y, 20); Sfx.win(); Haptic.win();
+        R.float('ESCAPED!', clamp(p.x, 110, innerWidth - 110), p.y, 'big');
+        later(newRoom, 1300);
+      } else {
+        entry = ''; paintDisp();
+        const pad = $('.es-pad', view); if (pad) { pad.classList.remove('bad'); void pad.offsetWidth; pad.classList.add('bad'); }
+        Sfx.error(); Haptic.lose(); R.breakCombo(); R.penalty(5); R.float('WRONG CODE · −5s', clamp(p.x, 110, innerWidth - 110), p.y, 'mag');
+      }
+    }
+    function resize() { box.style.setProperty('--oh', clamp(Math.floor((wrap.clientHeight - 300) / 2), 58, 96) + 'px'); }
+    resize(); newRoom();
+    return {
+      resize,
+      stop() { dead = true; timers.forEach(clearTimeout); },
+      nearMiss() { return Object.entries(luckIn).map(([k, t]) => { tiles[k].insertAdjacentHTML('beforeend', luckBadge(t)); return { el: tiles[k], type: t }; }); }
+    };
+  }
+};
+
 /* ---------------------------- registry + floor line-ups ---------------------------- */
-const TABLES = { memory: MemoryTable, mahjong: MahjongTable, blocks: BlocksTable, connect: ConnectTable, gems: GemsTable, stack: StackTable, safe: SafeTable, mines: MinesTable, simon: SimonTable };
+const TABLES = { memory: MemoryTable, mahjong: MahjongTable, blocks: BlocksTable, connect: ConnectTable, gems: GemsTable, stack: StackTable, safe: SafeTable, mines: MinesTable, simon: SimonTable, escape: EscapeTable };
 // Order = 3D layout: [top-left, top-right, mid-left, mid-right, bottom-left, bottom-right]
 const FLOORS = {
   main: ['memory', 'connect', 'mahjong', 'gems', 'blocks', 'stack'],
-  high: ['safe', 'mines', 'simon', 'mahjong', 'gems', 'blocks']
+  high: ['safe', 'mines', 'simon', 'mahjong', 'gems', 'blocks'],
+  sky: ['escape']   // the Sky Deck is mostly play areas (pit, slide, trampolines, disco)
 };
 const floorTables = () => FLOORS[Econ.room().id].map(id => TABLES[id]);
 
@@ -2128,6 +2344,16 @@ const World = (() => {
     simon: { color: 0xa974ff, css: '#c49bff', felt: 0x2a0f45, shape: 'round' }
   };
   const keys = {}, joy = { id: null, sx: 0, sy: 0, vx: 0, vy: 0, t0: 0, moved: false };
+  const THEMES = {
+    main: { hemi: 0xb58cff, ground: 0x1a0526, floor: 0xffffff, neon: [0xff3fb4, 0x3ff0ff], bg: 0x0a0412, door: 0x2a0d3d },
+    high: { hemi: 0xffcf7a, ground: 0x2a1a04, floor: 0xffd38a, neon: [0xffd166, 0xff9f43], bg: 0x140c02, door: 0x3a2508 },
+    sky: { hemi: 0x9fe6ff, ground: 0x082a44, floor: 0x86c8ff, neon: [0x3ff0ff, 0x8dff6a], bg: 0x04101f, door: 0x0b3d63 }
+  };
+  const GRAV = 24;
+  // Player physics/activity state (walk, climb, slide; vertical y/vy for pit, trampolines and jumps)
+  const P = { mode: 'walk', y: 0, vy: 0, power: 0, jumpAt: -9, flipN: 0, flipT0: 0, flipDur: 1, flips: 0, t: 0, u: 0, spinT: 0, onDance: false, danceT: 0, grooving: false, capNoted: false, lastClimb: 0 };
+  const sky = {};   // Sky Deck play areas (filled by buildSky)
+  const dummy = T3 ? new T3.Object3D() : null;
   const v3 = (x, y, z) => new T3.Vector3(x, y, z);
 
   /* ---------- procedural textures (canvas, no image files) ---------- */
@@ -2216,23 +2442,33 @@ const World = (() => {
     const c2 = mesh(new T3.ConeGeometry(0.07, 0.12, 4), bt, 0.06, 1.42, 0.34, g); c2.rotation.z = -Math.PI / 2;
     const sh = mesh(new T3.CircleGeometry(0.55, 24), new T3.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.38, depthWrite: false }), 0, 0.015, 0, g); sh.rotation.x = -Math.PI / 2;
     if (isPlayer) { const ring = mesh(new T3.RingGeometry(0.6, 0.72, 32), glow(0xffd166, 0.85), 0, 0.02, 0, g); ring.rotation.x = -Math.PI / 2; g.userData.ring = ring; }
+    // Body hangs off a hip-height pivot so the whole character can flip, sink or bounce while the shadow stays put
+    const pivot = new T3.Group(); pivot.position.y = 1;
+    [...g.children].forEach(ch => { if (ch === sh || ch === g.userData.ring) return; g.remove(ch); ch.position.y -= 1; pivot.add(ch); });
+    g.add(pivot);
     g.userData.parts = { torso, head, legL, legR, armL, armR, hatG };
-    g.userData.phase = 0;
+    Object.assign(g.userData, { phase: 0, pivot, shadow: sh, y: 0 });
     scene.add(g);
     return g;
   }
-  function animChar(c, speed, dt, cheer) {
+  function animChar(c, speed, dt, pose) {
     const p = c.userData.parts, u = c.userData;
+    if (pose === true) pose = 'cheer';
     u.phase += dt * (speed > 0.1 ? 10 * Math.min(1.3, speed / SPEED + 0.4) : 2);
-    const s = speed > 0.1 ? Math.sin(u.phase) : 0, k = speed > 0.1 ? 1 : 0;
-    p.legL.rotation.x = s * 0.75 * k; p.legR.rotation.x = -s * 0.75 * k;
-    p.armL.rotation.x = -s * 0.65 * k; p.armR.rotation.x = s * 0.65 * k;
-    const bob = speed > 0.1 ? Math.abs(Math.sin(u.phase)) * 0.07 : Math.sin(u.phase) * 0.02;
+    const walk = speed > 0.1 && !pose, s = walk ? Math.sin(u.phase) : 0;
+    p.legL.rotation.x = s * 0.75; p.legR.rotation.x = -s * 0.75;
+    p.armL.rotation.x = -s * 0.65; p.armR.rotation.x = s * 0.65;
+    p.armL.rotation.z = -0.15; p.armR.rotation.z = 0.15;
+    const bob = walk ? Math.abs(Math.sin(u.phase)) * 0.07 : Math.sin(u.phase) * 0.02;
     let hop = 0;
-    if (cheer) { hop = Math.abs(Math.sin(time * 7)) * 0.3; p.armL.rotation.z = -2.6; p.armR.rotation.z = 2.6; }
-    else { p.armL.rotation.z = -0.15; p.armR.rotation.z = 0.15; }
-    p.torso.position.y = 1.0 + bob; p.head.position.y = 1.72 + bob; p.hatG.position.y = 1.96 + bob;
-    c.position.y = hop;
+    if (pose === 'cheer') { hop = Math.abs(Math.sin(time * 7)) * 0.3; p.armL.rotation.z = -2.6; p.armR.rotation.z = 2.6; }
+    else if (pose === 'dance') { const b = time * 8 + c.id; hop = Math.abs(Math.sin(b)) * 0.16; p.armL.rotation.z = -1.5 - Math.sin(b); p.armR.rotation.z = 1.5 - Math.sin(b); p.legL.rotation.x = Math.sin(b) * 0.35; p.legR.rotation.x = -Math.sin(b) * 0.35; }
+    else if (pose === 'slide') { p.armL.rotation.z = -2.8; p.armR.rotation.z = 2.8; p.legL.rotation.x = p.legR.rotation.x = -1.3; }
+    else if (pose === 'climb') { const b = time * 12; p.armL.rotation.x = -2.7 + Math.sin(b) * 0.5; p.armR.rotation.x = -2.7 - Math.sin(b) * 0.5; p.legL.rotation.x = Math.sin(b) * 0.6; p.legR.rotation.x = -Math.sin(b) * 0.6; }
+    else if (pose === 'air') { p.armL.rotation.z = -1.9; p.armR.rotation.z = 1.9; p.legL.rotation.x = 0.35; p.legR.rotation.x = -0.25; }
+    p.torso.position.y = bob; p.head.position.y = 0.72 + bob; p.hatG.position.y = 0.96 + bob;
+    u.pivot.position.y = 1 + (u.y || 0) + hop;
+    u.shadow.scale.setScalar(clamp(1 - Math.max(0, u.y || 0) * 0.12, 0.35, 1));
   }
   const lerpAngle = (a, b, t) => { let d = ((b - a + Math.PI) % (Math.PI * 2)) - Math.PI; if (d < -Math.PI) d += Math.PI * 2; return a + d * t; };
 
@@ -2293,7 +2529,8 @@ const World = (() => {
     Object.keys(FLOORS).forEach(f => {
       const fl = floors[f] = { group: new T3.Group(), zones: [], colliders: [], clickables: [] };
       scene.add(fl.group);
-      FLOORS[f].forEach((id, i) => buildTable(Object.assign({ id, x: SPOTS[i][0], z: SPOTS[i][1] }, LOOK[id]), fl));
+      if (f === 'sky') buildSky(fl);
+      else FLOORS[f].forEach((id, i) => buildTable(Object.assign({ id, x: SPOTS[i][0], z: SPOTS[i][1] }, LOOK[id]), fl));
     });
 
     // player + patrons
@@ -2315,6 +2552,8 @@ const World = (() => {
     colliders.length = 0; colliders.push(...base.colliders, ...fl.colliders);
     clickables.length = 0; clickables.push(...base.clickables, ...fl.clickables);
     target = null; pendingZone = null; showZone(null, true);
+    Object.assign(P, { mode: 'walk', y: 0, vy: 0, power: 0, flipN: 0, spinT: 0, onDance: false }); player.userData.pivot.rotation.x = 0;
+    if (P.grooving) { Sfx.stopGroove(); P.grooving = false; }
     npcs.forEach(n => { n.position.set(rand(-8, 8), 0, rand(-10, 7)); collide(n.position, 0.45); n.userData.npc.goal = null; });
   }
   function switchFloor(f) {
@@ -2324,7 +2563,7 @@ const World = (() => {
       player.position.set(8.2, 0, -10.4); player.rotation.y = 0;
       camera.position.set(player.position.x * 0.8, 14, player.position.z + 12);
       fade.classList.remove('on');
-      UI.banner(f === 'high' ? 'HIGH ROLLER FLOOR<small>Exclusive games · stakes ×10</small>' : 'MAIN FLOOR<small>Welcome back down</small>', 'good', 1500);
+      const fi = FLOOR_INFO[f]; UI.banner(`${fi.name.toUpperCase()}<small>Floor ${fi.n} · ${fi.sub}</small>`, 'good', 1700);
     }, 330);
   }
   function buildTable(d, fl) {
@@ -2422,19 +2661,180 @@ const World = (() => {
     const gold = lam(0xffd166, { emissive: 0x6b4a10 });
     mesh(new T3.BoxGeometry(0.35, 3.6, 0.4), gold, -1.25, 1.8, 0.1, g); mesh(new T3.BoxGeometry(0.35, 3.6, 0.4), gold, 1.25, 1.8, 0.1, g);
     mesh(new T3.BoxGeometry(2.85, 0.35, 0.4), gold, 0, 3.6, 0.1, g);
-    const door = mesh(new T3.PlaneGeometry(2.15, 3.4), new T3.MeshBasicMaterial({ color: 0x120814 }), 0, 1.7, 0.25, g);
-    const s = sign('HIGH ROLLER', '#ffd166', '', 2.9); s.position.set(0, 4.35, 0.3); g.add(s); signs.door = s;
-    const s2 = sign('MAIN FLOOR', '#3ff0ff', '', 2.9); s2.position.set(0, 4.35, 0.3); s2.visible = false; g.add(s2); signs.doorDown = s2;
-    // velvet rope on gold stanchions
-    const rope = new T3.Group(); g.add(rope);
-    [-1.2, 1.2].forEach(x => { mesh(new T3.CylinderGeometry(0.06, 0.12, 1.0, 10), gold, x, 0.5, 1.3, rope); mesh(new T3.SphereGeometry(0.1, 10, 8), gold, x, 1.02, 1.3, rope); });
-    const curve = new T3.QuadraticBezierCurve3(v3(-1.2, 0.95, 1.3), v3(0, 0.55, 1.3), v3(1.2, 0.95, 1.3));
-    mesh(new T3.TubeGeometry(curve, 16, 0.05, 8), lam(0xb0102f), 0, 0, 0, rope);
-    signs.rope = rope; signs.doorPanel = door;
+    const door = mesh(new T3.PlaneGeometry(2.15, 3.4), new T3.MeshBasicMaterial({ color: 0x2a0d3d }), 0, 1.7, 0.25, g);
+    mesh(new T3.BoxGeometry(0.04, 3.3, 0.02), gold, 0, 1.7, 0.27, g);   // the seam between the elevator doors
+    signs.floor = {};
+    Object.keys(FLOOR_INFO).forEach(id => { const f = FLOOR_INFO[id], s = sign('ELEVATOR', '#ffd166', `FLOOR ${f.n} · ${f.name.toUpperCase()}`, 2.9); s.position.set(0, 4.45, 0.3); s.visible = false; g.add(s); signs.floor[id] = s; });
+    signs.lamps = [0, 1, 2].map(i => mesh(new T3.SphereGeometry(0.1, 10, 8), glow(0x332a44), -0.45 + i * 0.45, 3.6, 0.34, g));
+    signs.doorPanel = door;
     const ring = mesh(new T3.RingGeometry(1.8, 2.0, 48), glow(0xffd166, 0.3), 8.2, 0.03, -11.7); ring.rotation.x = -Math.PI / 2;
-    const zone = { id: 'hr', kind: 'hr', x: 8.2, z: -11.7, r: 2.2, ring, color: 0xffd166 };
+    const zone = { id: 'hr', kind: 'elev', x: 8.2, z: -11.7, r: 2.2, ring, color: 0xffd166 };
     zones.push(zone); g.traverse(o => { o.userData.zone = zone; }); clickables.push(g);
   }
+  /* ---------- Sky Deck: ball pit + slide, trampolines, disco floor, escape room ---------- */
+  function buildSky(fl) {
+    const G = fl.group, add = (geo, mat, x, y, z, parent = G) => mesh(geo, mat, x, y, z, parent);
+    const zone = (o) => { fl.zones.push(o); return o; };
+    const light = (c, x, y, z) => { const l = new T3.PointLight(c, 1.0, 7); l.position.set(x, y, z); G.add(l); };
+
+    // night sky: stars + moon above the back wall
+    { const n = 260, pos = new Float32Array(n * 3);
+      for (let i = 0; i < n; i++) { pos[i * 3] = rand(-34, 34); pos[i * 3 + 1] = rand(6, 18); pos[i * 3 + 2] = rand(-40, -15); }
+      const geo = new T3.BufferGeometry(); geo.setAttribute('position', new T3.BufferAttribute(pos, 3));
+      G.add(new T3.Points(geo, new T3.PointsMaterial({ color: 0xffffff, size: 0.14, fog: false, transparent: true, opacity: 0.9, depthWrite: false })));
+      add(new T3.SphereGeometry(1.6, 24, 16), new T3.MeshBasicMaterial({ color: 0xfff1c8, fog: false }), -14, 13, -32); }
+
+    // ball pit
+    const PIT = sky.pit = { x: -7, z: -5.5, half: 2.35 };
+    add(new T3.PlaneGeometry(4.8, 4.8), lam(0x0b2a4a), PIT.x, 0.02, PIT.z).rotation.x = -Math.PI / 2;
+    const rimC = [0xff3fb4, 0x3ff0ff, 0xffd166, 0x8dff6a];
+    [[0, -1, 5.0, 0.25], [0, 1, 5.0, 0.25], [-1, 0, 0.25, 5.0], [1, 0, 0.25, 5.0]].forEach(([sx, sz, w, d], i) =>
+      add(new T3.BoxGeometry(w, 0.6, d), lam(rimC[i], { emissive: rimC[i], emissiveIntensity: 0.25 }), PIT.x + sx * 2.5, 0.3, PIT.z + sz * 2.5));
+    const N = 260, BC = [0xff3fb4, 0x3ff0ff, 0xffd166, 0x8dff6a, 0xa974ff, 0xff7a00].map(c => new T3.Color(c));
+    const balls = new T3.InstancedMesh(new T3.SphereGeometry(0.17, 8, 6), lam(0xffffff), N);
+    const B = sky.balls = { mesh: balls, n: N, x: new Float32Array(N), z: new Float32Array(N), y0: new Float32Array(N), oy: new Float32Array(N), vy: new Float32Array(N) };
+    for (let i = 0; i < N; i++) { B.x[i] = PIT.x + rand(-2.2, 2.2); B.z[i] = PIT.z + rand(-2.2, 2.2); B.y0[i] = 0.17 + Math.floor(i / 90) * 0.16 + rand(0, 0.07); balls.setColorAt(i, BC[i % BC.length]); }
+    G.add(balls); writeBalls();
+    light(0x3ff0ff, PIT.x, 3, PIT.z);
+    zone({ id: 'pit', kind: 'fun', x: PIT.x, z: PIT.z, r: 2.35 });
+
+    // slide tower + tube slide that ends in the pit
+    const T = sky.tower = { x: -7.6, z: -11.4, top: 3.2 };
+    const gold = lam(0xffd166, { emissive: 0x6b4a10 });
+    [[-0.7, -0.7], [0.7, -0.7], [-0.7, 0.7], [0.7, 0.7]].forEach(([dx, dz]) => add(new T3.CylinderGeometry(0.08, 0.08, 3.3, 8), gold, T.x + dx, 1.65, T.z + dz));
+    add(new T3.BoxGeometry(1.7, 0.18, 1.7), lam(0x3ff0ff, { emissive: 0x3ff0ff, emissiveIntensity: 0.3 }), T.x, 3.1, T.z);
+    add(new T3.BoxGeometry(1.7, 0.5, 0.06), gold, T.x, 3.45, T.z - 0.85);
+    add(new T3.BoxGeometry(0.06, 0.5, 1.7), gold, T.x - 0.85, 3.45, T.z);
+    [-0.35, 0.35].forEach(dx => add(new T3.BoxGeometry(0.07, 3.2, 0.07), lam(0xffffff), T.x + dx, 1.6, T.z + 0.95));
+    for (let y = 0.35; y < 3.1; y += 0.35) add(new T3.BoxGeometry(0.7, 0.05, 0.05), lam(0xffffff), T.x, y, T.z + 0.95);
+    sky.ladder = { x: T.x, z: T.z + 1.15 };
+    const curve = sky.curve = new T3.CatmullRomCurve3([v3(T.x, 3.25, T.z), v3(T.x + 1.6, 2.95, T.z - 0.25), v3(-4.5, 2.35, -10.6), v3(-4.4, 1.65, -9.0), v3(-5.4, 0.95, -7.7), v3(-6.4, 0.4, -6.7), v3(-7.0, 0.1, -6.0)]);
+    const tube = add(new T3.TubeGeometry(curve, 90, 0.36, 12, false), lam(0xff3fb4, { emissive: 0xff3fb4, emissiveIntensity: 0.25 }), 0, 0, 0);
+    [0.25, 0.45, 0.62].forEach(u => { const p = curve.getPointAt(u); add(new T3.CylinderGeometry(0.06, 0.06, p.y, 8), gold, p.x, p.y / 2, p.z); });
+    const ss = sign('MEGA SLIDE', '#ff3fb4', 'CLIMB · SLIDE · SPLASH', 2.6); ss.position.set(T.x, 4.6, T.z); G.add(ss);
+    fl.colliders.push({ x: T.x, z: T.z, r: 0.95 });
+    light(0xff3fb4, T.x + 1, 4, T.z + 1);
+    const sRing = add(new T3.RingGeometry(1.0, 1.15, 40), glow(0xff3fb4, 0.35), T.x, 0.03, T.z + 1.75); sRing.rotation.x = -Math.PI / 2;
+    const slideZ = zone({ id: 'slide', kind: 'fun', x: T.x, z: T.z + 1.75, r: 1.2, ring: sRing });
+    [tube, ss].forEach(m => { m.userData.zone = slideZ; fl.clickables.push(m); });
+
+    // two trampolines
+    sky.tramps = [{ x: 4.8, z: -8.0, r: 1.6 }, { x: 8.6, z: -4.4, r: 1.3 }].map((t, k) => {
+      const g = new T3.Group(); g.position.set(t.x, 0, t.z); G.add(g);
+      add(new T3.TorusGeometry(t.r, 0.11, 8, 36), lam(k ? 0x8dff6a : 0x3ff0ff, { emissive: k ? 0x8dff6a : 0x3ff0ff, emissiveIntensity: 0.3 }), 0, 0.55, 0, g).rotation.x = Math.PI / 2;
+      const matG = new T3.Group(); matG.position.y = 0.53; g.add(matG);
+      add(new T3.CircleGeometry(t.r - 0.06, 36), lam(0x14141c), 0, 0, 0, matG).rotation.x = -Math.PI / 2;
+      add(new T3.RingGeometry(t.r * 0.42, t.r * 0.5, 32), glow(0xffd166, 0.6), 0, 0.01, 0, matG).rotation.x = -Math.PI / 2;
+      for (let i = 0; i < 6; i++) { const a = i / 6 * Math.PI * 2; add(new T3.CylinderGeometry(0.05, 0.05, 0.55, 6), lam(0x9aa0b0), Math.cos(a) * t.r, 0.27, Math.sin(a) * t.r, g); }
+      Object.assign(t, { mat: matG, squash: 0, y: 0.55 });
+      tickers.push(dt => { t.squash *= Math.exp(-7 * dt); t.mat.position.y = 0.53 - t.squash * 0.28; });
+      light(k ? 0x8dff6a : 0x3ff0ff, t.x, 3.2, t.z);
+      const z = zone({ id: 'tramp', kind: 'fun', x: t.x, z: t.z, r: t.r + 0.25 });
+      g.traverse(o => { o.userData.zone = z; }); fl.clickables.push(g);
+      return t;
+    });
+
+    // disco floor
+    const D = sky.dance = { x: -6.4, z: 3.4, half: 2.0 };
+    const DC = [0xff3fb4, 0x3ff0ff, 0xffd166, 0x8dff6a, 0xa974ff], tiles = [];
+    for (let i = 0; i < 4; i++) for (let j = 0; j < 4; j++) tiles.push(add(new T3.BoxGeometry(0.94, 0.06, 0.94), new T3.MeshBasicMaterial({ color: DC[0] }), D.x - 1.5 + i, 0.03, D.z - 1.5 + j));
+    tickers.push(() => { const beat = Math.floor(time * 2); tiles.forEach((m, k) => { const i = k >> 2, j = k & 3; const on = (i + j + beat) % 3 !== 0; m.material.color.setHex(DC[(i * 3 + j + beat) % 5]).multiplyScalar(on ? 1 : 0.25); }); });
+    add(new T3.CylinderGeometry(0.02, 0.02, 1.2, 4), lam(0xcccccc), D.x, 5.3, D.z);
+    const ball = add(new T3.IcosahedronGeometry(0.5, 1), lam(0xe8e8f0, { emissive: 0x666677 }), D.x, 4.5, D.z);
+    const beams = new T3.Group(); beams.position.set(D.x, 4.5, D.z); G.add(beams);
+    [0xff3fb4, 0x3ff0ff, 0xffd166].forEach((c, i) => { const cone = add(new T3.ConeGeometry(0.9, 4.2, 16, 1, true), glow(c, 0.12), 0, 0, 0, beams); cone.position.set(Math.cos(i * 2.1) * 0.9, -2.1, Math.sin(i * 2.1) * 0.9); cone.rotation.z = 0.25 * (i - 1); });
+    tickers.push(dt => { ball.rotation.y += dt * 1.2; beams.rotation.y -= dt * 0.8; });
+    light(0xa974ff, D.x, 3.4, D.z);
+    const dz = zone({ id: 'dance', kind: 'fun', x: D.x, z: D.z, r: 2.2 });
+    tiles.forEach(m => { m.userData.zone = dz; }); fl.clickables.push(...tiles);
+
+    // escape room building (a bettable table)
+    const E = { x: 6.6, z: 2.4 }, g = new T3.Group(); g.position.set(E.x, 0, E.z); G.add(g);
+    add(new T3.BoxGeometry(5, 3.4, 3.6), lam(0x3a2244), 0, 1.7, 0, g);
+    add(new T3.BoxGeometry(5.1, 0.12, 3.7), glow(0xff7a00), 0, 3.45, 0, g);
+    add(new T3.PlaneGeometry(1.4, 2.4), new T3.MeshBasicMaterial({ color: 0x5a1a10 }), 0, 1.2, 1.81, g);
+    [-0.78, 0.78].forEach(x => add(new T3.BoxGeometry(0.14, 2.55, 0.12), gold, x, 1.27, 1.84, g)); add(new T3.BoxGeometry(1.7, 0.14, 0.12), gold, 0, 2.5, 1.84, g);
+    add(new T3.TorusGeometry(0.16, 0.05, 8, 20, Math.PI), gold, 0, 1.6, 1.88, g);
+    add(new T3.BoxGeometry(0.34, 0.28, 0.1), gold, 0, 1.45, 1.88, g);
+    const keypad = add(new T3.BoxGeometry(0.2, 0.3, 0.05), glow(0x8dff6a), 0.5, 1.3, 1.84, g);
+    tickers.push(() => { keypad.material.color.setHex(Math.sin(time * 3) > 0 ? 0x8dff6a : 0x2a5a20); });
+    const es = sign('ESCAPE ROOM', '#ff7a00', 'BET · SEARCH · ESCAPE', 3.2); es.position.set(0, 4.25, 1.4); g.add(es);
+    tickers.push(() => { es.position.y = 4.25 + Math.sin(time * 1.4) * 0.06; });
+    light(0xff7a00, E.x, 3, E.z + 3);
+    fl.colliders.push({ x: E.x - 1.2, z: E.z, r: 1.95 }, { x: E.x + 1.2, z: E.z, r: 1.95 });
+    const eRing = add(new T3.RingGeometry(1.35, 1.55, 40), glow(0xff7a00, 0.35), E.x, 0.03, E.z + 3.3); eRing.rotation.x = -Math.PI / 2;
+    const ez = zone({ id: 'escape', kind: 'table', x: E.x, z: E.z + 3.3, r: 1.6, ring: eRing, color: 0xff7a00 });
+    g.traverse(o => { o.userData.zone = ez; }); fl.clickables.push(g);
+  }
+  function writeBalls() {
+    const B = sky.balls;
+    for (let i = 0; i < B.n; i++) { dummy.position.set(B.x[i], B.y0[i] + B.oy[i], B.z[i]); dummy.updateMatrix(); B.mesh.setMatrixAt(i, dummy.matrix); }
+    B.mesh.instanceMatrix.needsUpdate = true;
+  }
+  function splash(x, z, r, power) {
+    const B = sky.balls;
+    for (let i = 0; i < B.n; i++) { const d = Math.hypot(B.x[i] - x, B.z[i] - z); if (d < r) B.vy[i] = Math.max(B.vy[i], rand(3, 7.5) * power * (1 - d / r)); }
+    Sfx.splash(); Haptic.match();
+    const s = toScreen(x, 0.5, z); FX.sparks(s.x, s.y, '#3ff0ff', 14); FX.sparks(s.x, s.y, '#ff3fb4', 10);
+  }
+  function updateBalls(dt) {
+    const B = sky.balls, inPit = groundAt(player.position).pit && P.y < 0.2;
+    for (let i = 0; i < B.n; i++) {
+      if (inPit) { const d = Math.hypot(B.x[i] - player.position.x, B.z[i] - player.position.z); if (d < 0.75) B.vy[i] += (0.75 - d) * 26 * dt; }
+      if (B.oy[i] > 0 || B.vy[i] > 0) { B.vy[i] -= 14 * dt; B.oy[i] += B.vy[i] * dt; if (B.oy[i] <= 0) { B.oy[i] = 0; B.vy[i] = B.vy[i] < -1.5 ? -B.vy[i] * 0.3 : 0; } }
+    }
+    writeBalls();
+  }
+  /** Ground height + play-area under a point (Sky Deck only). */
+  function groundAt(p) {
+    if (floorId !== 'sky') return { y: 0 };
+    for (const t of sky.tramps) if (Math.hypot(p.x - t.x, p.z - t.z) < t.r - 0.1) return { y: 0.55, tramp: t };
+    if (Math.abs(p.x - sky.pit.x) < sky.pit.half && Math.abs(p.z - sky.pit.z) < sky.pit.half) return { y: -0.6, pit: true };
+    if (Math.abs(p.x - sky.dance.x) < sky.dance.half && Math.abs(p.z - sky.dance.z) < sky.dance.half) return { y: 0, dance: true };
+    return { y: 0 };
+  }
+  function toScreen(x, y, z) {
+    const p = v3(x, y, z).project(camera), b = host.getBoundingClientRect();
+    return { x: b.left + (p.x + 1) / 2 * b.width, y: b.top + (1 - p.y) / 2 * b.height };
+  }
+  const floatAtPlayer = (text, cls) => { const s = toScreen(player.position.x, P.y + 2.6, player.position.z); FX.float(text, s.x, s.y, cls); };
+  function funBonus(n) {
+    const got = Econ.funReward(n), s = toScreen(player.position.x, P.y + 2.2, player.position.z);
+    if (got) { FX.float(`+${got} CHIPS`, s.x, s.y - 34, 'big'); FX.coins(s.x, s.y, 10); Sfx.jingle(3); }
+    else if (!P.capNoted) { P.capNoted = true; UI.toast(`Daily fun bonus reached (${FUN_CAP} chips). Keep playing for glory!`); }
+  }
+  function creditFlips() {
+    const n = P.flipN; P.flipN = 0; player.userData.pivot.rotation.x = 0;
+    if (!n) return;
+    P.flips += n; floatAtPlayer(n === 2 ? 'DOUBLE FLIP!' : 'BACKFLIP!', 'mag big'); Sfx.coin(); Haptic.match();
+    if (Math.floor(P.flips / 5) > Math.floor((P.flips - n) / 5)) funBonus(10);
+  }
+  function bounce(t) {
+    creditFlips();
+    const timed = time - P.jumpAt < 0.55;   // tapped JUMP shortly before touching the mat
+    P.power = clamp(P.power + (timed ? 1 : -0.7), 0, 5);
+    P.vy = 6.5 + P.power * 1.9; P.y = t.y; P.jumpAt = -9; P.bouncedAt = time;
+    t.squash = 1; Sfx.boing(P.power); if (timed) Haptic.tap();
+    P.flipN = P.power >= 5 ? 2 : P.power >= 3 ? 1 : 0; P.flipT0 = time; P.flipDur = (2 * P.vy / GRAV) * 0.8;
+    if (timed && P.power === 2) floatAtPlayer('HIGHER!', 'cy');
+  }
+  function land(g) {
+    creditFlips();
+    if (g.pit && P.vy < -6) { splash(player.position.x, player.position.z, 1.9, 1); floatAtPlayer('SPLASH!', 'cy big'); }
+    P.y = g.y; P.vy = 0; P.power = 0;
+  }
+  function funAct(id) {
+    const g = groundAt(player.position), grounded = P.y <= g.y + 0.05 && P.vy <= 0;
+    if (id === 'tramp') {
+      // a slightly late tap (just after leaving the mat) still counts
+      if (time - (P.bouncedAt || -9) < 0.18 && P.vy > 0 && P.y < 1.2) { P.power = clamp(P.power + 1, 0, 5); P.vy = 6.5 + P.power * 1.9; P.flipN = P.power >= 5 ? 2 : P.power >= 3 ? 1 : 0; P.flipDur = (2 * P.vy / GRAV) * 0.8; P.bouncedAt = -9; Sfx.boing(P.power); }
+      else P.jumpAt = time;
+    }
+    else if (id === 'slide') { if (P.mode === 'walk' && grounded) { P.mode = 'climb'; P.t = 0; Sfx.select(6); } }
+    else if (id === 'pit') { if (grounded) { P.vy = 8; Sfx.boing(1); floatAtPlayer('CANNONBALL!', 'mag'); } }
+    else if (id === 'dance') { P.spinT = 0.45; const s = toScreen(player.position.x, 1.6, player.position.z); FX.sparks(s.x, s.y, '#ffd166', 18); Sfx.select(10); }
+  }
+
   function buildDust() {
     const n = 160, pos = new Float32Array(n * 3);
     for (let i = 0; i < n; i++) { pos[i * 3] = rand(-12, 12); pos[i * 3 + 1] = rand(0, 5); pos[i * 3 + 2] = rand(-14, 9); }
@@ -2461,7 +2861,7 @@ const World = (() => {
   function walkToZone(z) {
     if (curZone === z) { act(); return; }
     // walk to the near edge of that zone, then open it on arrival
-    const dx = player.position.x - z.x, dz = player.position.z - z.z, L = Math.hypot(dx, dz) || 1, R = z.r * 0.82;
+    const dx = player.position.x - z.x, dz = player.position.z - z.z, L = Math.hypot(dx, dz) || 1, R = z.kind === 'fun' ? 0 : z.r * 0.82;
     target = v3(z.x + dx / L * R, 0, z.z + dz / L * R); pendingZone = z; stuck = 0; Sfx.select(4); marker(target);
   }
   /** Bend a walking direction around round obstacles ahead (simple steering). */
@@ -2520,13 +2920,18 @@ const World = (() => {
     const room = Econ.room();
     if (z.kind === 'table') { const T = TABLES[z.id]; return { name: T.name, info: `${T.blurb} Stakes ${fmtShort(room.min)}–${fmtShort(T.max * room.scale)} · ${T.time}s`, act: `Sit at ${T.name}` }; }
     if (z.kind === 'wheel') { const l = Wheel.timeLeft(); return { name: 'Daily Free Spin', info: l > 0 ? `Next free spin in ${Wheel.fmtLeft(l)}` : 'Your free spin is ready: 50 – 1,000 chips', act: l > 0 ? 'Look at the wheel' : 'Spin the wheel' }; }
-    if (floorId === 'high') return { name: 'Elevator', info: 'Ride back down to the Main Floor tables.', act: 'Go to Main Floor' };
-    if (!Store.d.hrUnlocked) return { name: 'High Roller Room', info: `Members only. Reach ${fmt(HR_UNLOCK)} chips to get in (you have ${fmt(Store.d.bank)}).`, act: 'Locked', locked: true };
-    return { name: 'High Roller floor', info: 'Upstairs: Safe Cracker, Diamond Mines, Lucky Sequence and more at ×10 stakes.', act: 'Go upstairs' };
+    if (z.kind === 'elev') { const f = FLOOR_INFO[floorId]; return { name: 'Elevator', info: `You're on floor ${f.n}, ${f.name}. Ride to any floor.`, act: 'Call elevator' }; }
+    const left = Econ.funLeft();
+    return {
+      tramp: { name: 'Trampoline', info: 'Tap JUMP just before you land to go higher. Big bounces flip.', act: 'JUMP!' },
+      slide: { name: 'Mega Slide', info: 'Climb the tower and slide down into the ball pit.', act: 'Climb & slide' },
+      pit: { name: 'Ball Pit', info: '260 balls. Wade through or cannonball for a splash.', act: 'Cannonball!' },
+      dance: { name: 'Disco Floor', info: `Stand still to dance. Every 20s on the floor pays 10 chips (${fmt(left)} left today).`, act: 'Spin move' }
+    }[z.id];
   }
   function showZone(z, silent) {
     curZone = z;
-    zones.forEach(o => { o.ring.material.opacity = o === z ? 0.9 : 0.35; });
+    zones.forEach(o => { if (o.ring) o.ring.material.opacity = o === z ? 0.9 : 0.35; });
     if (!z) { ui.card.hidden = true; ui.act.hidden = true; ui.hint.hidden = false; return; }
     const t = zoneText(z);
     ui.name.textContent = t.name; ui.info.textContent = t.info; ui.act.textContent = t.act;
@@ -2539,8 +2944,8 @@ const World = (() => {
     pendingZone = null; target = null;
     if (z.kind === 'table') Bet.open(z.id);
     else if (z.kind === 'wheel') Wheel.open();
-    else if (!Store.d.hrUnlocked) { UI.toast(`Reach ${fmt(HR_UNLOCK)} chips to unlock the High Roller Room`); Sfx.error(); }
-    else Lobby.setRoom(Econ.room().id === 'high' ? 'main' : 'high');
+    else if (z.kind === 'elev') Lobby.openElevator();
+    else if (z.kind === 'fun') funAct(z.id);
   }
 
   /* ---------- simulation ---------- */
@@ -2553,26 +2958,52 @@ const World = (() => {
   }
   function update(dt) {
     time += dt;
-    // player intent: joystick > keys > tap target
-    let mx = joy.vx, mz = joy.vy;
-    if (keys.arrowleft || keys.a) mx -= 1; if (keys.arrowright || keys.d) mx += 1;
-    if (keys.arrowup || keys.w) mz -= 1; if (keys.arrowdown || keys.s) mz += 1;
-    let L = Math.hypot(mx, mz), speed = 0;
-    if (L > 0.12) { target = null; pendingZone = null; mx /= Math.max(1, L); mz /= Math.max(1, L); speed = SPEED * Math.min(1, L); }
-    else if (target) {
-      const dx = target.x - player.position.x, dz = target.z - player.position.z, d = Math.hypot(dx, dz);
-      if (d < 0.15) target = null; else { [mx, mz] = steer(player.position.x, player.position.z, dx / d, dz / d); speed = SPEED * Math.min(1, d * 2 + 0.3); }
+    // ---- player: scripted climb/slide, otherwise walk with vertical physics (pit, trampolines, jumps)
+    let speed = 0, pose = false;
+    const pv = player.userData.pivot;
+    if (P.mode === 'climb') {
+      P.t += dt; const k = Math.min(1, P.t / 1.1);
+      player.position.set(sky.ladder.x, 0, sky.ladder.z); player.rotation.y = Math.PI; P.y = k * (sky.tower.top - 0.1); pose = 'climb';
+      if (Math.floor(time * 7) !== P.lastClimb) { P.lastClimb = Math.floor(time * 7); Sfx.climb(); }
+      if (k >= 1) { P.mode = 'slide'; P.u = 0; Sfx.whee(); floatAtPlayer('WHEEE!', 'cy big'); }
+    } else if (P.mode === 'slide') {
+      P.u = Math.min(1, P.u + dt * (0.3 + P.u * 0.9));
+      const pt = sky.curve.getPointAt(P.u), tan = sky.curve.getTangentAt(P.u);
+      player.position.set(pt.x, 0, pt.z); P.y = pt.y + 0.3; player.rotation.y = Math.atan2(tan.x, tan.z); pose = 'slide';
+      if (P.u >= 1) { P.mode = 'walk'; P.vy = 1; splash(pt.x, pt.z, 2.3, 1.2); floatAtPlayer('SPLASH!', 'cy big'); funBonus(5); }
+    } else {
+      // intent: joystick > keys > tap target
+      let mx = joy.vx, mz = joy.vy;
+      if (keys.arrowleft || keys.a) mx -= 1; if (keys.arrowright || keys.d) mx += 1;
+      if (keys.arrowup || keys.w) mz -= 1; if (keys.arrowdown || keys.s) mz += 1;
+      const L = Math.hypot(mx, mz);
+      if (L > 0.12) { target = null; pendingZone = null; mx /= Math.max(1, L); mz /= Math.max(1, L); speed = SPEED * Math.min(1, L); }
+      else if (target) {
+        const dx = target.x - player.position.x, dz = target.z - player.position.z, d = Math.hypot(dx, dz);
+        if (d < 0.15) target = null; else { [mx, mz] = steer(player.position.x, player.position.z, dx / d, dz / d); speed = SPEED * Math.min(1, d * 2 + 0.3); }
+      }
+      if (groundAt(player.position).pit && P.y < 0) speed *= 0.5;   // wading through balls
+      if (speed) {
+        const n = Math.hypot(mx, mz) || 1, before = player.position.clone();
+        player.position.x += mx / n * speed * dt; player.position.z += mz / n * speed * dt;
+        collide(player.position, 0.45);
+        const moved = player.position.distanceTo(before);
+        if (target && moved < speed * dt * 0.2) { stuck += dt; if (stuck > 0.6) { target = null; if (curZone !== pendingZone) pendingZone = null; } } else stuck = 0;
+        if (P.spinT <= 0) player.rotation.y = lerpAngle(player.rotation.y, Math.atan2(mx, mz), 1 - Math.exp(-14 * dt));
+      }
+      const g = groundAt(player.position), airborne = P.y > g.y + 0.02 || P.vy > 0;
+      if (g.tramp && !airborne) bounce(g.tramp);
+      else if (airborne) { P.vy -= GRAV * dt; P.y += P.vy * dt; if (P.y <= g.y) { if (g.tramp) bounce(g.tramp); else land(g); } }
+      else P.y += (g.y - P.y) * Math.min(1, dt * 10);
+      if (P.flipN) pv.rotation.x = -clamp((time - P.flipT0) / P.flipDur, 0, 1) * Math.PI * 2 * P.flipN;
+      if (P.spinT > 0) { P.spinT -= dt; player.rotation.y += dt * 14; }
+      P.onDance = !!g.dance;
+      pose = P.y > g.y + 0.35 ? 'air' : (P.onDance && speed < 0.1) ? 'dance' : false;
+      if (pose === 'dance') { P.danceT += dt; if (P.danceT >= 20) { P.danceT = 0; floatAtPlayer('ON THE BEAT!', 'mag'); funBonus(10); } }
     }
-    if (speed) {
-      const n = Math.hypot(mx, mz) || 1;
-      const before = player.position.clone();
-      player.position.x += mx / n * speed * dt; player.position.z += mz / n * speed * dt;
-      collide(player.position, 0.45);
-      const moved = player.position.distanceTo(before);
-      if (target && moved < speed * dt * 0.2) { stuck += dt; if (stuck > 0.6) { target = null; if (curZone !== pendingZone) pendingZone = null; } } else stuck = 0;
-      player.rotation.y = lerpAngle(player.rotation.y, Math.atan2(mx, mz), 1 - Math.exp(-14 * dt));
-    }
-    animChar(player, speed, dt, false);
+    if (P.onDance !== P.grooving) { P.grooving = P.onDance; if (P.onDance) Sfx.startGroove(); else Sfx.stopGroove(); }
+    player.userData.y = P.y;
+    animChar(player, speed, dt, pose);
     if (player.userData.ring) player.userData.ring.material.opacity = 0.6 + Math.sin(time * 4) * 0.25;
     if (mark && mark.visible) { mark.userData.t += dt; mark.scale.setScalar(1 + mark.userData.t * 2); mark.material.opacity = Math.max(0, 0.9 - mark.userData.t * 1.6); if (mark.userData.t > 0.6) mark.visible = false; }
 
@@ -2581,37 +3012,49 @@ const World = (() => {
     for (const z of zones) { const d = Math.hypot(player.position.x - z.x, player.position.z - z.z); if (d < z.r && d < best) { best = d; near = z; } }
     if (near !== curZone) showZone(near);
     if (near && pendingZone === near && !target) { pendingZone = null; act(); }
-    zones.forEach(z => { if (z !== curZone) z.ring.material.opacity = 0.25 + Math.sin(time * 2 + z.x) * 0.1; });
+    zones.forEach(z => { if (z.ring && z !== curZone) z.ring.material.opacity = 0.25 + Math.sin(time * 2 + z.x) * 0.1; });
 
     // patrons wander between tables and cheer
     npcs.forEach(n => {
       const u = n.userData.npc;
       if (!u.goal) {
         u.wait -= dt; u.cheer = u.wait > 0 && u.atTable && Math.sin(time * 0.7 + n.id) > 0.4;
-        if (u.wait <= 0) {
+        if (u.wait <= 0 && floorId === 'sky') {
+          const r = Math.random(), t = pick(sky.tramps);
+          u.goal = r < 0.3 ? v3(t.x + rand(-0.5, 0.5), 0, t.z + rand(-0.5, 0.5))
+            : r < 0.55 ? v3(sky.dance.x + rand(-1.5, 1.5), 0, sky.dance.z + rand(-1.5, 1.5))
+            : r < 0.8 ? v3(sky.pit.x + rand(-2, 2), 0, sky.pit.z + rand(-2, 2))
+            : v3(rand(-10, 10), 0, rand(-11, 8));
+          u.atTable = false;
+        } else if (u.wait <= 0) {
           if (Math.random() < 0.65) { const z = pick(zones.filter(q => q.kind === 'table')); const a = rand(0, Math.PI * 2); u.goal = v3(z.x + Math.cos(a) * 2.3, 0, z.z + Math.sin(a) * 2.3); u.atTable = true; }
           else { u.goal = v3(rand(-10, 10), 0, rand(-11, 8)); u.atTable = false; }
         }
-        animChar(n, 0, dt, u.cheer);
+        const g = groundAt(n.position);
+        n.userData.y = g.tramp ? 0.55 + Math.abs(Math.sin(time * 3.4 + n.id)) * 2 : n.userData.y + (g.y - n.userData.y) * Math.min(1, dt * 8);
+        animChar(n, 0, dt, g.tramp && n.userData.y > 1.2 ? 'air' : g.dance ? 'dance' : u.cheer);
         if (u.atTable && u.face) n.rotation.y = lerpAngle(n.rotation.y, u.face, 1 - Math.exp(-6 * dt));
         return;
       }
-      const dx = u.goal.x - n.position.x, dz = u.goal.z - n.position.z, d = Math.hypot(dx, dz), sp = 2.4;
+      const dx = u.goal.x - n.position.x, dz = u.goal.z - n.position.z, d = Math.hypot(dx, dz), sp = groundAt(n.position).pit ? 1.2 : 2.4;
       if (d < 0.2) { u.goal = null; u.wait = rand(2, 6); const z = zones.find(q => q.kind === 'table' && Math.hypot(q.x - n.position.x, q.z - n.position.z) < 3); u.face = z ? Math.atan2(z.x - n.position.x, z.z - n.position.z) : null; return; }
       const before = n.position.clone(), [sx, sz] = steer(n.position.x, n.position.z, dx / d, dz / d);
       n.position.x += sx * sp * dt; n.position.z += sz * sp * dt; collide(n.position, 0.45);
       if (n.position.distanceTo(before) < sp * dt * 0.2) { u.goal = null; u.wait = rand(0.5, 1.5); }
       n.rotation.y = lerpAngle(n.rotation.y, Math.atan2(sx, sz), 1 - Math.exp(-8 * dt));
+      const g = groundAt(n.position); n.userData.y += (g.y - n.userData.y) * Math.min(1, dt * 8);
       animChar(n, sp, dt, false);
     });
 
     tickers.forEach(f => f(dt));
+    if (floorId === 'sky') updateBalls(dt);
 
     // camera: high three-quarter view that follows the player
     const portrait = camera.aspect < 0.8;
     const want = v3(player.position.x * (portrait ? 0.8 : 0.7), portrait ? 14 : 9.5, player.position.z + (portrait ? 12 : 9));
+    want.y += Math.max(0, P.y) * 0.5;
     camera.position.lerp(want, 1 - Math.exp(-5 * dt));
-    camera.lookAt(player.position.x * (portrait ? 0.92 : 0.8), 0.6, player.position.z - (portrait ? 2.4 : 1.5));
+    camera.lookAt(player.position.x * (portrait ? 0.92 : 0.8), 0.6 + Math.max(0, P.y) * 0.6, player.position.z - (portrait ? 2.4 : 1.5));
   }
   function frame() {
     if (!running) return;
@@ -2646,8 +3089,12 @@ const World = (() => {
       return true;
     },
     start() { if (!ok || running) return; running = true; clock.getDelta(); resize(); frame(); },
-    stop() { running = false; cancelAnimationFrame(raf); joy.id = null; joy.vx = joy.vy = 0; joyEl.hidden = true; for (const k in keys) keys[k] = false; },
+    stop() { running = false; cancelAnimationFrame(raf); if (P.grooving) { Sfx.stopGroove(); P.grooving = false; P.onDance = false; } joy.id = null; joy.vx = joy.vy = 0; joyEl.hidden = true; for (const k in keys) keys[k] = false; },
     resize() { if (ok) resize(); },
+    /** Read-only snapshot for the automated smoke test. */
+    get state() { return { floor: floorId, mode: P.mode, y: +P.y.toFixed(2), flips: P.flips, power: P.power, dancing: P.onDance, zone: curZone && curZone.id }; },
+    /** Walk to a named zone (used by the quick menu's activity cards). */
+    goTo(id) { const z = zones.find(q => q.id === id); if (z) walkToZone(z); },
     /** Screen position of a zone (used by the automated smoke test). */
     screenOf(id) {
       const z = zones.find(q => q.id === id); if (!z) return null;
@@ -2657,15 +3104,14 @@ const World = (() => {
     /** Sync world props with the economy (HR door, theme, zone card text). */
     refresh() {
       if (!ok) return;
-      const hr = Econ.room().id === 'high', unlocked = Store.d.hrUnlocked;
-      if (floorId !== Econ.room().id && switching !== Econ.room().id) switchFloor(Econ.room().id);
-      signs.door.visible = !hr; signs.doorDown.visible = hr;
-      signs.rope.visible = !unlocked;
-      signs.doorPanel.material.color.setHex(unlocked ? (hr ? 0x3ff0ff : 0xffd166) : 0x120814);
-      hemi.color.setHex(hr ? 0xffcf7a : 0xb58cff); hemi.groundColor.setHex(hr ? 0x2a1a04 : 0x1a0526);
-      floorMat.color.setHex(hr ? 0xffd38a : 0xffffff);
-      neon.forEach((m, i) => m.material.color.setHex(hr ? (i % 2 ? 0xff9f43 : 0xffd166) : (i % 2 ? 0x3ff0ff : 0xff3fb4)));
-      const bg = hr ? 0x140c02 : 0x0a0412; scene.background.setHex(bg); scene.fog.color.setHex(bg);
+      const f = Econ.room().id, th = THEMES[f];
+      if (floorId !== f && switching !== f) switchFloor(f);
+      Object.keys(signs.floor).forEach(k => { signs.floor[k].visible = k === f; });
+      signs.lamps.forEach((l, i) => l.material.color.setHex(i + 1 === FLOOR_INFO[f].n ? 0xffd166 : 0x332a44));
+      signs.doorPanel.material.color.setHex(th.door);
+      hemi.color.setHex(th.hemi); hemi.groundColor.setHex(th.ground); floorMat.color.setHex(th.floor);
+      neon.forEach((m, i) => m.material.color.setHex(th.neon[i % 2 ? 1 : 0]));
+      scene.background.setHex(th.bg); scene.fog.color.setHex(th.bg);
       if (curZone) showZone(curZone, true);
     }
   };
@@ -2964,14 +3410,25 @@ const Lobby = (() => {
   let spinTimer = 0, cardsFloor = null;
   function buildCards() {
     const box = $('#tables'), room = Econ.room(); box.innerHTML = ''; cardsFloor = room.id;
-    $('#tablesLabel').textContent = `${room.id === 'high' ? 'High Roller floor' : 'Main Floor'} games`;
+    $('#tablesLabel').textContent = `Floor ${FLOOR_INFO[room.id].n} · ${FLOOR_INFO[room.id].name}`;
     floorTables().forEach((T, i) => {
       const b = el('button', 'table-card glass');
       b.innerHTML = `<div class="art ${T.art}" style="--sd:${i * 0.8}s">${ART[T.id]}</div><h3>${T.name}</h3><p>${T.blurb}</p><div class="stakes"><span>Stakes ${fmtShort(room.min)}–${fmtShort(T.max * room.scale)}</span><span>${T.time}s</span></div>`;
       b.addEventListener('click', () => { sheet(false); Bet.open(T.id); });
       box.appendChild(b);
     });
+    if (room.id === 'sky') ACTIVITIES.forEach((a, i) => {
+      const b = el('button', 'table-card glass');
+      b.innerHTML = `<div class="art ${a.art}" style="--sd:${(i + 1) * 0.8}s">${a.icon}</div><h3>${a.name}</h3><p>${a.blurb}</p><div class="stakes"><span>Free play</span><span>${World.ok ? 'Walk there' : '3D only'}</span></div>`;
+      b.addEventListener('click', () => { if (!World.ok) { UI.toast('The play areas need the 3D lobby (WebGL)'); return; } sheet(false); World.goTo(a.id); });
+      box.appendChild(b);
+    });
   }
+  const ACTIVITIES = [
+    { id: 'slide', name: 'Ball Pit & Slide', blurb: 'Climb the tower, slide into 260 balls.', art: 'art-pit', icon: '<div class="mini-dots">' + ['#ff3fb4', '#ffd166', '#3ff0ff', '#8dff6a', '#ff3fb4', '#a974ff', '#ffd166', '#3ff0ff', '#ff3fb4'].map(c => `<i style="color:${c}"></i>`).join('') + '</div>' },
+    { id: 'tramp', name: 'Trampolines', blurb: 'Time your jumps to flip.', art: 'art-tramp', icon: '🤸' },
+    { id: 'dance', name: 'Disco Floor', blurb: 'Dance to the beat for chips.', art: 'art-disco', icon: '💃' }
+  ];
   const sheet = open => $('#scrLobby').classList.toggle('sheet-open', !!open);
   function init() {
     $('#btnMenu').addEventListener('click', () => sheet(true));
@@ -2980,20 +3437,35 @@ const Lobby = (() => {
     $$('.room-tab').forEach(t => t.addEventListener('click', () => setRoom(t.dataset.room)));
     $('#btnSpin').addEventListener('click', () => { sheet(false); Wheel.open(); });
     $('#btnSettings').addEventListener('click', () => { UI.syncToggles(); UI.open('#ovSettings'); });
+    $('#elClose').addEventListener('click', () => UI.close('#ovElev'));
+    $('#ovElev').addEventListener('click', e => { if (e.target.id === 'ovElev') UI.close('#ovElev'); });
   }
   function setRoom(id) {
     if (id === 'high' && !Store.d.hrUnlocked) { UI.toast(`Reach ${fmt(HR_UNLOCK)} chips to unlock the High Roller Room`); Sfx.error(); return; }
     if (id === 'high' && Store.d.bank < ROOMS.high.min) { UI.toast(`High Roller tables start at ${ROOMS.high.min} chips`); Sfx.error(); return; }
     Store.d.room = id; Store.save(); applyRoom(); render();
     if (id === 'high') { Sfx.win(); FX.sparks(innerWidth / 2, 160, '#ffd166', 30); }
+    if (id === 'sky') { Sfx.win(); FX.sparks(innerWidth / 2, 160, '#3ff0ff', 30); }
   }
-  function applyRoom() { document.body.classList.toggle('hr', Econ.room().id === 'high'); }
+  function applyRoom() { const id = Econ.room().id; document.body.classList.toggle('hr', id === 'high'); document.body.classList.toggle('sky', id === 'sky'); }
+  function openElevator() {
+    const box = $('#elBtns'), cur = Econ.room().id; box.innerHTML = '';
+    ['sky', 'high', 'main'].forEach(id => {
+      const f = FLOOR_INFO[id], locked = id === 'high' && !Store.d.hrUnlocked, here = id === cur;
+      const b = el('button', 'floor-btn' + (here ? ' here' : '') + (locked ? ' locked' : ''));
+      b.innerHTML = `<span class="fn">${f.n}</span><span class="ft"><b>${f.name}</b><small>${here ? 'You are here' : locked ? `Unlocks at ${fmt(HR_UNLOCK)} chips` : f.sub}</small></span><span class="fi">${locked ? '🔒' : here ? '●' : '▲'}</span>`;
+      b.disabled = here;
+      b.addEventListener('click', () => { if (locked) { UI.toast(`Reach ${fmt(HR_UNLOCK)} chips to unlock the High Roller floor`); Sfx.error(); return; } UI.close('#ovElev'); setRoom(id); });
+      box.appendChild(b);
+    });
+    UI.open('#ovElev');
+  }
   function render() {
     const room = Econ.room(), s = Store.d.stats;
-    $('#roomMain').classList.toggle('on', room.id === 'main');
+    $('#roomMain').classList.toggle('on', room.id === 'main'); $('#roomSky').classList.toggle('on', room.id === 'sky');
     const hi = $('#roomHigh'); hi.classList.toggle('on', room.id === 'high'); hi.classList.toggle('locked', !Store.d.hrUnlocked);
     $('#roomHighLbl').textContent = Store.d.hrUnlocked ? '👑 High Roller' : '🔒 High Roller';
-    $('#roomHighSub').textContent = Store.d.hrUnlocked ? 'Stakes from 100' : `Unlocks at ${fmtShort(HR_UNLOCK)}`;
+    $('#roomHighSub').textContent = Store.d.hrUnlocked ? 'Floor 2 · from 100' : `Unlocks at ${fmtShort(HR_UNLOCK)}`;
     $('#hrMeter').hidden = Store.d.hrUnlocked;
     $('#hrMeter i').style.transform = `scaleX(${clamp(Store.d.bank / HR_UNLOCK, 0, 1)})`;
     if (cardsFloor !== room.id) buildCards();
@@ -3022,11 +3494,11 @@ const Lobby = (() => {
     }
     if (Econ.justUnlocked) {
       Econ.justUnlocked = false; FX.confetti(); Sfx.fanfare(); Haptic.big();
-      const go = await UI.confirm({ icon: '👑', title: 'High Roller Room unlocked', body: 'A whole new floor: Safe Cracker, Diamond Mines and Lucky Sequence, plus classics at ×10 stakes and better jackpot odds. Take the gold door any time.', ok: 'Go upstairs', cancel: 'Stay on Main Floor' });
+      const go = await UI.confirm({ icon: '👑', title: 'High Roller Room unlocked', body: 'Floor 2 is open: Safe Cracker, Diamond Mines and Lucky Sequence, plus classics at ×10 stakes and better jackpot odds. Take the elevator any time.', ok: 'Go upstairs', cancel: 'Stay on Main Floor' });
       if (go) setRoom('high');
     }
   }
-  return { init, show, render, renderSpin, setRoom };
+  return { init, show, render, renderSpin, setRoom, openElevator };
 })();
 
 /* =====================================================================
