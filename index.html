@@ -35,6 +35,14 @@
   color-scheme:dark;
 }
 /* High Roller Room: the whole floor turns gold */
+/* Diamond Club: midnight navy, ice blue + silver */
+body.club{ --acc1:#7fdcff; --acc2:#e0f4ff; --bg1:#050b16; --bg2:#14294a; --muted:#b4c8de; --dim:#7690ad; }
+body.club #app::before{ background:
+    radial-gradient(90% 60% at 50% 110%, rgba(127,220,255,.16), transparent 70%),
+    repeating-linear-gradient(45deg, rgba(191,233,255,.035) 0 2px, transparent 2px 14px),
+    repeating-linear-gradient(-45deg, rgba(191,233,255,.035) 0 2px, transparent 2px 14px); }
+body.club .modal{ background:linear-gradient(170deg, rgba(20,42,74,.95), rgba(5,11,22,.97)); }
+body.club #scrLobby.world-on .scroll{ background:linear-gradient(175deg, rgba(20,42,74,.97), rgba(5,11,22,.98)); }
 /* Sky Deck: open-air night sky, cyan + lime */
 body.sky{ --acc1:#2ee6ff; --acc2:#8dff6a; --bg1:#051a2e; --bg2:#0b3d63; --muted:#a6cde0; --dim:#6b93a8; }
 body.sky #app::before{ background:
@@ -124,7 +132,7 @@ body.hr #app::before{ background:
   text-shadow:0 0 12px rgba(255,209,102,.55), 0 2px 0 #7a4f12; }
 .brand span{ display:block; font-family:var(--f-display); font-size:13px; letter-spacing:.32em; color:var(--acc1);
   text-shadow:0 0 10px var(--acc1); }
-.rooms{ display:grid; grid-template-columns:repeat(3,1fr); gap:6px; padding:5px; border-radius:18px; }
+.rooms{ display:grid; grid-template-columns:repeat(2,1fr); gap:6px; padding:5px; border-radius:18px; }
 .room-tab{ min-height:48px; padding:4px 2px; border-radius:13px; font-weight:800; font-size:13px; text-align:center; color:var(--muted); display:flex; flex-direction:column; align-items:center; justify-content:center; line-height:1.1; }
 .room-tab small{ font-weight:600; font-size:10.5px; color:var(--dim); }
 .room-tab.on{ color:#fff; background:linear-gradient(180deg, color-mix(in srgb, var(--acc1) 70%, #fff 0%), color-mix(in srgb, var(--acc1) 40%, #000));
@@ -163,6 +171,9 @@ body.hr #app::before{ background:
 .art-safe{ background:radial-gradient(circle at 30% 20%, #8c8c9c, #24242c 70%); }
 .art-mines{ background:radial-gradient(circle at 30% 20%, #9dff7a, #1f4a14 70%); }
 .art-simon{ background:radial-gradient(circle at 30% 20%, #c49bff, #3a1460 70%); }
+.art-pyramid{ background:radial-gradient(circle at 30% 20%, #ffe08a, #6b3c0a 70%); }
+.art-lights{ background:radial-gradient(circle at 30% 20%, #fff6c8, #4a3a10 70%); }
+.art-slidev{ background:radial-gradient(circle at 30% 20%, #9fe6ff, #12305a 70%); }
 .art-escape{ background:radial-gradient(circle at 30% 20%, #ff8a5c, #5a1a10 70%); }
 .art-pit{ background:radial-gradient(circle at 30% 20%, #7ae7ff, #0b3d63 70%); }
 .art-tramp{ background:radial-gradient(circle at 30% 20%, #b6ff9a, #1f5a2a 70%); }
@@ -435,6 +446,66 @@ body.hr .mn-cell.mine, .mn-cell.mine{ background:rgba(255,84,112,.25); }
 .es-keys{ display:grid; grid-template-columns:repeat(6, 44px); gap:5px; }
 .es-keys button{ height:44px; border-radius:10px; font-weight:800; font-size:17px; background:var(--glass-hi); border:1px solid var(--line); }
 
+/* ---------- PYRAMID ---------- */
+.py-board{ position:relative; touch-action:none; }
+.pc{ position:absolute; left:0; top:0; width:var(--cw,46px); height:calc(var(--cw,46px) * 1.4); border-radius:7px; padding:0;
+  background:linear-gradient(170deg, #fffaf0, #eadcc6); color:#1a1a1a; border:1px solid #fff; box-shadow:0 3px 8px rgba(0,0,0,.45), inset 0 -3px 0 rgba(0,0,0,.08);
+  display:flex; flex-direction:column; align-items:center; justify-content:center; line-height:1; transition:transform .15s ease, filter .2s; }
+.pc b{ font:800 calc(var(--cw,46px) * .42)/1 var(--f-ui); }
+.pc i{ font-style:normal; font-size:calc(var(--cw,46px) * .38); }
+.pc.red{ color:#d01f3a; }
+.pc.joker{ background:conic-gradient(from 0deg, #ff6bd5, #ffd166, #8dff6a, #3ff0ff, #a974ff, #ff6bd5); }
+.pc.joker b{ font-family:var(--f-emoji); }
+.pc.covered{ filter:brightness(.55) saturate(.7); }
+.pc.sel{ box-shadow:0 0 0 3px var(--gold), 0 0 18px var(--gold); filter:none; }
+.pc.nope{ animation:wiggle .3s ease; }
+.pc.gone{ animation:vanish .36s ease forwards; pointer-events:none; }
+.pc .lk{ position:absolute; top:-6px; right:-6px; }
+.py-board .pc.sel{ margin-top:-5px; }
+.py-tray{ display:flex; align-items:center; gap:10px; width:100%; justify-content:center; }
+.py-tray .pc{ position:relative; }
+.py-tray .hint{ flex:1; min-width:0; text-align:left; }
+.pc.back{ background:repeating-linear-gradient(45deg, rgba(255,255,255,.1) 0 3px, transparent 3px 8px), linear-gradient(160deg, #3a6ad8, #12306a); border:2px solid var(--gold); color:#fff; }
+.pc.back b{ font-size:16px; }
+.pc.back.empty{ opacity:.4; }
+.py-waste{ width:var(--cw,46px); height:calc(var(--cw,46px) * 1.4); border-radius:7px; border:2px dashed var(--line); }
+#scrGame.t-pyramid .game-foot{ min-height:76px; }
+
+/* ---------- CHANDELIER ---------- */
+.lo-grid{ position:relative; display:grid; grid-template-columns:repeat(5,1fr); gap:8px; padding:12px; border-radius:22px; touch-action:none;
+  background:radial-gradient(circle at 50% 0%, rgba(255,241,184,.12), transparent 60%), rgba(0,0,0,.45); border:1px solid var(--line); }
+.lo-cell{ border-radius:50%; position:relative; }
+.lo-cell i{ position:absolute; inset:8%; border-radius:50%; background:radial-gradient(circle at 35% 30%, rgba(255,255,255,.35), rgba(120,140,170,.15) 45%, rgba(20,24,40,.9));
+  box-shadow:inset 0 0 0 2px rgba(191,233,255,.25); transition:background .15s, box-shadow .15s, transform .15s; }
+.lo-cell.on i{ background:radial-gradient(circle at 35% 30%, #fff, #fff1b8 30%, #ffd166 55%, #b9822a); box-shadow:0 0 18px #ffd166, 0 0 40px rgba(255,209,102,.5); transform:scale(1.06); }
+.lo-grid.done{ box-shadow:0 0 40px rgba(255,241,184,.6); }
+.lo-badge{ position:absolute; left:50%; top:50%; transform:translate(-50%,-50%) scale(1.6); z-index:3; }
+
+/* ---------- SLIDE VAULT ---------- */
+.sv-board{ position:relative; border-radius:18px; background:rgba(0,0,0,.5); border:1px solid var(--line); touch-action:none; transition:box-shadow .3s; }
+.sv-board.done{ box-shadow:0 0 40px var(--acc1); }
+.sv-tile{ position:absolute; left:2px; top:2px; border-radius:10px; transition:transform .14s ease-out; box-shadow:inset 0 2px 0 rgba(255,255,255,.35), inset 0 -3px 0 rgba(0,0,0,.3), 0 3px 8px rgba(0,0,0,.4); }
+.sv-tile small{ position:absolute; top:4px; left:6px; font:800 12px/1 var(--f-ui); color:#fff; text-shadow:0 1px 2px #000; }
+.sv-tile.nope{ filter:brightness(.7); }
+
+/* ---------- transitions: iris wipe + elevator ride ---------- */
+#iris{ position:fixed; inset:0; z-index:88; pointer-events:none; visibility:hidden; }
+#iris.on{ visibility:visible; pointer-events:auto; }
+.ride{ position:fixed; inset:0; z-index:87; pointer-events:none; visibility:hidden; }
+.ride.on{ visibility:visible; pointer-events:auto; }
+.ride .door{ position:absolute; top:0; bottom:0; width:50.5%; transition:transform .5s cubic-bezier(.6,0,.3,1);
+  background:repeating-linear-gradient(90deg, rgba(255,255,255,.07) 0 2px, transparent 2px 9px), linear-gradient(180deg, #d9b25a, #8a6420 50%, #c99a3a);
+  box-shadow:inset 0 0 40px rgba(0,0,0,.45); }
+.ride .door.l{ left:0; transform:translateX(-102%); border-right:2px solid #5a3a10; }
+.ride .door.r{ right:0; transform:translateX(102%); border-left:2px solid #5a3a10; }
+.ride.closed .door{ transform:none; }
+.ride .panel{ position:absolute; left:50%; top:calc(var(--sat) + 18%); transform:translateX(-50%); display:flex; flex-direction:column; align-items:center; gap:8px; opacity:0; transition:opacity .25s; }
+.ride.closed .panel{ opacity:1; }
+.ride .num{ min-width:110px; padding:10px 18px; border-radius:14px; background:#120606; border:3px solid #5a3a10; text-align:center;
+  font-family:var(--f-display); font-size:56px; line-height:1; color:#ff7a3c; text-shadow:0 0 14px #ff5a1c; font-variant-numeric:tabular-nums; }
+.ride .dir{ font-size:22px; color:#ff7a3c; text-shadow:0 0 10px #ff5a1c; }
+.ride .nm{ font-family:var(--f-display); font-size:20px; color:#2a1600; text-shadow:0 1px 0 rgba(255,255,255,.4); }
+
 /* ---------- luck badges ---------- */
 .lk{ display:inline-grid; place-items:center; min-width:24px; height:20px; padding:0 5px; border-radius:7px; font:800 11px/1 var(--f-ui); letter-spacing:0;
   color:#fff; box-shadow:0 0 10px currentColor; }
@@ -673,11 +744,7 @@ body.hr .modal{ background:linear-gradient(170deg, rgba(80,52,14,.94), rgba(26,1
     <div class="sheet-scrim" id="sheetScrim"></div>
     <div class="scroll" id="lobbySheet">
       <div class="sheet-head"><b>Quick menu</b><button class="icon-btn" id="btnSheetClose" aria-label="Close menu">✕</button></div>
-      <div class="rooms glass" role="tablist" aria-label="Room">
-        <button class="room-tab on" id="roomMain" role="tab" data-room="main">Main Floor<small>Floor 1 · from 10</small></button>
-        <button class="room-tab" id="roomHigh" role="tab" data-room="high"><span id="roomHighLbl">🔒 High Roller</span><small id="roomHighSub">Unlocks at 10,000</small><span class="hr-meter" id="hrMeter"><i></i></span></button>
-        <button class="room-tab" id="roomSky" role="tab" data-room="sky">Sky Deck<small>Floor 3 · fun zone</small></button>
-      </div>
+      <div class="rooms glass" id="rooms" role="tablist" aria-label="Floor"></div>
       <button class="spin-banner" id="btnSpin">
         <span class="mini-wheel" aria-hidden="true"></span>
         <span><b>Daily Free Spin</b><small id="spinSub">Win 50 – 1,000 chips</small></span>
@@ -822,6 +889,8 @@ body.hr .modal{ background:linear-gradient(170deg, rgba(80,52,14,.94), rgba(26,1
 </div>
 
 <div id="flash"></div>
+<div id="iris"></div>
+<div class="ride" id="ride"><div class="door l"></div><div class="door r"></div><div class="panel"><span class="dir" id="rideDir">▲</span><span class="num" id="rideNum">1</span><span class="nm" id="rideName"></span></div></div>
 <canvas id="fx" aria-hidden="true"></canvas>
 <div id="floats" aria-hidden="true"></div>
 
@@ -857,7 +926,7 @@ const nextFrame = () => new Promise(r => requestAnimationFrame(() => requestAnim
 const Store = (() => {
   const KEY = 'puzzleParlor.v1';
   const defaults = () => ({
-    bank: 1000, lastSpin: 0, muted: false, haptics: true, hrUnlocked: false, room: 'main', lastWager: 50,
+    bank: 1000, lastSpin: 0, muted: false, haptics: true, hrUnlocked: false, clubUnlocked: false, room: 'main', lastWager: 50,
     stats: { rounds: 0, wins: 0, biggest: 0, jackpots: 0 },
     fun: { day: '', earned: 0 }
   });
@@ -965,6 +1034,7 @@ const Sfx = (() => {
       }, 125);
     },
     stopGroove() { clearInterval(grooveT); grooveT = 0; },
+    ding() { tone(1318.5, { dur: 0.7, vol: 0.13 }); tone(1046.5, { dur: 0.9, vol: 0.12, at: 0.2 }); },
     spinTick() { tone(2300, { type: 'square', dur: 0.018, vol: 0.04 }); }
   };
 })();
@@ -1061,6 +1131,30 @@ const FX = (() => {
   };
 })();
 
+/* ---------------------------- IRIS (circle wipe between 3D lobby and screens) ---------------------------- */
+const Iris = (() => {
+  const node = $('#iris'); let raf = 0;
+  const fast = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const draw = (x, y, r) => { node.style.background = `radial-gradient(circle at ${x}px ${y}px, transparent ${r}px, #ffd166 ${r}px, #ffd166 ${r + 4}px, #0a0412 ${r + 5}px)`; };
+  const maxR = (x, y) => Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y)) + 12;
+  function run(x, y, from, to, dur) {
+    return new Promise(res => {
+      cancelAnimationFrame(raf); node.classList.add('on'); if (fast) dur = 1;
+      const t0 = performance.now();
+      (function step(t) {
+        const k = Math.min(1, (t - t0) / dur), e = k < 0.5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2;
+        draw(x, y, Math.max(0, from + (to - from) * e));
+        if (k < 1) raf = requestAnimationFrame(step); else res();
+      })(t0);
+    });
+  }
+  return {
+    close(x = innerWidth / 2, y = innerHeight / 2, dur = 380) { return run(x, y, maxR(x, y), 0, dur); },
+    async open(x = innerWidth / 2, y = innerHeight / 2, dur = 420) { await run(x, y, 0, maxR(x, y), dur); node.classList.remove('on'); node.style.background = ''; },
+    get busy() { return node.classList.contains('on'); }
+  };
+})();
+
 /* ---------------------------- LUCK LAYER (shared) ---------------------------- */
 const LUCK = {
   gold: { label: 'GOLD CHIPS', short: '$', val: 0.5 },
@@ -1090,21 +1184,26 @@ const Luck = {
 const ROOMS = {
   main: { id: 'main', name: 'Main Floor', chips: [10, 50, 100, 500], min: 10, scale: 1 },
   high: { id: 'high', name: 'High Roller Room', chips: [100, 500, 1000, 5000], min: 100, scale: 10 },
+  club: { id: 'club', name: 'Diamond Club', chips: [250, 1000, 5000, 25000], min: 250, scale: 25 },
   sky: { id: 'sky', name: 'Sky Deck', chips: [10, 50, 100, 500], min: 10, scale: 1 }
 };
 const FLOOR_INFO = {
   main: { n: 1, name: 'Main Floor', sub: 'Casino classics · stakes from 10' },
   high: { n: 2, name: 'High Roller', sub: 'Exclusive games · stakes ×10' },
-  sky: { n: 3, name: 'Sky Deck', sub: 'Slide, trampolines, disco & Escape Room' }
+  club: { n: 3, name: 'Diamond Club', sub: 'Pyramid, Chandelier, Slide Vault · stakes ×25' },
+  sky: { n: 4, name: 'Sky Deck', sub: 'Slide, trampolines, disco & Escape Room' }
 };
-const HR_UNLOCK = 10000, COMP_LINE = 10, COMP_AMOUNT = 500, FUN_CAP = 200;
+const HR_UNLOCK = 10000, CLUB_UNLOCK = 50000, COMP_LINE = 10, COMP_AMOUNT = 500, FUN_CAP = 200;
 const TIERS = [
   { name: 'Easy', odds: 1.5 }, { name: 'Medium', odds: 2.5 }, { name: 'Hard', odds: 5 }
 ];
 const Econ = {
   justUnlocked: false,
   get bank() { return Store.d.bank; },
-  room() { const r = Store.d.room; return r === 'high' && Store.d.hrUnlocked ? ROOMS.high : r === 'sky' ? ROOMS.sky : ROOMS.main; },
+  room() { const r = Store.d.room; return ROOMS[r] && !this.locked(r) ? ROOMS[r] : ROOMS.main; },
+  /** Floors 2 and 3 unlock once the bankroll first reaches their threshold; they stay open after that. */
+  locked(id) { return (id === 'high' && !Store.d.hrUnlocked) || (id === 'club' && !Store.d.clubUnlocked); },
+  unlockAt(id) { return id === 'high' ? HR_UNLOCK : id === 'club' ? CLUB_UNLOCK : 0; },
   funLeft() { const f = Store.d.fun; return f && f.day === new Date().toDateString() ? Math.max(0, FUN_CAP - f.earned) : FUN_CAP; },
   /** Small chip rewards for Sky Deck tricks, capped per day so they can't be farmed. Returns chips given. */
   funReward(n) {
@@ -1116,7 +1215,8 @@ const Econ = {
   },
   add(n) {
     Store.d.bank = Math.max(0, Math.round(Store.d.bank + n));
-    if (Store.d.bank >= HR_UNLOCK && !Store.d.hrUnlocked) { Store.d.hrUnlocked = true; this.justUnlocked = true; }
+    if (Store.d.bank >= HR_UNLOCK && !Store.d.hrUnlocked) { Store.d.hrUnlocked = true; this.justUnlocked = 'high'; }
+    if (Store.d.bank >= CLUB_UNLOCK && !Store.d.clubUnlocked) { Store.d.clubUnlocked = true; this.justUnlocked = 'club'; }
     Store.save(); UI.updateBank();
   },
   tableMax(T) { return T.max * this.room().scale; }
@@ -2307,12 +2407,228 @@ const EscapeTable = {
   }
 };
 
+
+/* ---------------------------- PYRAMID (card solitaire, pairs to 13) — Diamond Club ---------------------------- */
+const PY_SUITS = ['♠', '♥', '♦', '♣'];
+const PyramidTable = {
+  id: 'pyramid', name: 'Pyramid', icon: '🔺', art: 'art-pyramid', unit: 'cards', time: 120, targets: [10, 16, 24], max: 2000, comboWindow: 4000,
+  blurb: 'Pair uncovered cards that add up to 13.',
+  rules: (t, time) => `Tap two uncovered cards that add up to <b>13</b>. A=1, J=11, Q=12, and a King goes alone. Flip the draw pile when you're stuck. Clear <b>${t} pyramid cards</b> in <b>${time}s</b>. Jokers pair with anything.`,
+  create(R, wrap, foot) {
+    const ROWS = 7, deck = [];
+    PY_SUITS.forEach(s => { for (let v = 1; v <= 13; v++) deck.push({ v, s, joker: false }); });
+    shuffle(deck);
+    if (Math.random() < Luck.wildChance) deck[randi(0, 27)] = { v: 0, s: '', joker: true };
+    const pyr = [], all = [];
+    for (let r = 0; r < ROWS; r++) { pyr.push([]); for (let i = 0; i <= r; i++) { const c = Object.assign(deck.shift(), { r, i, gone: false, luck: null }); pyr[r].push(c); all.push(c); } }
+    shuffle(all.filter(c => !c.joker)).slice(0, R.plan.length).forEach((c, k) => { c.luck = R.plan[k]; });
+    let stock = deck.map(c => Object.assign(c, { r: -1 })), waste = [], recycles = 2, sel = null, dead = false, cleared = 0;
+
+    const board = el('div', 'py-board'); wrap.appendChild(board);
+    foot.innerHTML = '';
+    const tray = el('div', 'py-tray');
+    tray.innerHTML = '<button class="pc back py-stock" aria-label="Draw a card"><b></b></button><div class="py-waste"></div><p class="hint">Tap the deck to draw.</p>';
+    foot.appendChild(tray);
+    const stockBtn = $('.py-stock', tray), wasteEl = $('.py-waste', tray);
+    const label = v => ({ 1: 'A', 11: 'J', 12: 'Q', 13: 'K' })[v] || String(v);
+    const red = c => c.s === '♥' || c.s === '♦';
+    const face = c => c.joker ? '<b>🃏</b>' : `<b>${label(c.v)}</b><i>${c.s}</i>`;
+    const covered = c => c.r >= 0 && c.r < ROWS - 1 && (!pyr[c.r + 1][c.i].gone || !pyr[c.r + 1][c.i + 1].gone);
+    const exposed = c => !c.gone && !covered(c);
+    const pairs = (a, b) => a.joker || b.joker || a.v + b.v === 13;
+
+    all.forEach(c => {
+      c.el = el('button', 'pc' + (red(c) ? ' red' : '') + (c.joker ? ' joker' : ''), face(c));
+      c.el.addEventListener('pointerdown', e => { e.preventDefault(); tap(c); });
+      board.appendChild(c.el);
+    });
+    function paint() {
+      all.forEach(c => { if (!c.gone) c.el.classList.toggle('covered', covered(c)); });
+      stockBtn.querySelector('b').textContent = stock.length ? stock.length : recycles ? '↻' : '✕';
+      stockBtn.classList.toggle('empty', !stock.length && !recycles);
+      const top = waste[waste.length - 1];
+      wasteEl.innerHTML = '';
+      if (top) {
+        top.el = el('button', 'pc' + (red(top) ? ' red' : '') + (top.joker ? ' joker' : '') + (sel === top ? ' sel' : ''), face(top));
+        top.el.addEventListener('pointerdown', e => { e.preventDefault(); tap(top); });
+        wasteEl.appendChild(top.el);
+      }
+    }
+    function select(c) { if (sel && sel.el) sel.el.classList.remove('sel'); sel = c; if (c && c.el) c.el.classList.add('sel'); }
+    function removeCards(list) {
+      let n = 0, sx = 0, sy = 0;
+      list.forEach(c => {
+        const p = centerOf(c.el); sx += p.x; sy += p.y;
+        FX.sparks(p.x, p.y, '#ffd166', 10);
+        if (c.r >= 0) { c.gone = true; n++; c.el.classList.add('gone'); const e = c.el; setTimeout(() => e.remove(), 380); if (c.luck) { R.luck(c.luck, p.x, p.y); c.luck = null; } }
+        else waste.pop();
+      });
+      select(null);
+      const mid = { x: sx / list.length, y: sy / list.length };
+      if (n) { cleared += n; R.score(n); }
+      R.combo(mid.x, mid.y);
+      paint();
+      if (cleared >= 28) { setTimeout(() => R.finish('cleared'), 450); return; }
+      checkStuck();
+    }
+    function tap(c) {
+      if (!R.active || dead) return;
+      if (c.r >= 0 && !exposed(c)) { c.el.classList.remove('nope'); void c.el.offsetWidth; c.el.classList.add('nope'); Sfx.error(); return; }
+      Haptic.tap();
+      if (c.v === 13 && !c.joker) { removeCards([c]); return; }
+      if (!sel) { select(c); Sfx.select(3); return; }
+      if (sel === c) { select(null); Sfx.tap(); return; }
+      if (pairs(sel, c)) removeCards([sel, c]);
+      else { select(c); Sfx.select(1); }
+    }
+    stockBtn.addEventListener('pointerdown', e => {
+      e.preventDefault(); if (!R.active || dead) return;
+      if (stock.length) { waste.push(stock.pop()); Sfx.flip(); }
+      else if (recycles) { recycles--; stock = waste.reverse(); waste = []; Sfx.whoosh(); }
+      else { Sfx.error(); return; }
+      if (sel && sel.r < 0) select(null);
+      paint(); checkStuck();
+    });
+    function checkStuck() {
+      if (stock.length || recycles) return;
+      const open = all.filter(exposed), top = waste[waste.length - 1], pool = top ? [...open, top] : open;
+      const move = pool.some((a, i) => (a.v === 13 && !a.joker) || pool.some((b, j) => j > i && pairs(a, b)));
+      if (!move) setTimeout(() => { if (!dead) R.finish('stuck'); }, 500);
+    }
+    function resize() {
+      const W = wrap.clientWidth, H = wrap.clientHeight, w = Math.floor(Math.min((W - 8) / 7.3, (H - 8) / 5.7, 64)), h = Math.round(w * 1.4);
+      board.style.width = (w * 7.3) + 'px'; board.style.height = (h * 4.1) + 'px';
+      board.style.setProperty('--cw', w + 'px'); tray.style.setProperty('--cw', Math.min(w, 46) + 'px');
+      all.forEach(c => { c.el.style.transform = `translate(${(3.65 + (c.i - c.r / 2) * 1.04 - 0.5) * w}px, ${c.r * h * 0.5}px)`; c.el.style.zIndex = c.r + 1; });
+    }
+    resize(); paint();
+    return {
+      resize,
+      stop() { dead = true; },
+      nearMiss() { return all.filter(c => !c.gone && c.luck).map(c => { c.el.insertAdjacentHTML('beforeend', luckBadge(c.luck)); return { el: c.el, type: c.luck }; }); }
+    };
+  }
+};
+
+/* ---------------------------- CHANDELIER (Lights Out) — Diamond Club ---------------------------- */
+const LightsTable = {
+  id: 'lights', name: 'Chandelier', icon: '💡', art: 'art-lights', unit: 'chandeliers', time: 90, targets: [2, 3, 4], max: 2000, comboWindow: 600000,
+  blurb: 'Switch every crystal light off.',
+  rules: (t, time) => `Tapping a crystal flips it and its four neighbours. Switch every light off to finish a chandelier. Finish <b>${t}</b> in <b>${time}s</b>. Stuck? Reset puts the board back.`,
+  create(R, wrap, foot) {
+    const N = 5;
+    const grid = el('div', 'lo-grid'); wrap.appendChild(grid);
+    foot.innerHTML = '';
+    const resetBtn = el('button', 'btn btn-ghost', 'Reset board'); resetBtn.style.minHeight = '44px';
+    const info = el('p', 'hint', ''); foot.append(resetBtn, info);
+    let on = [], start = [], solved = 0, dead = false, locked = false, moves = 0;
+    const boardLuck = {}; shuffle([0, 1, 2, 3]).slice(0, R.plan.length).forEach((b, i) => { boardLuck[b] = R.plan[i]; });
+    const cells = [...Array(N * N)].map((_, i) => {
+      const b = el('button', 'lo-cell', '<i></i>'); b.setAttribute('aria-label', 'Crystal ' + (i + 1));
+      b.addEventListener('pointerdown', e => { e.preventDefault(); tap(i); }); grid.appendChild(b); return b;
+    });
+    const flipAt = (arr, i) => { const r = Math.floor(i / N), c = i % N; [[0, 0], [1, 0], [-1, 0], [0, 1], [0, -1]].forEach(([dr, dc]) => { const rr = r + dr, cc = c + dc; if (rr >= 0 && cc >= 0 && rr < N && cc < N) arr[rr * N + cc] = !arr[rr * N + cc]; }); };
+    const paint = () => { cells.forEach((b, i) => b.classList.toggle('on', on[i])); info.textContent = `${on.filter(Boolean).length} lit · ${moves} taps`; };
+    function newBoard() {
+      do { on = Array(N * N).fill(false); shuffle([...Array(N * N).keys()]).slice(0, Math.min(8, 3 + solved)).forEach(i => flipAt(on, i)); } while (!on.some(Boolean));
+      start = on.slice(); moves = 0; locked = false; grid.classList.remove('done'); paint();
+    }
+    function tap(i) {
+      if (!R.active || dead || locked) return;
+      flipAt(on, i); moves++; paint(); Sfx.select(on[i] ? 9 : 4); Haptic.tap();
+      if (!on.some(Boolean)) {
+        locked = true; solved++; grid.classList.add('done');
+        const p = centerOf(grid);
+        R.score(1); R.combo(p.x, p.y); FX.sparks(p.x, p.y, '#fff1b8', 30); Sfx.win(); Haptic.win();
+        R.float(moves <= Math.min(8, 2 + solved) ? 'PERFECT!' : 'LIGHTS OUT!', p.x, p.y, 'big');
+        if (boardLuck[solved - 1]) { const t = boardLuck[solved - 1]; delete boardLuck[solved - 1]; setTimeout(() => R.luck(t, p.x, p.y + 40), 300); }
+        setTimeout(() => { if (!dead) newBoard(); }, 1000);
+      }
+    }
+    resetBtn.addEventListener('click', () => { if (!R.active || locked) return; on = start.slice(); moves = 0; paint(); Sfx.whoosh(); R.breakCombo(); });
+    function resize() { const s = Math.floor(Math.min(wrap.clientWidth, wrap.clientHeight, 380)); grid.style.width = grid.style.height = s + 'px'; }
+    resize(); newBoard();
+    return {
+      resize,
+      stop() { dead = true; },
+      nearMiss() { const k = Object.keys(boardLuck).map(Number).sort((a, b) => a - b)[0]; if (k == null) return []; grid.insertAdjacentHTML('beforeend', `<div class="lo-badge">${luckBadge(boardLuck[k])}</div>`); return [{ el: grid, type: boardLuck[k] }]; }
+    };
+  }
+};
+
+/* ---------------------------- SLIDE VAULT (8-puzzle) — Diamond Club ---------------------------- */
+const SLIDE_ART = [
+  'radial-gradient(circle at 50% 45%, #fff 0 6%, transparent 7%), conic-gradient(from 45deg at 50% 50%, #7fdcff, #e0f4ff, #3f8fd8, #bfe9ff, #7fdcff), radial-gradient(circle, #12233d, #050a14)',
+  'radial-gradient(circle at 50% 50%, #ffd166 0 18%, #b9822a 19% 24%, #e23a6f 25% 40%, #fff 41% 44%, #e23a6f 45% 60%, #1a0629 61%)',
+  'repeating-conic-gradient(from 0deg at 50% 50%, #ff3fb4 0 30deg, #3ff0ff 30deg 60deg, #ffd166 60deg 90deg), radial-gradient(circle, #000, #000)'
+];
+const SlideTable = {
+  id: 'slidev', name: 'Slide Vault', icon: '🧩', art: 'art-slidev', unit: 'vaults', time: 120, targets: [1, 2, 3], max: 2000, comboWindow: 600000,
+  blurb: 'Slide the tiles back into the picture.',
+  rules: (t, time) => `Tap a tile next to the gap to slide it in. Put the picture back together, numbers 1 to 8 in order. Open <b>${t} vault${t > 1 ? 's' : ''}</b> in <b>${time}s</b>.`,
+  create(R, wrap, foot) {
+    const N = 3, board = el('div', 'sv-board'); wrap.appendChild(board);
+    foot.innerHTML = '<p class="hint">Tap a tile beside the gap. The small numbers show the order.</p>';
+    let pos = [], tiles = [], solvedN = 0, dead = false, locked = false, size = 300, art = SLIDE_ART[0];
+    const vaultLuck = {}; shuffle([0, 1, 2, 3]).slice(0, R.plan.length).forEach((b, i) => { vaultLuck[b] = R.plan[i]; });
+    // pos[cell] = tile id (0..7) or 8 for the gap
+    const place = (t, cell) => { const g = size / N; t.el.style.transform = `translate(${(cell % N) * g}px, ${Math.floor(cell / N) * g}px)`; };
+    function build() {
+      board.innerHTML = ''; tiles = [];
+      art = SLIDE_ART[solvedN % SLIDE_ART.length];
+      for (let id = 0; id < 8; id++) {
+        const t = { id, el: el('button', 'sv-tile', `<small>${id + 1}</small>`) };
+        t.el.style.backgroundImage = art; t.el.style.backgroundPosition = `${(id % N) * 50}% ${Math.floor(id / N) * 50}%`;
+        t.el.addEventListener('pointerdown', e => { e.preventDefault(); tap(t); });
+        board.appendChild(t.el); tiles.push(t);
+      }
+      pos = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+      let gap = 8, prev = -1;
+      const steps = 30 + solvedN * 10;
+      for (let k = 0; k < steps || pos.every((v, i) => v === i); k++) {
+        const r = Math.floor(gap / N), c = gap % N, opts = [];
+        if (r > 0) opts.push(gap - N); if (r < N - 1) opts.push(gap + N); if (c > 0) opts.push(gap - 1); if (c < N - 1) opts.push(gap + 1);
+        const nxt = pick(opts.filter(o => o !== prev).length ? opts.filter(o => o !== prev) : opts);
+        pos[gap] = pos[nxt]; pos[nxt] = 8; prev = gap; gap = nxt;
+      }
+      locked = false; resize();
+    }
+    function tap(t) {
+      if (!R.active || dead || locked) return;
+      const cell = pos.indexOf(t.id), gap = pos.indexOf(8);
+      const adj = (Math.abs(cell - gap) === 1 && Math.floor(cell / N) === Math.floor(gap / N)) || Math.abs(cell - gap) === N;
+      if (!adj) { t.el.classList.remove('nope'); void t.el.offsetWidth; t.el.classList.add('nope'); Sfx.error(); return; }
+      pos[gap] = t.id; pos[cell] = 8; place(t, gap); Sfx.flip(); Haptic.tap();
+      if (pos.every((v, i) => v === i)) {
+        locked = true; solvedN++;
+        const p = centerOf(board);
+        board.classList.add('done'); setTimeout(() => board.classList.remove('done'), 800);
+        R.score(1); R.combo(p.x, p.y); FX.coins(p.x, p.y, 18); Sfx.win(); Haptic.win(); R.float('VAULT OPEN!', p.x, p.y, 'big');
+        const lk = vaultLuck[solvedN - 1]; if (lk) { delete vaultLuck[solvedN - 1]; setTimeout(() => R.luck(lk, p.x, p.y + 40), 300); }
+        setTimeout(() => { if (!dead) build(); }, 1100);
+      }
+    }
+    function resize() {
+      size = Math.floor(Math.min(wrap.clientWidth, wrap.clientHeight, 360)); board.style.width = board.style.height = size + 'px';
+      const g = size / N; tiles.forEach(t => { t.el.style.width = t.el.style.height = (g - 4) + 'px'; t.el.style.backgroundSize = `${size}px ${size}px`; place(t, pos.indexOf(t.id)); });
+    }
+    build();
+    return {
+      resize,
+      stop() { dead = true; },
+      nearMiss() { const k = Object.keys(vaultLuck).map(Number).sort((a, b) => a - b)[0]; if (k == null) return []; board.insertAdjacentHTML('beforeend', `<div class="lo-badge">${luckBadge(vaultLuck[k])}</div>`); return [{ el: board, type: vaultLuck[k] }]; }
+    };
+  }
+};
+
 /* ---------------------------- registry + floor line-ups ---------------------------- */
-const TABLES = { memory: MemoryTable, mahjong: MahjongTable, blocks: BlocksTable, connect: ConnectTable, gems: GemsTable, stack: StackTable, safe: SafeTable, mines: MinesTable, simon: SimonTable, escape: EscapeTable };
+const TABLES = { memory: MemoryTable, mahjong: MahjongTable, blocks: BlocksTable, connect: ConnectTable, gems: GemsTable, stack: StackTable, safe: SafeTable, mines: MinesTable, simon: SimonTable, escape: EscapeTable,
+  pyramid: PyramidTable, lights: LightsTable, slidev: SlideTable };
 // Order = 3D layout: [top-left, top-right, mid-left, mid-right, bottom-left, bottom-right]
 const FLOORS = {
   main: ['memory', 'connect', 'mahjong', 'gems', 'blocks', 'stack'],
   high: ['safe', 'mines', 'simon', 'mahjong', 'gems', 'blocks'],
+  club: ['pyramid', 'lights', 'slidev', 'safe', 'mines', 'gems'],
   sky: ['escape']   // the Sky Deck is mostly play areas (pit, slide, trampolines, disco)
 };
 const floorTables = () => FLOORS[Econ.room().id].map(id => TABLES[id]);
@@ -2328,7 +2644,7 @@ const World = (() => {
   const ui = { card: $('#zoneCard'), name: $('#zoneName'), info: $('#zoneInfo'), act: $('#worldAct'), hint: $('#worldHint') };
   const BOUNDS = { x0: -11.2, x1: 11.2, z0: -12.5, z1: 9.2 };
   const SPEED = 5.4;
-  let ok = false, running = false, raf = 0, renderer, scene, camera, clock, hemi, floorMat;
+  let ok = false, running = false, raf = 0, renderer, scene, camera, clock, hemi, floorMat, wallMat;
   let player, curZone = null, pendingZone = null, target = null, time = 0, stuck = 0;
   const colliders = [], zones = [], clickables = [], tickers = [], npcs = [], neon = [], signs = {};
   const floors = {}; let floorId = null, base = null, switching = null;   // active zones/colliders = base (wheel, door, decor) + current floor's tables
@@ -2341,19 +2657,24 @@ const World = (() => {
     stack: { color: 0x4f8dff, css: '#7fb2ff', felt: 0x10285a, shape: 'rect' },
     safe: { color: 0xffd166, css: '#ffd166', felt: 0x26262e, shape: 'rect' },
     mines: { color: 0x8dff6a, css: '#8dff6a', felt: 0x1f3a14, shape: 'round' },
-    simon: { color: 0xa974ff, css: '#c49bff', felt: 0x2a0f45, shape: 'round' }
+    simon: { color: 0xa974ff, css: '#c49bff', felt: 0x2a0f45, shape: 'round' },
+    pyramid: { color: 0xffd166, css: '#ffe08a', felt: 0x0e3a2a, shape: 'rect' },
+    lights: { color: 0xfff1b8, css: '#fff1b8', felt: 0x1a1f33, shape: 'round' },
+    slidev: { color: 0x7fdcff, css: '#9fe6ff', felt: 0x10203a, shape: 'rect' }
   };
   const keys = {}, joy = { id: null, sx: 0, sy: 0, vx: 0, vy: 0, t0: 0, moved: false };
   const THEMES = {
-    main: { hemi: 0xb58cff, ground: 0x1a0526, floor: 0xffffff, neon: [0xff3fb4, 0x3ff0ff], bg: 0x0a0412, door: 0x2a0d3d },
-    high: { hemi: 0xffcf7a, ground: 0x2a1a04, floor: 0xffd38a, neon: [0xffd166, 0xff9f43], bg: 0x140c02, door: 0x3a2508 },
-    sky: { hemi: 0x9fe6ff, ground: 0x082a44, floor: 0x86c8ff, neon: [0x3ff0ff, 0x8dff6a], bg: 0x04101f, door: 0x0b3d63 }
+    main: { hemi: 0xb58cff, ground: 0x1a0526, floor: 0xffffff, wall: 0xffffff, neon: [0xff3fb4, 0x3ff0ff], bg: 0x0a0412, door: 0x2a0d3d },
+    high: { hemi: 0xffcf7a, ground: 0x2a1a04, floor: 0xffd38a, wall: 0xffd9a0, neon: [0xffd166, 0xff9f43], bg: 0x140c02, door: 0x3a2508 },
+    club: { hemi: 0xcfe8ff, ground: 0x0a1426, floor: 0x7fa8ff, wall: 0x8fb8ff, neon: [0x7fdcff, 0xe0f4ff], bg: 0x03070e, door: 0x10203a },
+    sky: { hemi: 0x9fe6ff, ground: 0x082a44, floor: 0x86c8ff, wall: 0x9fd8ff, neon: [0x3ff0ff, 0x8dff6a], bg: 0x04101f, door: 0x0b3d63 }
   };
   const GRAV = 24;
   // Player physics/activity state (walk, climb, slide; vertical y/vy for pit, trampolines and jumps)
   const P = { mode: 'walk', y: 0, vy: 0, power: 0, jumpAt: -9, flipN: 0, flipT0: 0, flipDur: 1, flips: 0, t: 0, u: 0, spinT: 0, onDance: false, danceT: 0, grooving: false, capNoted: false, lastClimb: 0 };
   const sky = {};   // Sky Deck play areas (filled by buildSky)
   const dummy = T3 ? new T3.Object3D() : null;
+  let camLook = null;   // smoothed camera look-at target, so every camera move glides
   const v3 = (x, y, z) => new T3.Vector3(x, y, z);
 
   /* ---------- procedural textures (canvas, no image files) ---------- */
@@ -2465,6 +2786,7 @@ const World = (() => {
     else if (pose === 'dance') { const b = time * 8 + c.id; hop = Math.abs(Math.sin(b)) * 0.16; p.armL.rotation.z = -1.5 - Math.sin(b); p.armR.rotation.z = 1.5 - Math.sin(b); p.legL.rotation.x = Math.sin(b) * 0.35; p.legR.rotation.x = -Math.sin(b) * 0.35; }
     else if (pose === 'slide') { p.armL.rotation.z = -2.8; p.armR.rotation.z = 2.8; p.legL.rotation.x = p.legR.rotation.x = -1.3; }
     else if (pose === 'climb') { const b = time * 12; p.armL.rotation.x = -2.7 + Math.sin(b) * 0.5; p.armR.rotation.x = -2.7 - Math.sin(b) * 0.5; p.legL.rotation.x = Math.sin(b) * 0.6; p.legR.rotation.x = -Math.sin(b) * 0.6; }
+    else if (pose === 'sit') { p.legL.rotation.x = p.legR.rotation.x = -1.45; p.armL.rotation.x = p.armR.rotation.x = -1.0; }
     else if (pose === 'air') { p.armL.rotation.z = -1.9; p.armR.rotation.z = 1.9; p.legL.rotation.x = 0.35; p.legR.rotation.x = -0.25; }
     p.torso.position.y = bob; p.head.position.y = 0.72 + bob; p.hatG.position.y = 0.96 + bob;
     u.pivot.position.y = 1 + (u.y || 0) + hop;
@@ -2483,7 +2805,7 @@ const World = (() => {
     floorMat = lam(0xffffff, { map: ct.tex });
     const floor = mesh(new T3.PlaneGeometry(46, 46), floorMat, 0, 0, 2); floor.rotation.x = -Math.PI / 2; floor.userData.floor = true;
     const vt = velvet(); vt.tex.wrapS = vt.tex.wrapT = T3.RepeatWrapping; vt.tex.repeat.set(10, 2);
-    const wallM = lam(0xffffff, { map: vt.tex });
+    const wallM = wallMat = lam(0xffffff, { map: vt.tex });
     mesh(new T3.BoxGeometry(25, 5.5, 0.4), wallM, 0, 2.75, -14.2);
     mesh(new T3.BoxGeometry(0.4, 5.5, 26), wallM, -12.2, 2.75, -1.5);
     mesh(new T3.BoxGeometry(0.4, 5.5, 26), wallM, 12.2, 2.75, -1.5);
@@ -2531,6 +2853,7 @@ const World = (() => {
       scene.add(fl.group);
       if (f === 'sky') buildSky(fl);
       else FLOORS[f].forEach((id, i) => buildTable(Object.assign({ id, x: SPOTS[i][0], z: SPOTS[i][1] }, LOOK[id]), fl));
+      if (f === 'club') buildClubDecor(fl);
     });
 
     // player + patrons
@@ -2542,7 +2865,7 @@ const World = (() => {
       n.position.set(rand(-8, 8), 0, rand(-10, 7)); n.userData.npc = { goal: null, wait: rand(0, 2), cheer: false };
       npcs.push(n);
     });
-    applyFloor(Econ.room().id);
+    applyFloor(Econ.room().id); applyTheme(Econ.room().id);
   }
   function applyFloor(f) {
     floorId = f;
@@ -2556,15 +2879,49 @@ const World = (() => {
     if (P.grooving) { Sfx.stopGroove(); P.grooving = false; }
     npcs.forEach(n => { n.position.set(rand(-8, 8), 0, rand(-10, 7)); collide(n.position, 0.45); n.userData.npc.goal = null; });
   }
-  function switchFloor(f) {
-    const fade = $('#worldFade'); fade.classList.add('on'); Sfx.whoosh(); switching = f;
-    setTimeout(() => {
-      switching = null; applyFloor(f);
-      player.position.set(8.2, 0, -10.4); player.rotation.y = 0;
-      camera.position.set(player.position.x * 0.8, 14, player.position.z + 12);
-      fade.classList.remove('on');
-      const fi = FLOOR_INFO[f]; UI.banner(`${fi.name.toUpperCase()}<small>Floor ${fi.n} · ${fi.sub}</small>`, 'good', 1700);
-    }, 330);
+  function applyTheme(f) {
+    const th = THEMES[f];
+    Object.keys(signs.floor).forEach(k => { signs.floor[k].visible = k === f; });
+    signs.lamps.forEach((l, i) => l.material.color.setHex(i + 1 === FLOOR_INFO[f].n ? 0xffd166 : 0x332a44));
+    signs.doorPanel.material.color.setHex(th.door);
+    hemi.color.setHex(th.hemi); hemi.groundColor.setHex(th.ground); floorMat.color.setHex(th.floor); wallMat.color.setHex(th.wall);
+    neon.forEach((m, i) => m.material.color.setHex(th.neon[i % 2 ? 1 : 0]));
+    scene.background.setHex(th.bg); scene.fog.color.setHex(th.bg);
+  }
+  const hideZoneUI = () => { ui.card.hidden = true; ui.act.hidden = true; ui.hint.hidden = true; };
+  const IN_LIFT = () => v3(8.2, 0, -12.9), OUT_LIFT = () => v3(8.2, 0, -10.4);
+  /** Elevator ride: walk in, gold doors close over the screen, floor counter ticks, doors open on the new floor. */
+  async function switchFloor(f) {
+    switching = f;
+    const fromN = FLOOR_INFO[floorId].n, toN = FLOOR_INFO[f].n, ride = $('#ride');
+    curZone = null; hideZoneUI(); target = null; pendingZone = null;
+    P.mode = 'elev'; P.elev = { t: 0, from: player.position.clone(), to: IN_LIFT() };
+    await wait(500);
+    $('#rideNum').textContent = fromN; $('#rideDir').textContent = toN > fromN ? '▲' : '▼'; $('#rideName').textContent = '';
+    ride.classList.add('on'); void ride.offsetWidth; ride.classList.add('closed'); Sfx.whoosh(); Haptic.tap();
+    await wait(560);
+    applyFloor(f); applyTheme(f);
+    P.mode = 'elevHold'; player.position.copy(IN_LIFT()); player.rotation.y = 0;
+    camera.position.set(player.position.x * 0.8, 14, player.position.z + 12); camLook.set(player.position.x * 0.92, 0.6, player.position.z - 2.4);
+    for (let n = fromN; n !== toN;) { n += Math.sign(toN - fromN); await wait(420); $('#rideNum').textContent = n; Sfx.tick(0.5); }
+    $('#rideName').textContent = FLOOR_INFO[f].name.toUpperCase(); Sfx.ding();
+    await wait(500);
+    ride.classList.remove('closed'); await wait(520); ride.classList.remove('on');
+    switching = null;
+    P.mode = 'elevOut'; P.elev = { t: 0, from: IN_LIFT(), to: OUT_LIFT() };
+    const fi = FLOOR_INFO[f]; UI.banner(`${fi.name.toUpperCase()}<small>Floor ${fi.n} · ${fi.sub}</small>`, 'good', 1700);
+  }
+  /** Sit-down: walk to the nearest stool, hop on, camera swoops over the table, then the iris wipes into the bet screen. */
+  function sitAt(z) {
+    if (P.mode !== 'walk' || P.y > 0.3 || P.vy > 0) { Bet.open(z.id); return; }
+    const noSeat = z.id === 'escape', tc = noSeat ? v3(z.x, 0, z.z - 3.3) : v3(z.x, 0, z.z);
+    let seat = noSeat ? v3(z.x, 0, z.z - 1.0) : null, best = 1e9;
+    if (!noSeat) for (let k = 0; k < 4; k++) {
+      const a = k * Math.PI / 2 + Math.PI / 4, s = v3(tc.x + Math.cos(a) * 2.15, 0, tc.z + Math.sin(a) * 2.15), d = s.distanceTo(player.position);
+      if (d < best) { best = d; seat = s; }
+    }
+    P.mode = 'sit'; P.sit = { t: 0, from: player.position.clone(), seat, table: tc, id: z.id, noSeat, fired: false };
+    target = null; pendingZone = null; curZone = null; hideZoneUI(); Sfx.select(5);
   }
   function buildTable(d, fl) {
     const T = TABLES[d.id], g = new T3.Group(); g.position.set(d.x, 0, d.z); fl.group.add(g);
@@ -2623,6 +2980,23 @@ const World = (() => {
       tickers.push(() => { spark.scale.setScalar(0.7 + Math.random() * 0.8); });
       const dia = mesh(new T3.OctahedronGeometry(0.3), lam(0x9de7ff, { emissive: 0x3ff0ff, emissiveIntensity: 0.4 }), 0, 2.0, 0, g); dia.scale.y = 1.4;
       tickers.push(() => { dia.rotation.y = time * 1.5; dia.position.y = 2.0 + Math.sin(time * 2.2) * 0.1; });
+    } else if (d.id === 'pyramid') {
+      const cm = lam(0xfff5e0);
+      for (let r = 0; r < 4; r++) for (let i = 0; i <= r; i++) mesh(new T3.BoxGeometry(0.3, 0.02, 0.42), cm, (i - r / 2) * 0.34, 1.07, -0.6 + r * 0.32, g);
+      const cp = new T3.Group(); cp.position.set(0, 2.0, 0); g.add(cp);
+      mesh(new T3.ConeGeometry(0.35, 0.5, 4), lam(0xffd166, { emissive: 0x6b4a10 }), 0, 0, 0, cp);
+      tickers.push(() => { cp.rotation.y = time * 1.2; cp.position.y = 2.0 + Math.sin(time * 2) * 0.1; });
+    } else if (d.id === 'lights') {
+      const bulbs = []; for (let i = 0; i < 9; i++) bulbs.push(mesh(new T3.SphereGeometry(0.12, 10, 8), glow(0xffd166), -0.5 + (i % 3) * 0.5, 1.18, -0.5 + Math.floor(i / 3) * 0.5, g));
+      tickers.push(() => { bulbs.forEach((b, i) => b.material.color.setHex((Math.floor(time * 1.5) + i * 7) % 3 ? 0xffd166 : 0x332a1a)); });
+      const ch = new T3.Group(); ch.position.set(0, 2.4, 0); g.add(ch);
+      mesh(new T3.TorusGeometry(0.45, 0.04, 8, 24), lam(0xffd166, { emissive: 0x6b4a10 }), 0, 0, 0, ch).rotation.x = Math.PI / 2;
+      for (let i = 0; i < 8; i++) { const a = i / 8 * Math.PI * 2; mesh(new T3.OctahedronGeometry(0.07), glow(0xe0f4ff), Math.cos(a) * 0.45, -0.15, Math.sin(a) * 0.45, ch); }
+      tickers.push(() => { ch.rotation.y = time * 0.5; });
+    } else if (d.id === 'slidev') {
+      const cols = [0x7fdcff, 0x3f8fd8, 0xbfe9ff], tl = [];
+      for (let i = 0; i < 8; i++) tl.push(mesh(new T3.BoxGeometry(0.36, 0.1, 0.36), lam(cols[i % 3], { emissive: cols[i % 3], emissiveIntensity: 0.2 }), -0.4 + (i % 3) * 0.4, 1.1, -0.4 + Math.floor(i / 3) * 0.4, g));
+      tickers.push(() => { tl[7].position.x = (Math.sin(time * 1.5) + 1) / 2 * 0.4; });
     } else if (d.id === 'simon') {
       const cols = [0xff3fb4, 0x3ff0ff, 0xffd166, 0x8dff6a];
       const pads = cols.map((c, i) => mesh(new T3.BoxGeometry(0.55, 0.08, 0.55), new T3.MeshBasicMaterial({ color: c }), i % 2 ? 0.32 : -0.32, 1.1, i < 2 ? -0.32 : 0.32, g));
@@ -2665,11 +3039,22 @@ const World = (() => {
     mesh(new T3.BoxGeometry(0.04, 3.3, 0.02), gold, 0, 1.7, 0.27, g);   // the seam between the elevator doors
     signs.floor = {};
     Object.keys(FLOOR_INFO).forEach(id => { const f = FLOOR_INFO[id], s = sign('ELEVATOR', '#ffd166', `FLOOR ${f.n} · ${f.name.toUpperCase()}`, 2.9); s.position.set(0, 4.45, 0.3); s.visible = false; g.add(s); signs.floor[id] = s; });
-    signs.lamps = [0, 1, 2].map(i => mesh(new T3.SphereGeometry(0.1, 10, 8), glow(0x332a44), -0.45 + i * 0.45, 3.6, 0.34, g));
+    signs.lamps = [0, 1, 2, 3].map(i => mesh(new T3.SphereGeometry(0.1, 10, 8), glow(0x332a44), -0.6 + i * 0.4, 3.6, 0.34, g));
     signs.doorPanel = door;
     const ring = mesh(new T3.RingGeometry(1.8, 2.0, 48), glow(0xffd166, 0.3), 8.2, 0.03, -11.7); ring.rotation.x = -Math.PI / 2;
     const zone = { id: 'hr', kind: 'elev', x: 8.2, z: -11.7, r: 2.2, ring, color: 0xffd166 };
     zones.push(zone); g.traverse(o => { o.userData.zone = zone; }); clickables.push(g);
+  }
+  function buildClubDecor(fl) {
+    [[0, -8], [0, 1.5]].forEach(([x, z]) => {
+      const ch = new T3.Group(); ch.position.set(x, 4.7, z); fl.group.add(ch);
+      mesh(new T3.CylinderGeometry(0.02, 0.02, 1.2, 4), lam(0xcccccc), 0, 0.7, 0, ch);
+      [[0.95, 12], [0.55, 7]].forEach(([r, n], k) => {
+        mesh(new T3.TorusGeometry(r, 0.05, 8, 32), lam(0xffd166, { emissive: 0x6b4a10 }), 0, -k * 0.35, 0, ch).rotation.x = Math.PI / 2;
+        for (let i = 0; i < n; i++) { const a = i / n * Math.PI * 2; mesh(new T3.OctahedronGeometry(0.09), glow(0xe0f4ff), Math.cos(a) * r, -0.22 - k * 0.35, Math.sin(a) * r, ch); }
+      });
+      tickers.push(() => { ch.rotation.y = time * 0.25; });
+    });
   }
   /* ---------- Sky Deck: ball pit + slide, trampolines, disco floor, escape room ---------- */
   function buildSky(fl) {
@@ -2942,7 +3327,7 @@ const World = (() => {
   function act() {
     const z = curZone; if (!z) return;
     pendingZone = null; target = null;
-    if (z.kind === 'table') Bet.open(z.id);
+    if (z.kind === 'table') sitAt(z);
     else if (z.kind === 'wheel') Wheel.open();
     else if (z.kind === 'elev') Lobby.openElevator();
     else if (z.kind === 'fun') funAct(z.id);
@@ -2961,7 +3346,35 @@ const World = (() => {
     // ---- player: scripted climb/slide, otherwise walk with vertical physics (pit, trampolines, jumps)
     let speed = 0, pose = false;
     const pv = player.userData.pivot;
-    if (P.mode === 'climb') {
+    const ease = k => k * k * (3 - 2 * k);
+    if (P.mode === 'sit') {
+      const S = P.sit; S.t += dt;
+      const k = clamp(S.t / 0.4, 0, 1);
+      player.position.lerpVectors(S.from, S.seat, ease(k));
+      player.rotation.y = lerpAngle(player.rotation.y, Math.atan2(S.table.x - S.seat.x, S.table.z - S.seat.z), 1 - Math.exp(-12 * dt));
+      speed = k < 1 ? SPEED * 0.6 : 0;
+      if (!S.noSeat) { const h = clamp((S.t - 0.35) / 0.2, 0, 1); P.y = -0.28 * h + Math.sin(h * Math.PI) * 0.35; if (h > 0.5) pose = 'sit'; }
+      if (!S.fired && S.t > 0.9) {
+        S.fired = true; const s = toScreen(S.table.x, 1.1, S.table.z);
+        Iris.close(s.x, s.y, 360).then(() => { Bet.open(S.id); Iris.open(innerWidth / 2, innerHeight / 2, 400); });
+      }
+      if (S.fired && S.t > 2.2 && UI.cur === 'lobby') { P.mode = 'stand'; P.standT = 0; }   // the table didn't open (e.g. not enough chips)
+    } else if (P.mode === 'stand') {
+      const S = P.sit; P.standT += dt;
+      const k = clamp(P.standT / 0.55, 0, 1), out = v3(S.seat.x - S.table.x, 0, S.seat.z - S.table.z).normalize();
+      player.position.set(S.seat.x + out.x * 0.8 * ease(k), 0, S.seat.z + out.z * 0.8 * ease(k));
+      P.y = S.noSeat ? 0 : -0.28 * (1 - ease(k)); pose = !S.noSeat && k < 0.35 ? 'sit' : false; speed = k > 0.35 && k < 1 ? SPEED * 0.5 : 0;
+      if (k > 0.35) player.rotation.y = lerpAngle(player.rotation.y, Math.atan2(out.x, out.z), 1 - Math.exp(-8 * dt));
+      if (k >= 1) { P.mode = 'walk'; P.y = 0; collide(player.position, 0.45); }
+    } else if (P.mode === 'elev' || P.mode === 'elevOut') {
+      const E = P.elev; E.t += dt; const k = clamp(E.t / 0.5, 0, 1);
+      player.position.lerpVectors(E.from, E.to, ease(k)); speed = k < 1 ? SPEED * 0.6 : 0; P.y = 0;
+      const dx = E.to.x - E.from.x, dz = E.to.z - E.from.z;
+      if (Math.hypot(dx, dz) > 0.05) player.rotation.y = lerpAngle(player.rotation.y, Math.atan2(dx, dz), 1 - Math.exp(-12 * dt));
+      if (P.mode === 'elevOut' && k >= 1) P.mode = 'walk';
+    } else if (P.mode === 'elevHold') {
+      // inside the elevator while the doors are shut
+    } else if (P.mode === 'climb') {
       P.t += dt; const k = Math.min(1, P.t / 1.1);
       player.position.set(sky.ladder.x, 0, sky.ladder.z); player.rotation.y = Math.PI; P.y = k * (sky.tower.top - 0.1); pose = 'climb';
       if (Math.floor(time * 7) !== P.lastClimb) { P.lastClimb = Math.floor(time * 7); Sfx.climb(); }
@@ -3008,10 +3421,12 @@ const World = (() => {
     if (mark && mark.visible) { mark.userData.t += dt; mark.scale.setScalar(1 + mark.userData.t * 2); mark.material.opacity = Math.max(0, 0.9 - mark.userData.t * 1.6); if (mark.userData.t > 0.6) mark.visible = false; }
 
     // zones
-    let near = null, best = 1e9;
-    for (const z of zones) { const d = Math.hypot(player.position.x - z.x, player.position.z - z.z); if (d < z.r && d < best) { best = d; near = z; } }
-    if (near !== curZone) showZone(near);
-    if (near && pendingZone === near && !target) { pendingZone = null; act(); }
+    if (P.mode === 'walk') {
+      let near = null, best = 1e9;
+      for (const z of zones) { const d = Math.hypot(player.position.x - z.x, player.position.z - z.z); if (d < z.r && d < best) { best = d; near = z; } }
+      if (near !== curZone) showZone(near);
+      if (near && pendingZone === near && !target) { pendingZone = null; act(); }
+    }
     zones.forEach(z => { if (z.ring && z !== curZone) z.ring.material.opacity = 0.25 + Math.sin(time * 2 + z.x) * 0.1; });
 
     // patrons wander between tables and cheer
@@ -3051,10 +3466,18 @@ const World = (() => {
 
     // camera: high three-quarter view that follows the player
     const portrait = camera.aspect < 0.8;
-    const want = v3(player.position.x * (portrait ? 0.8 : 0.7), portrait ? 14 : 9.5, player.position.z + (portrait ? 12 : 9));
-    want.y += Math.max(0, P.y) * 0.5;
-    camera.position.lerp(want, 1 - Math.exp(-5 * dt));
-    camera.lookAt(player.position.x * (portrait ? 0.92 : 0.8), 0.6 + Math.max(0, P.y) * 0.6, player.position.z - (portrait ? 2.4 : 1.5));
+    let want, look, rate = 5;
+    if (P.mode === 'sit') {
+      const S = P.sit, out = v3(S.seat.x - S.table.x, 0, S.seat.z - S.table.z).normalize();
+      want = v3(S.seat.x + out.x * 2.4, 3.3, S.seat.z + out.z * 2.4 + 1.2); look = v3(S.table.x, 1.0, S.table.z); rate = 3.2;
+    } else {
+      want = v3(player.position.x * (portrait ? 0.8 : 0.7), (portrait ? 14 : 9.5) + Math.max(0, P.y) * 0.5, player.position.z + (portrait ? 12 : 9));
+      look = v3(player.position.x * (portrait ? 0.92 : 0.8), 0.6 + Math.max(0, P.y) * 0.6, player.position.z - (portrait ? 2.4 : 1.5));
+      if (P.mode === 'stand') rate = 2.6;   // slow pull-back after leaving a table
+    }
+    camera.position.lerp(want, 1 - Math.exp(-rate * dt));
+    camLook.lerp(look, 1 - Math.exp(-(rate + 3) * dt));
+    camera.lookAt(camLook);
   }
   function frame() {
     if (!running) return;
@@ -3081,14 +3504,22 @@ const World = (() => {
       scene = new T3.Scene(); scene.background = new T3.Color(0x0a0412); scene.fog = new T3.Fog(0x0a0412, 17, 36);
       camera = new T3.PerspectiveCamera(58, 1, 0.1, 80); clock = new T3.Clock();
       build(); bindInput(); ok = true; resize();
-      camera.position.set(0, 12.5, 17); camera.lookAt(0, 0.6, 4);
+      camera.position.set(0, 12.5, 17); camLook = v3(0, 0.6, 4); camera.lookAt(camLook);
       host.hidden = false;
       // Re-draw canvas signs once the web fonts arrive
       if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => scene.traverse(o => { if (o.userData.tex) o.userData.tex.redraw(); })).catch(() => {});
       renderer.domElement.addEventListener('webglcontextlost', e => { e.preventDefault(); running = false; });
       return true;
     },
-    start() { if (!ok || running) return; running = true; clock.getDelta(); resize(); frame(); },
+    start() {
+      if (!ok || running) return;
+      running = true; clock.getDelta(); resize();
+      if (P.mode === 'sit' && P.sit.fired) {   // back from a table: wipe opens on it while you stand and the camera pulls out
+        P.mode = 'stand'; P.standT = 0;
+        const s = toScreen(P.sit.table.x, 1.1, P.sit.table.z); Iris.open(s.x, s.y, 480);
+      }
+      frame();
+    },
     stop() { running = false; cancelAnimationFrame(raf); if (P.grooving) { Sfx.stopGroove(); P.grooving = false; P.onDance = false; } joy.id = null; joy.vx = joy.vy = 0; joyEl.hidden = true; for (const k in keys) keys[k] = false; },
     resize() { if (ok) resize(); },
     /** Read-only snapshot for the automated smoke test. */
@@ -3104,14 +3535,9 @@ const World = (() => {
     /** Sync world props with the economy (HR door, theme, zone card text). */
     refresh() {
       if (!ok) return;
-      const f = Econ.room().id, th = THEMES[f];
-      if (floorId !== f && switching !== f) switchFloor(f);
-      Object.keys(signs.floor).forEach(k => { signs.floor[k].visible = k === f; });
-      signs.lamps.forEach((l, i) => l.material.color.setHex(i + 1 === FLOOR_INFO[f].n ? 0xffd166 : 0x332a44));
-      signs.doorPanel.material.color.setHex(th.door);
-      hemi.color.setHex(th.hemi); hemi.groundColor.setHex(th.ground); floorMat.color.setHex(th.floor);
-      neon.forEach((m, i) => m.material.color.setHex(th.neon[i % 2 ? 1 : 0]));
-      scene.background.setHex(th.bg); scene.fog.color.setHex(th.bg);
+      const f = Econ.room().id;
+      if (floorId !== f) { if (switching !== f) switchFloor(f); }
+      else if (!switching) applyTheme(f);
       if (curZone) showZone(curZone, true);
     }
   };
@@ -3402,7 +3828,7 @@ const Lobby = (() => {
     memory: '🃏',
     mahjong: '🀄',
     blocks: '<div class="mini-blocks">' + ['#ff3fb4', '#ff3fb4', 'o', '#3ff0ff', '#ffd166', '#ffd166', '#3ff0ff', 'o', '#8dff6a'].map(c => c === 'o' ? '<i class="o"></i>' : `<i style="color:${c}"></i>`).join('') + '</div>',
-    gems: '💎', safe: '🔐', mines: '💣',
+    gems: '💎', safe: '🔐', mines: '💣', pyramid: '🔺', lights: '💡', slidev: '🧩',
     stack: '<div class="mini-chips"><i style="--cc:#2f7df6"></i><i style="--cc:#e23a6f"></i><i style="--cc:#d29b1e"></i></div>',
     simon: '<div class="mini-pads">' + ['#ff3fb4', '#3ff0ff', '#ffd166', '#8dff6a'].map(c => `<i style="color:${c}"></i>`).join('') + '</div>',
     connect: '<div class="mini-dots">' + ['#ff3fb4', '#ff3fb4', '#3ff0ff', '#ffd166', '#ff3fb4', '#3ff0ff', '#ffd166', '#8dff6a', '#3ff0ff'].map(c => `<i style="color:${c}"></i>`).join('') + '</div>'
@@ -3434,40 +3860,42 @@ const Lobby = (() => {
     $('#btnMenu').addEventListener('click', () => sheet(true));
     $('#btnSheetClose').addEventListener('click', () => sheet(false));
     $('#sheetScrim').addEventListener('click', () => sheet(false));
-    $$('.room-tab').forEach(t => t.addEventListener('click', () => setRoom(t.dataset.room)));
     $('#btnSpin').addEventListener('click', () => { sheet(false); Wheel.open(); });
     $('#btnSettings').addEventListener('click', () => { UI.syncToggles(); UI.open('#ovSettings'); });
     $('#elClose').addEventListener('click', () => UI.close('#ovElev'));
     $('#ovElev').addEventListener('click', e => { if (e.target.id === 'ovElev') UI.close('#ovElev'); });
   }
   function setRoom(id) {
-    if (id === 'high' && !Store.d.hrUnlocked) { UI.toast(`Reach ${fmt(HR_UNLOCK)} chips to unlock the High Roller Room`); Sfx.error(); return; }
-    if (id === 'high' && Store.d.bank < ROOMS.high.min) { UI.toast(`High Roller tables start at ${ROOMS.high.min} chips`); Sfx.error(); return; }
+    if (Econ.locked(id)) { UI.toast(`Reach ${fmt(Econ.unlockAt(id))} chips to unlock ${FLOOR_INFO[id].name}`); Sfx.error(); return; }
+    if (Store.d.bank < ROOMS[id].min) { UI.toast(`${FLOOR_INFO[id].name} tables start at ${fmt(ROOMS[id].min)} chips`); Sfx.error(); return; }
     Store.d.room = id; Store.save(); applyRoom(); render();
-    if (id === 'high') { Sfx.win(); FX.sparks(innerWidth / 2, 160, '#ffd166', 30); }
-    if (id === 'sky') { Sfx.win(); FX.sparks(innerWidth / 2, 160, '#3ff0ff', 30); }
+    if (id !== 'main') { Sfx.win(); FX.sparks(innerWidth / 2, 160, id === 'high' ? '#ffd166' : id === 'club' ? '#bfe9ff' : '#3ff0ff', 30); }
   }
-  function applyRoom() { const id = Econ.room().id; document.body.classList.toggle('hr', id === 'high'); document.body.classList.toggle('sky', id === 'sky'); }
+  function applyRoom() { const id = Econ.room().id; ['hr:high', 'club:club', 'sky:sky'].forEach(p => { const [c, r] = p.split(':'); document.body.classList.toggle(c, id === r); }); }
   function openElevator() {
     const box = $('#elBtns'), cur = Econ.room().id; box.innerHTML = '';
-    ['sky', 'high', 'main'].forEach(id => {
-      const f = FLOOR_INFO[id], locked = id === 'high' && !Store.d.hrUnlocked, here = id === cur;
+    ['sky', 'club', 'high', 'main'].forEach(id => {
+      const f = FLOOR_INFO[id], locked = Econ.locked(id), here = id === cur;
       const b = el('button', 'floor-btn' + (here ? ' here' : '') + (locked ? ' locked' : ''));
-      b.innerHTML = `<span class="fn">${f.n}</span><span class="ft"><b>${f.name}</b><small>${here ? 'You are here' : locked ? `Unlocks at ${fmt(HR_UNLOCK)} chips` : f.sub}</small></span><span class="fi">${locked ? '🔒' : here ? '●' : '▲'}</span>`;
+      b.innerHTML = `<span class="fn">${f.n}</span><span class="ft"><b>${f.name}</b><small>${here ? 'You are here' : locked ? `Unlocks at ${fmt(Econ.unlockAt(id))} chips` : f.sub}</small></span><span class="fi">${locked ? '🔒' : here ? '●' : '▲'}</span>`;
       b.disabled = here;
-      b.addEventListener('click', () => { if (locked) { UI.toast(`Reach ${fmt(HR_UNLOCK)} chips to unlock the High Roller floor`); Sfx.error(); return; } UI.close('#ovElev'); setRoom(id); });
+      b.addEventListener('click', () => { if (locked) { UI.toast(`Reach ${fmt(Econ.unlockAt(id))} chips to unlock ${f.name}`); Sfx.error(); return; } if (Store.d.bank < ROOMS[id].min) { setRoom(id); return; } UI.close('#ovElev'); setRoom(id); });
       box.appendChild(b);
     });
     UI.open('#ovElev');
   }
   function render() {
     const room = Econ.room(), s = Store.d.stats;
-    $('#roomMain').classList.toggle('on', room.id === 'main'); $('#roomSky').classList.toggle('on', room.id === 'sky');
-    const hi = $('#roomHigh'); hi.classList.toggle('on', room.id === 'high'); hi.classList.toggle('locked', !Store.d.hrUnlocked);
-    $('#roomHighLbl').textContent = Store.d.hrUnlocked ? '👑 High Roller' : '🔒 High Roller';
-    $('#roomHighSub').textContent = Store.d.hrUnlocked ? 'Floor 2 · from 100' : `Unlocks at ${fmtShort(HR_UNLOCK)}`;
-    $('#hrMeter').hidden = Store.d.hrUnlocked;
-    $('#hrMeter i').style.transform = `scaleX(${clamp(Store.d.bank / HR_UNLOCK, 0, 1)})`;
+    const tabs = $('#rooms'); tabs.innerHTML = '';
+    ['main', 'high', 'club', 'sky'].forEach(id => {
+      const f = FLOOR_INFO[id], locked = Econ.locked(id), need = Econ.unlockAt(id);
+      const b = el('button', 'room-tab' + (room.id === id ? ' on' : '') + (locked ? ' locked' : ''));
+      b.id = 'room' + id[0].toUpperCase() + id.slice(1); b.setAttribute('role', 'tab'); b.dataset.room = id;
+      b.innerHTML = `${locked ? '🔒 ' : ''}${f.name}<small>${locked ? `Unlocks at ${fmtShort(need)}` : `Floor ${f.n} · ${id === 'sky' ? 'fun zone' : `from ${fmtShort(ROOMS[id].min)}`}`}</small>` +
+        (locked ? `<span class="hr-meter"><i style="transform:scaleX(${clamp(Store.d.bank / need, 0, 1)})"></i></span>` : '');
+      b.addEventListener('click', () => setRoom(id));
+      tabs.appendChild(b);
+    });
     if (cardsFloor !== room.id) buildCards();
     const rate = s.rounds ? Math.round(100 * s.wins / s.rounds) + '%' : '—';
     $('#stats').innerHTML = `<div><b>${fmt(s.rounds)}</b><small>Rounds</small></div><div><b>${rate}</b><small>Win rate</small></div><div><b>${fmtShort(Math.max(0, s.biggest))}</b><small>Best win</small></div><div><b>${fmt(s.jackpots)}</b><small>Jackpots</small></div>`;
@@ -3483,7 +3911,7 @@ const Lobby = (() => {
   async function show() {
     sheet(false);
     UI.show('lobby');
-    if (Econ.room().id === 'high' && Store.d.bank < ROOMS.high.min) { Store.d.room = 'main'; Store.save(); UI.toast('Back to the Main Floor: High Roller tables start at 100'); }
+    { const r = Econ.room(); if (r.id !== 'main' && Store.d.bank < r.min) { Store.d.room = 'main'; Store.save(); UI.toast(`Back to the Main Floor: ${FLOOR_INFO[r.id].name} tables start at ${fmt(r.min)}`); } }
     applyRoom(); render();
     clearInterval(spinTimer); spinTimer = setInterval(() => { if (UI.cur === 'lobby') renderSpin(); }, 30000);
     await wait(350);
@@ -3493,9 +3921,11 @@ const Lobby = (() => {
       Econ.add(COMP_AMOUNT); const p = centerOf($('#bankPill')); FX.coins(p.x, p.y + 20, 24); Sfx.jingle(8); Haptic.win(); render();
     }
     if (Econ.justUnlocked) {
-      Econ.justUnlocked = false; FX.confetti(); Sfx.fanfare(); Haptic.big();
-      const go = await UI.confirm({ icon: '👑', title: 'High Roller Room unlocked', body: 'Floor 2 is open: Safe Cracker, Diamond Mines and Lucky Sequence, plus classics at ×10 stakes and better jackpot odds. Take the elevator any time.', ok: 'Go upstairs', cancel: 'Stay on Main Floor' });
-      if (go) setRoom('high');
+      const id = Econ.justUnlocked; Econ.justUnlocked = false; FX.confetti(); Sfx.fanfare(); Haptic.big();
+      const go = id === 'club'
+        ? await UI.confirm({ icon: '💎', title: 'Diamond Club unlocked', body: 'Floor 3 is open: Pyramid, Chandelier and Slide Vault, plus Safe Cracker, Diamond Mines and Gem Swap at ×25 stakes.', ok: 'Go upstairs', cancel: 'Stay here' })
+        : await UI.confirm({ icon: '👑', title: 'High Roller Room unlocked', body: 'Floor 2 is open: Safe Cracker, Diamond Mines and Lucky Sequence, plus classics at ×10 stakes and better jackpot odds. Take the elevator any time.', ok: 'Go upstairs', cancel: 'Stay on Main Floor' });
+      if (go) setRoom(id);
     }
   }
   return { init, show, render, renderSpin, setRoom, openElevator };
@@ -3547,11 +3977,16 @@ const Bet = (() => {
       : `Add chips to bet. Minimum ${fmt(room.min)}.`;
     const d = $('#btnDeal'); d.disabled = !ok; d.textContent = ok ? `Deal · bet ${fmt(wager)}` : 'Deal';
   }
-  function deal() {
+  let dealing = false;
+  async function deal() {
     const room = Econ.room();
-    if (wager < room.min || wager > Store.d.bank) return;
-    Store.d.lastWager = wager; Store.save();
+    if (dealing || wager < room.min || wager > Store.d.bank) return;
+    dealing = true; Store.d.lastWager = wager; Store.save();
+    const p = centerOf($('#btnDeal'));
+    await Iris.close(p.x, p.y, 320);                       // wipe closes onto the Deal button…
     Round.start({ table: tableId, tier, wager, dn: 0, timeScale: 1 });
+    Iris.open(innerWidth / 2, innerHeight / 2, 380);        // …and opens on the table
+    dealing = false;
   }
   return { open, deal, clear() { wager = 0; render(); } };
 })();
